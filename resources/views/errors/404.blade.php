@@ -42,7 +42,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">{{ trans('validation.http.Eror404') }}</div>
+                <div class="title">{{ trans('validation.http.Error404') }}</div>
             </div>
         </div>
     </body>

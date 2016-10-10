@@ -2,15 +2,49 @@
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Public Area Routes
 |--------------------------------------------------------------------------
-|
-| This file is where you may define all of the routes that are handled
-| by your application. Just tell Laravel the URIs it should respond
-| to using a Closure or controller method. Build something great!
-|
+| 
 */
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+|
+*/
+
+Auth::routes();
+Route::get('home' , 'HomeController@index') ;
+
+/*
+|--------------------------------------------------------------------------
+| Routes for Registered Users
+|--------------------------------------------------------------------------
+|
+*/
+
+
+/*
+|--------------------------------------------------------------------------
+| Routes for Admins
+|--------------------------------------------------------------------------
+|
+*/
+Route::group( ['prefix' => 'manage', 'middleware' => ['auth','admin'], 'namespace' => 'Manage'] , function () {
+    Route::get('/' , 'ManageController@index');
+});
+
+/*
+|        | POST     | login                        |                      | App\Http\Controllers\Auth\LoginController@login                        | web,guest    |
+|        | GET|HEAD | login                        | login                | App\Http\Controllers\Auth\LoginController@showLoginForm                | web,guest    |
+|        | POST     | logout                       |                      | App\Http\Controllers\Auth\LoginController@logout                       | web          |
+|        | POST     | password/email               |                      | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web,guest    |
+|        | POST     | password/reset               |                      | App\Http\Controllers\Auth\ResetPasswordController@reset                | web,guest    |
+|        | GET|HEAD | password/reset               |                      | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web,guest    |
+|        | GET|HEAD | password/reset/{token}       |                      | App\Http\Controllers\Auth\ResetPasswordController@showResetForm        | web,guest    |
+ */

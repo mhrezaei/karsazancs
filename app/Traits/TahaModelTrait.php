@@ -38,6 +38,19 @@ trait TahaModelTrait
 	{
 		return self::whereNull('id') ;
 	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Stators
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function meta($field, $in_array_format)
+	{
+		return json_decode($this->$field , $in_array_format) ;
+	}
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| General Select Methods

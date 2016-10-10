@@ -42,7 +42,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">{{ trans('validation.http.Eror410') }}</div>
+                <div class="title">{{ trans('validation.http.Error410') }}</div>
             </div>
         </div>
     </body>

@@ -90,7 +90,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'fa',
 
     /*
     |--------------------------------------------------------------------------
@@ -168,7 +168,7 @@ return [
          */
          Morilog\Jalali\JalaliServiceProvider::class,
          Barryvdh\Debugbar\ServiceProvider::class,
-
+         Collective\Html\HtmlServiceProvider::class,
         //
 
         /*
