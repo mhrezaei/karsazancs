@@ -1,68 +1,46 @@
-@extends('layouts.app')
+@extends('auth.layout')
+
+@section('page_title' , trans('people.commands.login'))
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
-                        {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+    <div class="page-bg">
+        <div class="container">
+            <div class="col-sm-4 col-center">
+                <section class="panel auth-content">
+                    <article>
+                        <h1 class="auth-title">{{ trans('people.commands.login') }}</h1>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+                        @if($errors->all())
+                            <div class="authform-error">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
                             </div>
-                        </div>
+                        @endif
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
+                        {!! Form::open(['url' => url('/login')]) !!}
+                            <div class="field icon right"> <input type="text" name="email" placeholder="{{ trans('validation.attributes.email') }}">
+                                <div class="icon-mail"></div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember"> Remember Me
-                                    </label>
+                            <div class="field icon right"> <input type="password" name="password" placeholder="{{ trans('validation.attributes.password') }}">
+                                <div class="icon-lock"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 tar">
+                                    <div class="checkbox"> <input id="check-1" type="checkbox" name="remember" value="check"> <label for="check-1">{{ trans('people.commands.remember_me') }}</label> </div>
                                 </div>
+                                <div class="col-sm-6 tal"> <a href="#" class="simple-link">{{ trans('people.commands.forget_password') }}</a> </div>
                             </div>
-                        </div>
+                            <div class="field mt25"> <button class="green block">{{ trans('people.commands.login_into_site') }}</button> </div>
 
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ url('/password/reset') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                        <div class="more-link"> <span>{{ trans('people.commands.not_a_member') }}</span> <a href="#">{{ trans('people.commands.register_now') }}</a> </div>
+                        </form>
+                    </article>
+                </section>
             </div>
         </div>
     </div>
-</div>
+
+
 @endsection

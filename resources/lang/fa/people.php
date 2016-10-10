@@ -19,6 +19,12 @@ return [
 		"commands" => [
 				"change_password" => 'تغییر رمز عبور',
 				"activate" => 'فعال‌سازی حساب',
+				'login' => 'ورود' ,
+				'login_into_site' => 'ورود به مجموعه' ,
+				'forget_password' => 'فراموشی گذرواژه' ,
+				'remember_me' => 'مرا به خاطر بسپار' ,
+				'not_a_member' => 'عضو مجموعه نیستید؟' ,
+				'register_now' => 'اکنون ثبت نام کنید' ,
 				'login_as' => 'لاگین به جای ایشان' ,
 				'send_sms' => 'ارسال پیامک',
 				'send_email' => 'ارسال ایمیل',

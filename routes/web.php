@@ -7,8 +7,8 @@
 | 
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group( ['namespace' => 'Front'] , function () {
+    Route::get('/' , 'FrontController@index') ;
 });
 
 /*
@@ -20,6 +20,7 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('home' , 'HomeController@index') ;
+Route::get('logout' , 'HomeController@logout') ;
 
 /*
 |--------------------------------------------------------------------------
