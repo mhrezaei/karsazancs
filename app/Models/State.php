@@ -81,6 +81,18 @@ class State extends Model
 		return !$this->parent_id ;
 	}
 
+	public function isCapital()
+	{
+		if($this->isProvince())
+			return false ;
+
+		if($this->province()->capital_id == $this->id)
+			return true ;
+		else
+			return false ;
+
+	}
+
 	public function capital()
 	{
 		if($this->isProvince())

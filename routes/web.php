@@ -45,10 +45,13 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'admin'], 'namespac
 
 	Route::group(['prefix' => 'upstream', 'middleware_' => 'admin:developer'] , function() {
 		Route::get('/{request_tab?}' , 'UpstreamController@index') ;
+		Route::get('/{request_tab}/search/{keyword}' , 'UpstreamController@search') ;
+		Route::get('/{request_tab}/{item_id}' , 'UpstreamController@item') ;
 		Route::get('/edit/{request_tab?}/{item_id?}/{parent_id?}' , 'UpstreamController@editor') ;
 
 		Route::group(['prefix' => 'save'] , function() {
-			Route::post('states' , 'UpstreamController@saveStates');
+			Route::post('state' , 'UpstreamController@saveProvince');
+			Route::post('city' , 'UpstreamController@saveCity');
 		});
 	});
 });

@@ -1,9 +1,10 @@
 @include('templates.modal.start' , [
 	'partial' => true ,
-	'form_url' => url('manage/upstream/save/states'),
+	'form_url' => url('manage/upstream/save/state'),
 	'modal_title' => $model->id? trans('manage.settings.province_edit') : trans('manage.settings.province_new'),
 ])
 <div class='modal-body'>
+
 	@include('forms.hiddens' , ['fields' => [
 		['id' , $model->id],
 		['parent_id' , '0']

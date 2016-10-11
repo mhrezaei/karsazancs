@@ -6,7 +6,7 @@ use App\Http\Requests\Request;
 use App\Providers\ValidationServiceProvider;
 
 
-class StatesSaveRequest extends Request
+class ProvinceSaveRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.

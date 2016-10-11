@@ -14,13 +14,13 @@
 		<div class="col-md-8 tools">
 
 			@include('manage.frame.widgets.toolbar_button' , [
-				'target' => 'masterModal("'.url('manage/upstream/edit/states/0').'")' ,
+				'target' => 'masterModal("'.url('manage/upstream/edit/state/0').'")' ,
 				'type' => 'success' ,
 				'caption' => trans('forms.button.add') ,
 				'icon' => 'plus-circle' ,
 			])
 			@include('manage.frame.widgets.toolbar_search' , [
-				'target' => url('manage/devSettings/states/search/-key-') ,
+				'target' => url('manage/upstream/states/search/-key-') ,
 				'label' => trans('manage.settings.search_states') ,
 			])
 		</div>
@@ -47,7 +47,7 @@
 				@foreach($model_data as $model)
 					<tr>
 						<td id="domain-{{$model->id}}-title" data-toggle="{{$model->title}}">
-							<a href="javascript:void(0)" onclick="masterModal('{{ url('manage/upstream/edit/states/'.$model->id) }}')">
+							<a href="javascript:void(0)" onclick="masterModal('{{ url('manage/upstream/edit/state/'.$model->id) }}')">
 								{{ $model->title }}
 							</a>
 						</td>
