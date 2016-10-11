@@ -19,8 +19,8 @@ Route::group( ['namespace' => 'Front'] , function () {
 */
 
 Auth::routes();
-Route::get('home' , 'HomeController@index') ;
-Route::get('logout' , 'HomeController@logout') ;
+Route::get('home' , 'Front\FrontController@redirectUsersAfterLogin') ;
+Route::get('logout' , 'Front\FrontController@logout') ;
 
 /*
 |--------------------------------------------------------------------------
