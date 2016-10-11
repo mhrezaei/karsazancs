@@ -19,7 +19,7 @@ class FrontController extends Controller
 
 	/*
 	|--------------------------------------------------------------------------
-	| Authenticatoin Related Things
+	| Authentication Related Things
 	|--------------------------------------------------------------------------
 	| A place to redirect logged user and logoff landing page.
 	*/

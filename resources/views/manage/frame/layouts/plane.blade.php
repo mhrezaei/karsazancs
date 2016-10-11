@@ -2,7 +2,7 @@
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
-<html lang="en" class="no-js">
+<html lang="fa" class="no-js">
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8"/>
@@ -20,7 +20,7 @@
 	</script>
 
 	{{-- JQuery --}}
-	{!! Html::script ('assets/libs/jquery.js') !!}
+	{!! Html::script ('assets/libs/jquery.min.js') !!}
 	{!! Html::script ('assets/libs/jquery.form.min.js') !!}
 
 	{{-- BOOTSTRAP --}}
@@ -51,9 +51,9 @@
 	{!! HTML::script ('assets/libs/bootstrap-select/defaults-fa_IR.min.js') !!}
 
 	{{-- Datepicker --}}
-	{!! HTML::script ('assets/site/js/persian-date-0.1.8.min.js') !!}
-	{!! HTML::script ('assets/site/js/persian-datepicker-0.4.5.min.js') !!}
-	{!! HTML::style ('assets/site/css/persian-datepicker-0.4.5.min.css') !!}
+	{{--{!! HTML::script ('assets/site/js/persian-date-0.1.8.min.js') !!}--}}
+	{{--{!! HTML::script ('assets/site/js/persian-datepicker-0.4.5.min.js') !!}--}}
+	{{--{!! HTML::style ('assets/site/css/persian-datepicker-0.4.5.min.css') !!}--}}
 
 	{!! HTML::style ('assets/libs/datepicker/js-persian-cal.css') !!}
 	{!! HTML::script ('assets/libs/datepicker/js-persian-cal.js') !!}
