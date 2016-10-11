@@ -13,7 +13,7 @@ class ManageController extends Controller
 
 	public function __construct()
 	{
-		$this->page[0] = ['index' , trans('manage.modules.index')] ;
+		$this->page[0] = ['index' , trans('manage.index')] ;
 	}
 
 	public function index()

@@ -38,6 +38,7 @@ Route::get('logout' , 'Front\FrontController@logout') ;
 */
 Route::group( ['prefix' => 'manage', 'middleware' => ['auth','admin'], 'namespace' => 'Manage'] , function () {
     Route::get('/' , 'ManageController@index');
+    Route::get('index' , 'ManageController@index') ;
 });
 
 /*

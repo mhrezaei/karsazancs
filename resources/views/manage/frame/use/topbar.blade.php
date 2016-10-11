@@ -25,6 +25,6 @@
 	'items' => [
 		['manage/account' , trans('manage.account.account_settings') , 'sliders'] ,
 //		['-'] ,
-		['/logout' , trans('manage.modules.logout') , 'sign-out'] ,
+		['/logout' , trans('manage.logout') , 'sign-out'] ,
 	]
 ])

@@ -1,8 +1,8 @@
-{{--@include('manage.frame.widgets.sidebar-link' , [--}}
-	{{--'icon' => 'dashboard' ,--}}
-	{{--'caption' => trans('manage.modules.index') ,--}}
-	{{--'link' => 'index' ,--}}
-{{--])--}}
+@include('manage.frame.widgets.sidebar-link' , [
+	'icon' => 'dashboard' ,
+	'caption' => trans('manage.index') ,
+	'link' => 'index' ,
+])
 
 {{--@include('manage.frame.widgets.sidebar-link' , [--}}
 	{{--'icon' => 'child' ,--}}
@@ -46,13 +46,13 @@
 
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'cogs',
-	'caption' => trans('manage.modules.settings'),
+	'caption' => trans('manage.settings.downstream'),
 	'link' => 'settings' ,
 	'permission' => 'settings' ,
 ])
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'user-secret',
-	'caption' => trans('manage.modules.devSettings'),
+	'caption' => trans('manage.settings.upstream'),
 	'link' => 'devSettings' ,
 	'permission' => 'developer' ,
 ])
