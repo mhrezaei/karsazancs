@@ -234,6 +234,7 @@ return [
           'Html' => Collective\Html\HtmlFacade::class,
           'jDate' => Morilog\Jalali\Facades\jDate::class,
           'Image' => Intervention\Image\Facades\Image::class,
+          'Taha' => \App\Providers\TahaServiceProvider::class ,
      ],
 
 ];

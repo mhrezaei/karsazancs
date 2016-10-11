@@ -8,15 +8,9 @@ use App\Traits\TahaModelTrait ;
 
 class State extends Model
 {
-	use SoftDeletes;
-	use TahaModelTrait ;
+	use SoftDeletes , TahaModelTrait ;
 
 	protected $guarded = ['id'];
-
-	public function domain()
-	{
-		return $this->belongsTo('App\Models\Domain');
-	}
 
 
 	public static function get_provinces($mood='self')
@@ -34,7 +28,7 @@ class State extends Model
 
 	public static function findByName($state_name)
 	{
-		return self::where('title' , $state_name)->first();
+		return self::findBySlug($state_name , 'title') ;
 	}
 
 	public static function get_cities($given_province=0, $mood = 'self')
@@ -58,9 +52,12 @@ class State extends Model
 		return $return ;
 	}
 
-	public function cities($mood='self')
+	public function cities()
 	{
-		return self::where('parent_id' , $this->id) ;
+		if($this->id)
+			return self::where('parent_id' , $this->id) ;
+		else
+			return self::where('parent_id' , '>' , '0') ;
 	}
 
 	public static function setCapital($province_name, $city_name)

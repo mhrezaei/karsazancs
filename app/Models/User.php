@@ -9,9 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
-    use TahaModelTrait ;
-    use PermitsTrait ;
+    use Notifiable , TahaModelTrait , PermitsTrait ;
 
     protected $guarded = ['id' , 'deleted_at' ] ;
     protected static $search_fields = ['name_first' , 'name_last' , 'code_melli' , 'email' , 'mobile'] ;

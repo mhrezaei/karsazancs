@@ -53,6 +53,6 @@
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'user-secret',
 	'caption' => trans('manage.settings.upstream'),
-	'link' => 'devSettings' ,
+	'link' => 'upstream' ,
 	'permission' => 'developer' ,
 ])
