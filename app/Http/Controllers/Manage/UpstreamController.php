@@ -167,11 +167,12 @@ class UpstreamController extends Controller
 				return view('manage.settings.downstream-value' , compact('model'));
 				break;
 
-			case 'branches' :
+			case 'branch' :
 				$branch = Branch::find($item_id) ;
 				if(!$branch)
 					return view('errors.410');
 				$model_data = $branch->categories()->get() ;
+				$page[1] = [$request_tab , trans("manage.settings.categories")];
 				$page[2] = ['categories' , $branch->title() , $item_id];
 				return view('manage.settings.categories', compact('page', 'model_data','branch'));
 				break;
@@ -327,7 +328,7 @@ class UpstreamController extends Controller
 
 	}//@TODO: INTACT
 
-	public function save_category(Requests\Manage\CategorySaveRequest $request)
+	public function saveCategory(Requests\Manage\CategorySaveRequest $request)
 	{
 		//If Save...
 		if($request->_submit == 'save') {
@@ -348,7 +349,7 @@ class UpstreamController extends Controller
 			]);
 
 		}
-	}//@TODO: INTACT
+	}
 
 	public function save_downstream(Requests\Manage\DownstreamSaveRequest $request)
 	{

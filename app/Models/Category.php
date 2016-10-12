@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Model
 {
 	use TahaModelTrait;
-	use SoftDeletes ;
 
 	public static $reserved_slugs = 'none,without' ;
 	protected $guarded = ['id'] ;
