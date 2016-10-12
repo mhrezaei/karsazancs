@@ -42,6 +42,10 @@ class UpstreamController extends Controller
 				$model_data = State::get_provinces()->orderBy('title')->get();
 				break;
 
+			case 'branches' :  //@TODO: Intact!
+				$model_data = Branch::orderBy('plural_title')->get();
+				break ;
+
 			case 'downstream' : //@TODO: Intact!
 				$model_data = Setting::orderBy('title')->paginate(100) ;
 				break;
@@ -50,9 +54,6 @@ class UpstreamController extends Controller
 				$model_data = State::get_provinces()->orderBy('title')->get();
 				break;
 
-			case 'branches' :  //@TODO: Intact!
-				$model_data = Branch::orderBy('plural_title')->get();
-				break ;
 
 			default :
 				return view('errors.404');
@@ -109,15 +110,19 @@ class UpstreamController extends Controller
 				}
 				return view('manage.settings.downstream-edit' , compact('model'));
 
-			case 'branches' :
-				if($item_id>0)
-					$model_data = Branch::find($item_id);
-				else
-					$model_data = new Branch() ;
-				return view('manage.settings.branches_edit', compact('model_data'));
+			case 'branch' :
+				if($item_id) {
+					$model = Branch::find($item_id);
+					if(!$model)
+						return view('errors.m410');
+				}
+				else {
+					$model = new Branch();
+				}
+				return view('manage.settings.branches-edit', compact('model'));
 
 			case 'categories' :
-				if($item_id>0) {
+				if($item_id) {
 					$model = Category::find($item_id);
 					if(!$model)
 						return view('errors.m410');
@@ -231,7 +236,7 @@ class UpstreamController extends Controller
 	|
 	*/
 
-	public function save_branches(Requests\Manage\BranchesSaveRequest $request)
+	public function saveBranch(Requests\Manage\BranchSaveRequest $request)
 	{
 		//If Save...
 		if($request->_submit == 'save') {
@@ -242,7 +247,7 @@ class UpstreamController extends Controller
 
 		//If Delete...
 		if($request->_submit == 'delete') {
-			$model = State::find($request->id) ;
+			$model = Branch::find($request->id) ;
 			if(!$model)
 				return $this->jsonFeedback();
 
@@ -251,7 +256,7 @@ class UpstreamController extends Controller
 			]);
 		}
 
-	}//@TODO: INTACT
+	}
 
 
 	public function save_domains(Requests\Manage\DomainSaveRequest $request)

@@ -57,6 +57,7 @@ return [
 				"deleted_at" => "حذف" ,
 				'ask_confirm' => 'همین را می‌خواهید؟' ,
 				"select_default" => 'انتخاب کنید...',
+				'disabled' => 'غیرفعال' ,
 		],
 
 
