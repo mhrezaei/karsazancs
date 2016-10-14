@@ -326,7 +326,7 @@ class UpstreamController extends Controller
 			]);
 		}
 
-	}//@TODO: INTACT
+	}
 
 	public function saveCategory(Requests\Manage\CategorySaveRequest $request)
 	{
@@ -351,7 +351,7 @@ class UpstreamController extends Controller
 		}
 	}
 
-	public function save_downstream(Requests\Manage\DownstreamSaveRequest $request)
+	public function saveDownstream(Requests\Manage\DownstreamSaveRequest $request)
 	{
 		if($request->_submit == 'save') {
 			return $this->jsonAjaxSaveFeedback(Setting::store($request) ,[
@@ -363,9 +363,9 @@ class UpstreamController extends Controller
 					'success_refresh' => 1,
 			]);
 		}
-	}//@TODO: INTACT
+	}
 
-	public function set_downstream(Request $request)
+	public function setDownstream(Request $request)
 	{
 		//Preparations...
 		$data = $request->toArray();
@@ -376,79 +376,34 @@ class UpstreamController extends Controller
 		//Purification of the global value...
 		switch ($request->data_type) {
 			case 'bool' :
-				$data['global_value'] += 0 ;
+				$data['default_value'] += 0 ;
+				$data['custom_value'] += 0 ;
 				break;
 
 			case 'date' :
-				$carbon = new Carbon($data['global_value']);
-				$data['global_value'] = $carbon->toDateString();
+				$carbon1 = new Carbon($data['default_value']);
+				$carbon2 = new Carbon($data['custom_value']);
+				$data['default_value'] = $carbon1->toDateString();
+				$data['custom_value'] = $carbon2->toDateString();
 				break;
 
 			case 'photo' :
-				$data['global_value'] = str_replace(url('') , null , $data['global_value']);
+				$data['default_value'] = str_replace(url('') , null , $data['default_value']);
+				$data['custom_value'] = str_replace(url('') , null , $data['custom_value']);
 				break ;
 
 		}
 
-		//Processing Domains...
-		$value = [] ;
-		foreach($model->domains() as $domain) {
-			//Bypass...
-			if(in_array($data[$domain->slug] , Setting::$unset_signals))
-				continue ;
-
-			//Purification...
-			switch ($request->data_type) {
-				case 'bool' :
-					$data[$domain->slug] += 0 ;
-					break;
-
-				case 'date' :
-					$carbon = new Carbon($data[$domain->slug]);
-					$data[$domain->slug] = $carbon->toDateString() ;
-					break;
-
-				case 'photo' :
-					$data[$domain->slug] = str_replace(url('') , null , $data[$domain->slug]);
-					break ;
-			}
-
-			//Set...
-			$value[$domain->slug] = $data[$domain->slug] ;
-		}
-
 		//Save...
-		$model->global_value = $data['global_value'] ;
-		$model->domain_value = json_encode($value) ;
+		$model->default_value = $data['default_value'] ;
+		$model->custom_value = $data['custom_value'] ;
 
 		return $this->jsonAjaxSaveFeedback($model->update() , [
 				'success_refresh' => 1,
 		]);
 
-	}//@TODO: INTACT
+	}
 
-	public function save_activities( Requests\Manage\ActivitySaveRequest $request	)
-	{
-		//If Save...
-		if($request->_submit == 'save') {
-			return $this->jsonAjaxSaveFeedback(Activity::store($request) ,[
-					'success_refresh' => 1,
-			]);
-		}
-
-		//If Delete...
-		if($request->_submit == 'delete') {
-			$model = Activity::find($request->id) ;
-			if(!$model)
-				return $this->jsonFeedback();
-
-			return $this->jsonAjaxSaveFeedback($model->delete() , [
-					'success_refresh' => 1,
-			]);
-
-		}
-
-	}//@TODO: INTACT
 
 	public function loginAs(Request $request)
 	{

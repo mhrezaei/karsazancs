@@ -1,83 +1,78 @@
 <?php
-$middleware = array_merge(\Config::get('lfm.middlewares'), ['\Unisharp\Laravelfilemanager\middleware\MultiUser']);
+$middlewares = \Config::get('lfm.middlewares');
 $prefix = \Config::get('lfm.prefix', 'laravel-filemanager');
-$as = 'unisharp.lfm.';
-$namespace = '\Unisharp\Laravelfilemanager\controllers';
+array_push($middlewares, '\Unisharp\Laravelfilemanager\middleware\MultiUser');
 
 // make sure authenticated
-Route::group(compact('middleware', 'prefix', 'as', 'namespace'), function () {
-
+Route::group(array('middleware' => $middlewares, 'prefix' => $prefix, 'as' => 'unisharp.lfm.'), function ()
+{
     // Show LFM
     Route::get('/', [
-        'uses' => 'LfmController@show',
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\LfmController@show',
         'as' => 'show'
     ]);
 
     // upload
     Route::any('/upload', [
-        'uses' => 'UploadController@upload',
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\UploadController@upload',
         'as' => 'upload'
     ]);
 
     // list images & files
     Route::get('/jsonitems', [
-        'uses' => 'ItemsController@getItems',
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\ItemsController@getItems',
         'as' => 'getItems'
     ]);
 
     // folders
-    Route::get('/newfolder', [
-        'uses' => 'FolderController@getAddfolder',
+    Route::get('/newfolder',[
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\FolderController@getAddfolder',
         'as' => 'getAddfolder'
     ]);
     Route::get('/deletefolder', [
-        'uses' => 'FolderController@getDeletefolder',
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\FolderController@getDeletefolder',
         'as' => 'getDeletefolder'
     ]);
     Route::get('/folders', [
-        'uses' => 'FolderController@getFolders',
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\FolderController@getFolders',
         'as' => 'getFolders'
     ]);
 
     // crop
     Route::get('/crop', [
-        'uses' => 'CropController@getCrop',
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\CropController@getCrop',
         'as' => 'getCrop'
     ]);
     Route::get('/cropimage', [
-        'uses' => 'CropController@getCropimage',
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\CropController@getCropimage',
         'as' => 'getCropimage'
     ]);
 
     // rename
     Route::get('/rename', [
-        'uses' => 'RenameController@getRename',
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\RenameController@getRename',
         'as' => 'getRename'
     ]);
 
     // scale/resize
     Route::get('/resize', [
-        'uses' => 'ResizeController@getResize',
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\ResizeController@getResize',
         'as' => 'getResize'
     ]);
     Route::get('/doresize', [
-        'uses' => 'ResizeController@performResize',
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\ResizeController@performResize',
         'as' => 'performResize'
     ]);
 
     // download
     Route::get('/download', [
-        'uses' => 'DownloadController@getDownload',
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\DownloadController@getDownload',
         'as' => 'getDownload'
     ]);
 
     // delete
     Route::get('/delete', [
-        'uses' => 'DeleteController@getDelete',
+        'uses' => 'Unisharp\Laravelfilemanager\controllers\DeleteController@getDelete',
         'as' => 'getDelete'
     ]);
-
-    Route::get('/demo', function () {
-        return view('laravel-filemanager::demo');
-    });
 });

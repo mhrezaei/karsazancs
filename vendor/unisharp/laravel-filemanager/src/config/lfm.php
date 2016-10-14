@@ -4,10 +4,8 @@ return [
     // If true, the uploaded file will be renamed to uniqid() + file extension.
     'rename_file'           => true,
 
-    // If rename_file set to false and this set to true, then non-alphanumeric characters in filename will be replaced.
+    // If rename_file set to false and this set to true, then filter filename characters which are not alphanumeric.
     'alphanumeric_filename' => true,
-    // If true, non-alphanumeric folder name will not be allowed.
-    'alphanumeric_directory' => false,
 
     'use_package_routes'    => true,
 

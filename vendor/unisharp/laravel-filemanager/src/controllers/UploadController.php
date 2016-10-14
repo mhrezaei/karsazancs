@@ -71,16 +71,11 @@ class UploadController extends LfmController {
         $is_valid = false;
 
         $file = Input::file('upload');
-
         if (empty($file)) {
             throw new \Exception(Lang::get('laravel-filemanager::lfm.error-file-empty'));
-        } elseif (!$file instanceof UploadedFile) {
+        }
+        if (!$file instanceof UploadedFile) {
             throw new \Exception(Lang::get('laravel-filemanager::lfm.error-instance'));
-        } elseif ($file->getError() == UPLOAD_ERR_INI_SIZE) {
-            $max_size = ini_get('upload_max_filesize');
-            throw new \Exception(Lang::get('laravel-filemanager::lfm.error-file-size', ['max' => $max_size]));
-        } elseif ($file->getError() != UPLOAD_ERR_OK) {
-            dd('File failed to upload. Error code: ' . $file->getError());
         }
 
         $mimetype = $file->getMimeType();
@@ -109,7 +104,7 @@ class UploadController extends LfmController {
 
     private function getNewName($file)
     {
-        $new_filename = trim(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+        $new_filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
         if (Config::get('lfm.rename_file') === true) {
             $new_filename = uniqid();

@@ -56,6 +56,8 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'admin'], 'namespac
 			Route::post('city' , 'UpstreamController@saveCity');
 			Route::post('branch' , 'UpstreamController@saveBranch');
 			Route::post('category' , 'UpstreamController@saveCategory');
+			Route::post('downstream' , 'UpstreamController@saveDownstream');
+			Route::post('downstream_value' , 'UpstreamController@setDownstream');
 		});
 	});
 });

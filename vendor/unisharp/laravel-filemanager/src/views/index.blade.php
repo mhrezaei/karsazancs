@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="fa">
 <head>
   <meta charset="UTF-8">
   <title>{{ Lang::get('laravel-filemanager::lfm.title-page') }}</title>
@@ -9,21 +9,21 @@
   <link rel="stylesheet" href="{{ asset('/vendor/laravel-filemanager/css/lfm.css') }}">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.css">
 </head>
-<body>
+<body dir="rtl" style="direction: rtl">
   <div class="container">
     <div class="row fill">
       <div class="panel panel-primary fill">
-        <div class="panel-heading">
+        <div class="panel-heading hidden">
           <h3 class="panel-title">{{ Lang::get('laravel-filemanager::lfm.title-panel') }}</h3>
         </div>
         <div class="panel-body fill">
           <div class="row fill">
             <div class="wrapper fill">
-              <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2 left-nav fill" id="lfm-leftcol">
-                <div id="tree1">
-                </div>
-              </div>
-              <div class="col-md-10 col-lg-10 col-sm-10 col-xs-10 right-nav" id="right-nav">
+              {{--<div class="col-md-2 col-lg-2 col-sm-2 col-xs-2 left-nav fill" id="lfm-leftcol">--}}
+                {{--<div id="tree1">--}}
+                {{--</div>--}}
+              {{--</div>--}}
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 right-nav" id="right-nav">
                 <div class="row">
                   <div class="col-md-12">
                     @if($extension_not_found)
@@ -40,7 +40,7 @@
                           </button>
                         </div>
                         <div class="collapse navbar-collapse">
-                          <ul class="nav navbar-nav" id="nav-buttons">
+                          <ul class="nav navbar-nav navbar-right" id="nav-buttons">
                             <li>
                               <a href="#" id="to-previous">
                                 <i class="fa fa-arrow-left"></i> {{ Lang::get('laravel-filemanager::lfm.nav-back') }}
