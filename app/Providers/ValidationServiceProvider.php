@@ -153,7 +153,9 @@ class ValidationServiceProvider extends ServiceProvider
 				break;
 
 			case 'date' :
-				$data = Carbon::createFromTimestamp($data)->toDateTimeString();
+				//$data = Carbon::createFromTimestamp($data)->toDateTimeString();
+				$carbon = new Carbon($data) ;
+				$data = $carbon->toDateString();
 				break ;
 
 			case 'stripUrl' :

@@ -40,9 +40,9 @@
 	{{--]--}}
 {{--])--}}
 
-{{--@foreach(Taha::sidebarPostsMenu() as $item)--}}
-	{{--@include('manage.frame.widgets.sidebar-link' , $item)--}}
-{{--@endforeach--}}
+@foreach(Taha::sidebarPostsMenu() as $item)
+	@include('manage.frame.widgets.sidebar-link' , $item)
+@endforeach
 
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'cogs',

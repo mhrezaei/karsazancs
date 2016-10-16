@@ -60,7 +60,7 @@
 									{{ trans('forms.general.disabled') }}
 								</span>
 							@else
-								<a href="{{url("manage/upstream/branch/$model->id")}}">
+								<a href="{{url("manage/upstream/branches/$model->id")}}">
 									@pd($model->categories()->count())
 									{{ trans('manage.settings.category') }}
 								</a>

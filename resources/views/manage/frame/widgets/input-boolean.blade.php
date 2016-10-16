@@ -3,9 +3,7 @@
 ])
 
 @include('forms.check' , [
-//    'name' => isset($domain)? $domain->slug : 'global_value',
     'label' => ' ',
-//    'class' => isset($domain)? '' : 'form-default',
 ])
 
 @include('forms.group-end')

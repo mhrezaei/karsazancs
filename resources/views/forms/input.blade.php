@@ -4,34 +4,34 @@ if(isset($class)) {
 		$required = true;
 	}
 }
+
+if(!isset($in_form))
+	$in_form = true ;
 ?>
 
-<div class="form-group">
-	<label
-			for="{{$name}}"
-			class="col-sm-2 control-label {{$label_class or ''}}"
-	>
-		@if(isset($label))
-			{{ $label }}
-		@else
-			{{ Lang::has("validation.attributes.$name") ? trans("validation.attributes.$name") : $name}}
-		@endif
-		@if(isset($required) and $required)
-			<span class="fa fa-star required-sign " title="{{trans('forms.logic.required')}}"></span>
-		@endif
-	</label>
-
-	<div class="col-sm-10">
-		<input
-				type="{{$type or 'text'}}"
-				id="{{$id or ''}}"
-				name="{{$name}}" value="{{$value or ''}}"
-				class="form-control {{$class or ''}}"
-				placeholder="{{$placeholder or ''}}"
-				{{$extra or ''}}
+@if($in_form)
+	<div class="form-group">
+		<label
+				for="{{$name}}"
+				class="col-sm-2 control-label {{$label_class or ''}}"
 		>
-		<span class="help-block {{$hint_class or ''}}">
-			{{ $hint or '' }}
-		</span>
+			@if(isset($label))
+				{{ $label }}
+			@else
+				{{ Lang::has("validation.attributes.$name") ? trans("validation.attributes.$name") : $name}}
+			@endif
+			@if(isset($required) and $required)
+				<span class="fa fa-star required-sign " title="{{trans('forms.logic.required')}}"></span>
+			@endif
+		</label>
+
+		<div class="col-sm-10">
+			@include('forms.input-self')
+			<span class="help-block {{$hint_class or ''}}">
+				{{ $hint or '' }}
+			</span>
+		</div>
 	</div>
-</div>
+@else
+	@include('forms.input-self')
+@endif

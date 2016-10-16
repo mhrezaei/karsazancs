@@ -27,6 +27,12 @@ class Post extends Model
 	protected static $default_image ;
 	public static $reserved_slugs = 'none,without' ;
 
+	protected $casts = [
+		'is_draft' => 'boolean' ,
+		'meta' => 'array' ,
+		'published_at' => 'datetime' ,
+	];
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -64,11 +70,11 @@ class Post extends Model
 		if(!$string)
 			return ;
 
-		$this->photos = json_decode($string , true) ;
+		$this->photos = $string ;
 		$this->photos_count = sizeof($this->photos);
 	}
 
-	public function savePhotos($data)
+	public static function savePhotos($data)
 	{
 		$resultant_array = [] ;
 		unset($data['_photo_src_NEW']);
@@ -85,10 +91,11 @@ class Post extends Model
 			}
 		}
 
-		if(sizeof($resultant_array))
-			return $this->meta('post_photos' , json_encode($resultant_array)) ;
-		else
-			return true ;
+		return $resultant_array ;
+//		if(sizeof($resultant_array))
+//			return $this->meta('post_photos' , json_encode($resultant_array)) ;
+//		else
+//			return true ;
 	}
 
 	/*
@@ -98,9 +105,9 @@ class Post extends Model
 	|
 	*/
 
-	public static function counter($branch , $domain='global' ,$criteria = 'published')
+	public static function counter($branch ,$criteria = 'published')
 	{
-		return self::selector($branch , $domain , $criteria)->count() ;
+		return self::selector($branch , $criteria)->count() ;
 	}
 
 	public static function searchRawQuery($keyword, $fields = null)
@@ -149,11 +156,11 @@ class Post extends Model
 			case 'scheduled' :
 				return $table->whereDate('published_at','>',$now)->whereNotNull('published_by') ;
 			case 'pending':
-				return $table->whereNull('published_at')->where('is_draft',false) ;
+				return $table->whereNull('published_by')->where('is_draft',false) ;
 			case 'drafts' :
-				return $table->where('is_draft',true)->whereNull('published_by');
+				return $table->where('is_draft',1)->whereNull('published_by');
 			case 'my_posts' :
-				return $table->where('created_by',Auth::user()->id)->where('is_draft',0);
+				return $table->where('created_by',Auth::user()->id);
 			case 'my_drafts' :
 				return $table->where('created_by',Auth::user()->id)->where('is_draft',true)->whereNull('published_by');
 			case 'bin' :
@@ -164,6 +171,18 @@ class Post extends Model
 
 
 	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Accessors & Mutators
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function setBranchAttribute($value)
+	{
+		$this->attributes['branch'] = strtolower($value);
+	}
+
 
 
 	/*
@@ -204,7 +223,7 @@ class Post extends Model
 		$online_user = Auth::user() ;
 
 		//Allowed by permission...
-		if($online_user->can($this->branch.".edit" , $this->domains))
+		if($online_user->can($this->branch.".edit"))
 			return true ;
 
 		//Own unpublished post...
@@ -224,7 +243,7 @@ class Post extends Model
 			return false ;
 
 		//Allowed by Permission...
-		if($online_user->can($this->branch.".delete" , $this->domains))
+		if($online_user->can($this->branch.".delete" ))
 			return true ;
 
 		//Own unpublished post...
@@ -240,7 +259,7 @@ class Post extends Model
 		$online_user = Auth::user() ;
 
 		//Allowed by Permission...
-		if($online_user->can($this->branch.".delete" , $this->domains))
+		if($online_user->can($this->branch.".delete" ))
 			return true ;
 
 		//Otherwise...
@@ -250,7 +269,7 @@ class Post extends Model
 
 	public function isScheduled()
 	{
-		if($this->published_at and $this->published_at > Carbon::now())
+		if($this->published_by and $this->published_at and $this->published_at > Carbon::now())
 			return true ;
 		else
 			return false ;
@@ -259,7 +278,7 @@ class Post extends Model
 
 	public function isPublished()
 	{
-		if($this->published_at and $this->published_at <= Carbon::now() and !$this->copy_of)
+		if($this->published_by and $this->published_at and $this->published_at <= Carbon::now() and !$this->copy_of)
 			return true ;
 		else
 			return false ;
@@ -294,16 +313,16 @@ class Post extends Model
 			$return['text'] = trans('posts.status.draft');
 			$return['color'] = 'warning' ;
 		}
-		elseif(!$this->published_at) {
+		else {
 			$return['slug'] = 'under_review';
 			$return['text'] = trans('posts.status.under_review');
 			$return['color'] = 'warning' ;
 		}
-		else {
-			$return['slug'] = '.';
-			$return['text'] = '.';
-			$return['color'] = 'danger' ;
-		}
+//		else {
+//			$return['slug'] = '.';
+//			$return['text'] = '.';
+//			$return['color'] = 'danger' ;
+//		}
 
 		//Return...
 		if(!$key)
@@ -361,20 +380,6 @@ class Post extends Model
 					return str_limit($this->title , 50) ;
 
 
-			case 'domains' :
-				if($this->domains == 'free')
-					return $default ;
-				elseif($this->domains == 'global' or $this->domains=='global*')
-					return trans('posts.manage.global');
-				else {
-					$slug = str_replace('*' , null , $this->domains) ;
-					$domain = Domain::selectBySlug($slug) ;
-					if($domain)
-						return $domain->title ;
-					else
-						return $default ;
-					}
-
 			case 'link' :
 				$link = str_replace(' ', '_', $this->title);
 				$link = str_replace('/', '_', $link);
@@ -425,11 +430,4 @@ class Post extends Model
 
 	}
 
-	public function checkDomain($domain)
-	{
-		if ($this->domains == 'free')
-			return true;
-		
-		return str_contains($this->domains, "$domain");
-	}
 }

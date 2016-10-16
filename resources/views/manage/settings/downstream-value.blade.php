@@ -16,13 +16,13 @@
 			'extra' => 'disabled'
 		])
 
-		@include("manage.settings.downstream-value-$model->data_type" , [
+		@include("manage.frame.widgets.input-$model->data_type" , [
 			'value' => $model->default_value ,
 			'name' => 'default_value' ,
 			'class' => 'form-default'
 		])
 
-		@include("manage.settings.downstream-value-$model->data_type" , [
+		@include("manage.frame.widgets.input-$model->data_type" , [
 			'value' => $model->custom_value ,
 			'name' => 'custom_value'
 		])

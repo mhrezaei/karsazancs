@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\models\Branch;
 use Illuminate\Support\ServiceProvider;
 use App\Models\User;
 

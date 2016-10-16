@@ -32,14 +32,9 @@
 	    'hint' =>	trans('validation.hint.unique').' | '.trans('validation.hint.english-only'),
 	])
 
-	@include('manage.settings.downstream-value-photo' , [
-		'domain' => json_decode(json_encode(
-			[
-				'title' => trans('validation.attributes.featured_image') ,
-				'slug' => 'image' ,
-			]
-		)) ,
-		'value' => $model->image ,
+	@include('manage.frame.widgets.input-photo' , [
+		'name' => 'image' ,
+		'value' => $model->image
 	])
 
 	@if($posts = $model->posts()->count())

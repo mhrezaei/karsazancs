@@ -57,7 +57,7 @@
 	    'label' => trans('manage.settings.branches_features'),
 	    'class' =>	'ltr',
 		'value' =>	$model->features ,
-	    'hint' =>	trans('manage.settings.branches_features_hint').' '.implode(' , ',$model::$available_features),
+	    'hint' =>	trans('manage.settings.some_of_these').' '.implode(' , ',$model::$available_features),
 	])
 
 

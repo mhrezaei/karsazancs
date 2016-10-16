@@ -30,7 +30,7 @@ class UpstreamController extends Controller
 		$this->page[0] = ['upstream' , trans('manage.settings.upstream') , ];
 	}
 
-	public function index($request_tab = 'states')
+	public function index($request_tab = 'downstream')
 	{
 		//Preparetions...
 		$page = $this->page;
@@ -42,15 +42,15 @@ class UpstreamController extends Controller
 				$model_data = State::get_provinces()->orderBy('title')->get();
 				break;
 
-			case 'branches' :  //@TODO: Intact!
+			case 'branches' :
 				$model_data = Branch::orderBy('plural_title')->get();
 				break ;
 
-			case 'downstream' : //@TODO: Intact!
+			case 'downstream' :
 				$model_data = Setting::orderBy('title')->paginate(100) ;
 				break;
 
-			case 'categories' :  //@TODO: Intact!
+			case 'categories' :
 				$model_data = State::get_provinces()->orderBy('title')->get();
 				break;
 
@@ -167,7 +167,7 @@ class UpstreamController extends Controller
 				return view('manage.settings.downstream-value' , compact('model'));
 				break;
 
-			case 'branch' :
+			case 'branches' :
 				$branch = Branch::find($item_id) ;
 				if(!$branch)
 					return view('errors.410');
@@ -227,7 +227,7 @@ class UpstreamController extends Controller
 		//View...
 		return view($view, compact('page', 'model_data' , 'key'));
 
-	}//@TODO: INTACT
+	}
 
 
 	/*
@@ -260,27 +260,6 @@ class UpstreamController extends Controller
 	}
 
 
-	public function save_domains(Requests\Manage\DomainSaveRequest $request)
-	{
-		//If Save...
-		if($request->_submit == 'save') {
-			return $this->jsonAjaxSaveFeedback(Domain::store($request) ,[
-					'success_refresh' => 1,
-			]);
-		}
-
-		//If Delete...
-		if($request->_submit == 'delete') {
-			$model = Domain::find($request->id) ;
-			if(!$model or $model->states()->count() )
-				return $this->jsonFeedback();
-
-			return $this->jsonAjaxSaveFeedback(Domain::destroy($request->id) ,[
-					'success_refresh' => 1,
-			]);
-		}
-
-	}//@TODO: INTACT
 
 	public function saveProvince(Requests\Manage\ProvinceSaveRequest $request)
 	{

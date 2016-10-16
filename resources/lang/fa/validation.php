@@ -280,6 +280,7 @@ return [
 				'keywords' => 'کلیدواژه‌ها',
 				'allowed_meta' => 'متاهای مجاز' ,
 				'featured_image' => 'نمایه',
+				'image' => 'تصویر' ,
 				'card_no' => 'شماره کارت' ,
 				'organs' => 'اعضای قابل اهدا',
 				'newsletter' => 'خبرنامه' ,
