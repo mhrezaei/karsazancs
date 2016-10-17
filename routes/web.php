@@ -77,24 +77,12 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'admin'], 'namespac
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'AdminsController@save');
-			Route::post('/inquiry' , 'AdminsController@inquiry');
 
 			Route::post('/change_password' , 'AdminsController@change_password');
 			Route::post('/soft_delete' , 'AdminsController@soft_delete');
-			Route::post('/bulk_soft_delete' , 'AdminsController@bulk_soft_delete');
-			Route::post('/bulk_soft_delete' , 'AdminsController@bulk_soft_delete');
 			Route::post('/undelete' , 'AdminsController@undelete');
-			Route::post('/bulk_undelete' , 'AdminsController@bulk_undelete');
 			Route::post('/hard_delete' , 'AdminsController@hard_delete');
-			Route::post('/bulk_hard_delete' , 'AdminsController@bulk_hard_delete');
-			Route::post('/publish' , 'AdminsController@publish');
-			Route::post('/bulk_publish' , 'AdminsController@bulk_publish');
 			Route::post('/permits' , 'AdminsController@permits');
-			Route::post('/sms' , 'AdminsController@sms');
-			Route::post('/bulk_sms' , 'AdminsController@bulk_sms');
-			Route::post('/email' , 'AdminsController@email');
-			Route::post('/bulk_email' , 'AdminsController@bulk_email');
-			Route::post('/care_review' , 'AdminsController@care_review');
 		});
 	});
 

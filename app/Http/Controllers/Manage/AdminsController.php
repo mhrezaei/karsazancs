@@ -26,22 +26,22 @@ class AdminsController extends Controller
 		$this->page[0] = ['admins' , trans('manage.admins')];
 	}
 
-	public function search(VolunteerSearchRequest $request)
+	public function search(Requests\Manage\AdminSearchRequest $request)
 	{
 		//Preparation...
 		$page = $this->page ;
-		$page[1] = ["search" , trans("people.volunteers.manage.search") , "search"] ;
-		$db = User::first() ;
+		$page[1] = ["search" , trans("forms.button.search") , "search"] ;
+		$db = new User();
 
 		//IF SEARCHED...
 		$keyword = $request->keyword ;
 		if(isset($request->searched)) {
-			$model_data = User::selector('volunteers' , "search:$keyword")->orderBy('volunteer_registered_at' , 'desc')->paginate(50);
-			return view('manage.volunteers.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
+			$model_data = User::selector('admins' ,"search_admin:$keyword")->orderBy('created_at' , 'desc')->paginate(50);
+			return view('manage.admins.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
 		}
 
 		//IF JUST FORM...
-		return view("manage.volunteers.search" , compact('page' , 'db'));
+		return view("manage.admins.search" , compact('page' , 'db'));
 
 	}
 
@@ -80,6 +80,11 @@ class AdminsController extends Controller
 				$opt['branches'] = Branch::orderBy('plural_title')->get() ;
 				$opt['modules'] = User::availableModules() ;
 				break;
+
+			case 'undelete' :
+			case 'hard_delete' :
+				$model = User::where('id' , 2)->withTrashed()->first();
+				break;
 		}
 
 		if(!$model) return view('errors.m410');
@@ -90,7 +95,7 @@ class AdminsController extends Controller
 
 	private function modalBulkAction($view_file)
 	{
-		$view = "manage.volunteers.$view_file-bulk" ;
+		$view = "manage.admins.$view_file-bulk" ;
 
 		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
 		if(!View::exists($view)) return view('errors.m404');
@@ -122,55 +127,6 @@ class AdminsController extends Controller
 	|--------------------------------------------------------------------------
 	|
 	*/
-
-	public function inquiry(Requests\Manage\CardInquiryRequest $request)
-	{
-		$user = User::findBySlug($request->code_melli , 'code_melli') ;
-
-		if(!$user){
-			return $this->jsonFeedback([
-					'ok' => 1 ,
-					'message' => trans('people.cards.manage.inquiry_success') ,
-					'callback' => 'cardEditor(1)' ,
-//					'redirectTime' => 1 ,
-			]);
-		}
-
-		if($user->volunteer_status < 0) {
-			return $this->jsonFeedback([
-				'ok' => 0 ,
-				'message' => trans('people.cards.manage.inquiry_was_volunteer') ,
-			]);
-		}
-
-		if($user->volunteer_status > 0) {
-			return $this->jsonFeedback(1,[
-					'ok' => 1 ,
-					'message' => trans('people.cards.manage.inquiry_is_volunteer') ,
-					'redirect' => Auth::user()->can('volunteers.edit')? url("manage/volunteers/$user->id/edit") : '' ,
-					'redirectTime' => 1 ,
-			]);
-		}
-
-		if($user->isCard()) {
-			return $this->jsonFeedback([
-					'ok' => 1 ,
-					'message' => trans('people.cards.manage.inquiry_has_card') ,
-					'redirect' => url("manage/volunteers/$user->id/edit") ,
-//					'redirectTime' => 1 ,
-			]);
-		}
-
-		return $this->jsonFeedback([
-				'ok' => 0 ,
-				'message' => "it's complicated!" ,
-//				'redirect' => url("manage/volunteers/$user->id/edit") ,
-//				'redirectTime' => 1 ,
-		]);
-
-
-	}
-
 
 	public function save(Requests\Manage\AdminSaveRequest $request)
 	{
@@ -218,120 +174,52 @@ class AdminsController extends Controller
 
 		return $this->jsonAjaxSaveFeedback($is_saved);
 	}
-	
-	public function publish(Request $request)
-	{
-		if(!Auth::user()->can('volunteers.publish')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		$model = User::find($request->id) ;
-		if($model->volunteer_status<0)
-			return $this->jsonFeedback() ;
-
-		$model->published_at = Carbon::now()->toDateTimeString() ;
-		$model->published_by = Auth::user()->id ;
-		$model->volunteer_status = 8 ;
-		$is_saved = $model->save();
-
-		if($is_saved)
-			;//@TODO: Call the event
-//			Event::fire(new VolunteerAccountPublished($model));
-
-		return $this->jsonAjaxSaveFeedback($is_saved , [
-			'success_refresh' => true ,
-		]);
-
-	}
-
-	public function bulk_publish(Request $request)
-	{
-		if(!Auth::user()->can('volunteers.publish')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		//Action...
-		$ids = $request->ids ;
-		if(!is_array($ids))
-			$ids = explode(',',$ids);
-
-		$done = User::whereIn('id',$ids)->where('volunteer_status' , '>' , '0')->where('volunteer_status' , '<' , '8')->update([
-				'published_at' => Carbon::now()->toDateTimeString() ,
-				'published_by' => Auth::user()->id ,
-				'volunteer_status' => 8 ,
-		]);
-
-		//Feedback...
-		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
-		]);
-
-		//@TODO: Event
-	}
 
 	public function soft_delete(Request $request)
 	{
-		if(!Auth::user()->can('volunteers.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-		if($request->id == Auth::user()->id) return $this->jsonFeedback();
-
+		//Security...
 		$model = User::find($request->id) ;
-		$done = $model->volunteerDelete();
+		if(!$model)
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+
+		if($model->id == Auth::user()->id)
+			return $this->jsonFeedback();
+
+		if($model->isDeveloper())
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+
+		$done = $model->delete();
 
 		return $this->jsonAjaxSaveFeedback($done , [
 			'success_refresh' => true ,
 		]);
 
-	}
-
-	public function bulk_soft_delete(Request $request)
-	{
-		if(!Auth::user()->can('volunteers.delete')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		$ids = explode(',',$request->ids);
-		foreach($ids as $id) {
-			$model = User::find($id) ;
-			if($model and $id != Auth::user()->id)
-				$done = $model->volunteerDelete() ;
-		}
-
-		return $this->jsonAjaxSaveFeedback($done , [
-			'success_refresh' => true ,
-		]);
 	}
 
 	public function undelete(Request $request)
 	{
-		if(!Auth::user()->can('volunteers.bin')) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		$model = User::find($request->id) ;
-		$done = $model->volunteerUndelete() ;
-
+		$done = User::withTrashed()->where('id', $request->id)->restore();
 		return $this->jsonAjaxSaveFeedback($done , [
 				'success_refresh' => true ,
 		]);
 
-	}
 
-	public function bulk_undelete(Request $request)
-	{
-		if(!Auth::user()->can('volunteers.bin'))
-			return $this->jsonFeedback(trans('validation.http.Eror403'));
-
-		$ids = explode(',', $request->ids);
-		foreach($ids as $id) {
-			$model = User::find($id);
-			if($model and $id != Auth::user()->id)
-				$done = $model->volunteerUndelete();
-		}
-
-		return $this->jsonAjaxSaveFeedback($done, ['success_refresh' => true,]);
 	}
 
 	public function hard_delete(Request $request)
 	{
-		if(!Auth::user()->isDeveloper()) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+		//Security...
+		$model = User::withTrashed()->where('id' , $request->id )->first() ;
+		if(!$model)
+			return $this->jsonFeedback(trans('validation.http.Error410'));
 
-		$model = User::find($request->id) ;
-		if(!$model or $model->volunteer_status>0)
-			return $this->jsonFeedback(trans('validation.http.Eror403'));
+		if($model->id == Auth::user()->id)
+			return $this->jsonFeedback();
 
-		$done = $model->volunteerHardDelete() ;
+		if($model->isDeveloper())
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+
+		$done = $model->forceDelete() ;
 
 		return $this->jsonAjaxSaveFeedback($done , [
 				'success_refresh' => true ,
@@ -339,23 +227,6 @@ class AdminsController extends Controller
 
 	}
 
-	public function bulk_hard_delete(Request $request)
-	{
-		if(!Auth::user()->isDeveloper()) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		$ids = explode(',', $request->ids);
-		foreach($ids as $id) {
-			$model = User::find($id);
-			if($model and $model->volunteer_status<0 and $id != Auth::user()->id)
-				$done = $model->volunteerHardDelete();
-		}
-
-		return $this->jsonAjaxSaveFeedback($done, [
-				'success_refresh' => true,
-		]);
-
-
-	}
 
 	public function permits(Request $request)
 	{

@@ -212,7 +212,7 @@ trait TahaModelTrait
 
 	public function delete()
 	{
-		if(self::hasColumn('deleted_at'))
+		if(self::hasColumn('deleted_at') and !$this->forceDeleting)
 			$this->deleted_at = Carbon::now()->toDateTimeString();
 		else
 			return parent::delete() ;

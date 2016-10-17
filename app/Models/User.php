@@ -394,13 +394,13 @@ class User extends Authenticatable
 		$table = self::where('id' , '>' , 0) ;
 
 		//Process Search...
-		if(str_contains($criteria , 'search_user')) {
-			$keyword = str_replace('search:' , null , $criteria) ;
-			$criteria = 'search_user' ;
+		if(str_contains($criteria , 'search_customer')) {
+			$keyword = str_replace('search_customer:' , null , $criteria) ;
+			$criteria = 'search' ;
 		}
 		if(str_contains($criteria , 'search_admin')) {
-			$keyword = str_replace('search:' , null , $criteria) ;
-			$criteria = 'search_admin' ;
+			$keyword = str_replace('search_admin:' , null , $criteria) ;
+			$criteria = 'search' ;
 		}
 
 		//Process Developer...
