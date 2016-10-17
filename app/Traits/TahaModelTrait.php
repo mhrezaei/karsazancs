@@ -59,7 +59,7 @@ trait TahaModelTrait
 
 		//Current Data...
 		$model = self::find($data['id']) ;
-		if($model->exists)
+		if($model)
 			if(is_array($model->meta))
 				$meta = $model->meta ;
 			else
@@ -95,12 +95,16 @@ trait TahaModelTrait
 		else
 			$meta = json_decode($this->meta , true) ;
 
+		//safety...
+		if(!$meta)
+			return ;
+
 		//Process...
 		foreach($meta as $field => $value) {
 			$this->$field = $value ;
 		}
 
-		return $this ;
+		return ;
 
 	}
 

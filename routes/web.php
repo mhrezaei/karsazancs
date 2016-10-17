@@ -48,9 +48,6 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'admin'], 'namespac
 	/*
 	| Posts
 	*/
-	/*
-	| Posts
-	*/
 	Route::group(['prefix'=>'posts'] , function() {
 		Route::get('/{branch_slug}' , 'PostsController@browse') ;
 		Route::get('{branch_slug}/edit/{post_id}' , 'PostsController@editor');
@@ -63,6 +60,46 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'admin'], 'namespac
 			Route::post('/hard_delete' , 'PostsController@hard_delete');
 		});
 	});
+
+	/*
+	| Admins
+	*/
+
+	Route::group(['prefix'=>'admins'] , function() { //@TODO: Middleware to check permission
+		Route::get('/' , 'AdminsController@browse') ;
+		Route::get('/browse' , 'AdminsController@browse') ;
+		Route::get('/browse/{request_tab}' , 'AdminsController@browse') ;
+		Route::get('/create/' , 'AdminsController@editor') ;
+		Route::get('/search' , 'AdminsController@search');
+		Route::get('/reports' , 'AdminsController@reports');
+
+		Route::get('/{user_id}' , 'AdminsController@show');
+		Route::get('/{user_id}/edit' , 'AdminsController@editor');
+		Route::get('/{user_id}/{modal_action}' , 'AdminsController@modalActions');
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/' , 'AdminsController@save');
+			Route::post('/inquiry' , 'AdminsController@inquiry');
+
+			Route::post('/change_password' , 'AdminsController@change_password');
+			Route::post('/soft_delete' , 'AdminsController@soft_delete');
+			Route::post('/bulk_soft_delete' , 'AdminsController@bulk_soft_delete');
+			Route::post('/bulk_soft_delete' , 'AdminsController@bulk_soft_delete');
+			Route::post('/undelete' , 'AdminsController@undelete');
+			Route::post('/bulk_undelete' , 'AdminsController@bulk_undelete');
+			Route::post('/hard_delete' , 'AdminsController@hard_delete');
+			Route::post('/bulk_hard_delete' , 'AdminsController@bulk_hard_delete');
+			Route::post('/publish' , 'AdminsController@publish');
+			Route::post('/bulk_publish' , 'AdminsController@bulk_publish');
+			Route::post('/permits' , 'AdminsController@permits');
+			Route::post('/sms' , 'AdminsController@sms');
+			Route::post('/bulk_sms' , 'AdminsController@bulk_sms');
+			Route::post('/email' , 'AdminsController@email');
+			Route::post('/bulk_email' , 'AdminsController@bulk_email');
+			Route::post('/care_review' , 'AdminsController@care_review');
+		});
+	});
+
 
 
 	/*

@@ -4,12 +4,8 @@ namespace App\Providers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
-use App\Providers\SecKeyServiceProvider;
+use App\Providers\SecKeyServiceProvider; //@TODO: Bring it here to this project!
 
 
 class ValidationServiceProvider extends ServiceProvider

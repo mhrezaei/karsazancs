@@ -245,6 +245,7 @@ return [
 				"edu_field" => "رشته‌ی تحصیلی" ,
 				'edu_city' => 'محل تحصیل',
 				"tel_mobile" => 'تلفن همراه',
+				"mobile" => 'تلفن همراه',
 				"tel_emergency" => 'تلفن اضطراری' ,
 				"home_city" => "محل سکونت",
 				"home_address" => "نشانی منزل",

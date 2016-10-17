@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Crypt;
 trait PermitsTrait
 {
 	protected static $available_modules = [
+		'admins' => [ '*' ] ,
 		'cards' => ['browse','view','send','search','create','bulk','edit','print','report','delete'],
 		'volunteers' => ['create','send','search' , 'view' ,'edit','publish','report','delete' , 'bin'],
 		'posts' => ['create','edit','publish','report','delete','bin'] ,

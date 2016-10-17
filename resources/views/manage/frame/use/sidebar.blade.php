@@ -45,6 +45,13 @@
 @endforeach
 
 @include('manage.frame.widgets.sidebar-link' , [
+	'icon' => 'user-secret',
+	'caption' => trans('manage.admins'),
+	'link' => 'admins' ,
+	'permission' => 'admins' ,
+])
+
+@include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'cogs',
 	'caption' => trans('manage.settings.downstream'),
 	'link' => 'settings' ,
