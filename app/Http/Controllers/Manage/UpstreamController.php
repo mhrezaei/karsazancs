@@ -387,8 +387,8 @@ class UpstreamController extends Controller
 	public function loginAs(Request $request)
 	{
 		$user = User::find($request->id) ;
-		if(!$user->isActive())
-			return $this->jsonFeedback('user is not active');
+		if(!$user->isAdmin())
+			return $this->jsonFeedback('user is not as admin');
 
 
 		$request->session()->set('logged_developer' , encrypt(Auth::user()->id)) ;
@@ -397,6 +397,6 @@ class UpstreamController extends Controller
 				'success_redirect' => url('/manage'),
 		]);
 
-	}//@TODO: INTACT
+	}
 
 }

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
 
 
-class AdminMiddleware
+class CanMiddleware
 {
 	/**
 	 * Handle an incoming request.
@@ -16,9 +16,9 @@ class AdminMiddleware
 	 * @param  \Closure                 $next
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next , $permits='')
+	public function handle($request, Closure $next , $permit)
 	{
-		if(!$this->check($permits)) {
+		if(!Auth::user()->can($permit)) {
 			if($request->ajax() || $request->wantsJson()) {
 				return response('Unauthorized.', 401);
 			}
@@ -29,20 +29,5 @@ class AdminMiddleware
 		}
 
 		return $next($request);
-	}
-
-	private function check($permits)
-	{
-
-		$logged_user = Auth::user() ;
-		if(!$logged_user or !$logged_user->isAdmin())
-			return false ;
-
-		if($permits) {
-			return true ; //@TOOD: implement Auth::user()->can()
-		}
-		else
-			return true ;
-
 	}
 }

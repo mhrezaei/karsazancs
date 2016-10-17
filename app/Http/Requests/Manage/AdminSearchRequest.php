@@ -16,7 +16,7 @@ class AdminSearchRequest extends Request
 	 */
 	public function authorize()
 	{
-		return Auth::user()->can('volunteers.search') ;
+		return true ;
 	}
 
 	/**

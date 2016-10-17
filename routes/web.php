@@ -39,7 +39,7 @@ Route::get('logout', 'Front\FrontController@logout');
 |
 */
 
-Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'admin'], 'namespace' => 'Manage'], function () {
+Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'namespace' => 'Manage'], function () {
 	Route::get('/', 'ManageController@index');
 	Route::get('index', 'ManageController@index');
 	//    Route::get('upstream' , 'UpstreamController@index') ;
@@ -65,7 +65,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'admin'], 'namespac
 	| Admins
 	*/
 
-	Route::group(['prefix'=>'admins'] , function() { //@TODO: Middleware to check permission
+	Route::group(['prefix'=>'admins', 'middleware_' => 'can:super'] , function() { //@TODO: Middleware to check permission
 		Route::get('/' , 'AdminsController@browse') ;
 		Route::get('/browse' , 'AdminsController@browse') ;
 		Route::get('/browse/{request_tab}' , 'AdminsController@browse') ;
@@ -92,7 +92,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'admin'], 'namespac
 	| Upstream Settings
 	*/
 
-	Route::group(['prefix' => 'upstream', 'middleware_' => 'admin:developer'] , function() {
+	Route::group(['prefix' => 'upstream', 'middleware_' => 'can:developer'] , function() {
 		Route::get('/{request_tab?}' , 'UpstreamController@index') ;
 		Route::get('/{request_tab}/search/{keyword}' , 'UpstreamController@search') ;
 		Route::get('/edit/{request_tab?}/{item_id?}/{parent_id?}' , 'UpstreamController@editor') ;
@@ -105,6 +105,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'admin'], 'namespac
 			Route::post('category' , 'UpstreamController@saveCategory');
 			Route::post('downstream' , 'UpstreamController@saveDownstream');
 			Route::post('downstream_value' , 'UpstreamController@setDownstream');
+			Route::post('login_as' , 'UpstreamController@loginAs');
 		});
 	});
 });

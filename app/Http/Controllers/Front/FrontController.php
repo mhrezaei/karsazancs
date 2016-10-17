@@ -32,9 +32,17 @@ class FrontController extends Controller
 			return redirect('/profile') ;
 	}
 
-	public function logout()
+	public function logout(Request $request)
 	{
-		Auth::logout() ;
+		$logged_developer = decrypt($request->session()->pull('logged_developer'));
+
+		if($logged_developer) {
+			$ok = Auth::loginUsingId( $logged_developer );
+			return redirect('/manage') ;
+		}
+
+		Auth::logout();
+		Session::flush();
 		return redirect('/login');
 	}
 

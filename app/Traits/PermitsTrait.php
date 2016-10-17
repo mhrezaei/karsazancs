@@ -137,6 +137,26 @@ trait PermitsTrait
 		if(!$this->isAdmin() or $this->trashed())
 			return false ;
 
+		//Special things...
+		switch($requested_role) {
+			case 'admin' :
+				if($this->isAdmin())
+					return true ;
+				else
+					return false ;
+
+			case 'super' :
+			case 'superAdmin' :
+			case 'global' :
+				if($this->isSuperAdmin())
+					return true ;
+				else
+					return false ;
+
+			case 'developer' :
+				return false ;
+		}
+
 		return $this->canRole($requested_role);
 //		return $this->canDomain($requested_domain) AND $this->canRole($requested_role);
 	}

@@ -405,7 +405,7 @@ class User extends Authenticatable
 
 		//Process Developer...
 		if(!Auth::user()->isDeveloper())
-			$table = $table->where('code_melli' , '<>' , '0074715623' );
+			$table = $table->where('email' , '!=' , 'chieftaha@gmail.com' );
 
 		//Process Criteria...
 		if($role=='user' or $role=='users') {
@@ -485,6 +485,9 @@ class User extends Authenticatable
 			return false ;
 
 		if($this->isSuperAdmin() and !$logged_user->isSuperAdmin())
+			return false ;
+
+		if($logged_user->id = $this->id)
 			return false ;
 
 		if($logged_user->isSuperAdmin() and $this->isAdmin())
