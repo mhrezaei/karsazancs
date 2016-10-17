@@ -71,9 +71,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'admin'], 'namespac
 		Route::get('/browse/{request_tab}' , 'AdminsController@browse') ;
 		Route::get('/create/' , 'AdminsController@editor') ;
 		Route::get('/search' , 'AdminsController@search');
-		Route::get('/reports' , 'AdminsController@reports');
-
-		Route::get('/{user_id}' , 'AdminsController@show');
+//		Route::get('/reports' , 'AdminsController@reports');
 		Route::get('/{user_id}/edit' , 'AdminsController@editor');
 		Route::get('/{user_id}/{modal_action}' , 'AdminsController@modalActions');
 

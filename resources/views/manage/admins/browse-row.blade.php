@@ -13,7 +13,13 @@
 </td>
 
 <td>
-	{{ trans('people.admins.roles') }}
+	@if($model->canBePermitted())
+		<a href="javascript:void(0)" onclick="masterModal('{{ url("manage/admins/$model->id/permits") }}')">
+			{{ trans("people.admins.$model->admin_role") }}
+		</a>
+	@else
+		{{ trans("people.admins.$model->admin_role") }}
+	@endif
 </td>
 
 <td>
@@ -29,7 +35,7 @@
 			['pencil' , trans('manage.permits.edit') , "modal:manage/admins/-id-/edit"],
 			['history' , trans('people.admins.history') , "urlN:manage/admins/-id-/history"],
 			['key' , trans('people.commands.change_password') , 'modal:manage/admins/-id-/change_password' , 'any' ,  !$model->trashed() ],
-//			['shield' , trans('manage.permits.permits') , 'modal:manage/admins/-id-/permits' , 'any' , $model->canBePermitted()],
+			['shield' , trans('manage.permits.permits') , 'modal:manage/admins/-id-/permits' , 'any' , $model->canBePermitted()],
 
 			['ban' , trans('people.commands.block') , 'modal:manage/admins/-id-/soft_delete' , 'any' , !$model->trashed()] ,
 			['undo' , trans('people.commands.unblock') , 'modal:manage/admins/-id-/undelete' , 'any' , $model->trashed()] ,

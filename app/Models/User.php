@@ -72,6 +72,16 @@ class User extends Authenticatable
 	|
 	*/
 
+	public function getAdminRoleAttribute()
+	{
+		if($this->isSuperAdmin())
+			return 'super' ;
+		elseif($this->isAdmin())
+			return 'ordinary' ;
+		else
+			return false ;
+	}
+
 	public function getMobileAttribute($value)
 	{
 		return AppServiceProvider::pd($value);
@@ -474,7 +484,7 @@ class User extends Authenticatable
 		if($this->isDeveloper())
 			return false ;
 
-		if($this->isSuperAdmin())
+		if($this->isSuperAdmin() and !$logged_user->isSuperAdmin())
 			return false ;
 
 		if($logged_user->isSuperAdmin() and $this->isAdmin())

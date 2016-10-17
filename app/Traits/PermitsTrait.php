@@ -7,27 +7,28 @@ use Illuminate\Support\Facades\Crypt;
 trait PermitsTrait
 {
 	protected static $available_modules = [
-		'admins' => [ '*' ] ,
-		'cards' => ['browse','view','send','search','create','bulk','edit','print','report','delete'],
-		'volunteers' => ['create','send','search' , 'view' ,'edit','publish','report','delete' , 'bin'],
+		'customers' => ['create' , 'view' , 'activation' , 'send' , 'edit' , 'report' , 'delete' , 'bin'] ,
+		'products' => ['create' , 'edit' , 'delete' , 'bin'],
+		'orders' => ['browse' , 'process' , 'edit' , 'report'  ,  'delete' , 'bin' ] ,
+		'tickets' => ['browse' , 'process' , 'edit' , 'report' , 'delete' , 'bin'] ,
+		'chats' => ['browse' , 'process' , 'report' , 'delete' , 'bin'] ,
 		'posts' => ['create','edit','publish','report','delete','bin'] ,
 	];
 
 	protected static $available_permits = [
-			'browse' , // np need for volunteers but vital for cards.
-			'print' , // np need for volunteers but vital for cards.
+			'browse' ,
+			'process' ,
 			'view',
 			'send',
 			'search',
 			'create',
-			'bulk',
 			'edit',
 			'publish',
 			'report',
 			'cats',
 			'delete',
-			'permits',
 			'bin',
+			'activation'
 	];
 
 	protected static $public_modules = [
@@ -48,10 +49,14 @@ trait PermitsTrait
 	|
 	*/
 
-	public function setPermits($roles , $domain)
+	public function setPermits($roles , $super_admin=false)
 	{
-		$this->domain = $domain ;
 		$this->roles = Crypt::encrypt(json_encode($roles)) ;
+		if($super_admin)
+			$this->status = 99 ;
+		else
+			$this->status = 91 ;
+
 		return $this->update() ;
 	}
 
@@ -129,13 +134,14 @@ trait PermitsTrait
 		if($this->isDeveloper())
 			return true ;
 
-		if($this->volunteer_status<8)
+		if(!$this->isAdmin() or $this->trashed())
 			return false ;
 
-		return $this->canDomain($requested_domain) AND $this->canRole($requested_role);
+		return $this->canRole($requested_role);
+//		return $this->canDomain($requested_domain) AND $this->canRole($requested_role);
 	}
 
-	private function canDomain($requested_domain)
+	private function canDomain($requested_domain) //depreciated
 	{
 		//Obvious Conditions...
 		if($this->domain == 'global')
@@ -165,7 +171,8 @@ trait PermitsTrait
 
 		//Special Roles...
 		if($requested_role == 'manage')
-			return $this->canRole('settings') and $this->canRole('volunteers.permit');
+			return $this->isSuperAdmin() ;
+//			return $this->canRole('settings') and $this->canRole('admins');
 
 
 		//Module Check...

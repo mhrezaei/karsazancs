@@ -61,16 +61,14 @@ class AdminsController extends Controller
 
 	}
 
-	public function modalActions($volunteer_id , $view_file)
+	public function modalActions($user_id , $view_file)
 	{
 
-		//@TODO: Do something for checking the permission, despite the fact that everything will be checked at the save method.
-		//@TODO: Reject if accessed without valid AJAX request
-		if($volunteer_id==0)
+		if($user_id==0)
 			return $this->modalBulkAction($view_file);
 
-		$model = User::find($volunteer_id) ;
-		$view = "manage.volunteers.$view_file" ;
+		$model = User::find($user_id) ;
+		$view = "manage.admins.$view_file" ;
 		$opt = [] ;
 
 		//Particular Actions...
@@ -80,21 +78,8 @@ class AdminsController extends Controller
 					return view('errors.m403');
 
 				$opt['branches'] = Branch::orderBy('plural_title')->get() ;
-				if(Auth::user()->can('manage' , 'global')) {
-					$opt['domains'] = Domain::orderBy('title')->get()->toArray() ;
-
-					array_unshift($opt['domains'] , [
-						'slug' => 'global' ,
-						'title' => trans('posts.manage.global')
-					]);
-				}
+				$opt['modules'] = User::availableModules() ;
 				break;
-
-			case 'care_review' :
-				$model->changes = json_decode($model->unverified_changes) ;
-				$states = State::get_combo() ;
-				break;
-
 		}
 
 		if(!$model) return view('errors.m410');
@@ -213,9 +198,16 @@ class AdminsController extends Controller
 
 	}
 
-	public function change_password(Requests\Manage\VolunteerChangePasswordRequest $request)
+	public function change_password(Requests\Manage\AdminChangePasswordRequest $request)
 	{
-		$model = User::find($request->id) ;
+		//Preparations...
+		$model = $user = User::find($request->id) ;
+		if(!$user or !$user->isAdmin())
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+		if($user->isDeveloper() and !Auth::user()->isDeveloper())
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+
+		//Save...
 		$model->password = Hash::make($request->password) ;
 		$model->password_force_change = 1 ;
 		$is_saved = $model->save();
@@ -225,7 +217,6 @@ class AdminsController extends Controller
 			//Event::fire(new VolunteerPasswordManualReset($model , $request->password));
 
 		return $this->jsonAjaxSaveFeedback($is_saved);
-
 	}
 	
 	public function publish(Request $request)
@@ -375,15 +366,23 @@ class AdminsController extends Controller
 
 		//Security...
 		if(!$model)
-			return $this->jsonFeedback(trans('validation.http.Eror410')) ;
+			return $this->jsonFeedback(trans('validation.http.Error410')) ;
 
 		if(!$model->canBePermitted())
-			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+			return $this->jsonFeedback(trans('validation.http.Error403')) ;
+
+		//is level changed?
+		$level_changed = $model->admin_role != $request->level ;
+
 
 		//Roles...
-		if($logged_user->isAdmin() and $request->level == 1) {
-			array_push($allowed_roles , 'volunteers.permit');
+		if($logged_user->isSuperAdmin() and $request->level == 'super') {
+			array_push($allowed_roles , 'admins');
 			array_push($allowed_roles , 'settings');
+			$super_admin = true ;
+		}
+		else {
+			$super_admin = false ;
 		}
 		foreach($request->toArray() as $field => $value) {
 			if(!str_contains($field , 'role_') or !$value)
@@ -395,19 +394,13 @@ class AdminsController extends Controller
 				array_push($allowed_roles , $role) ;
 		}
 
-		//Domain...
-		if($logged_user->can('manage' , 'global')) {
-			$model->domain = $request->domain ;
-		}
-		else {
-			//cannot change at all.
-		}
-
 		//Save...
-		$ok = $model->setPermits($allowed_roles , $model->domain) ;
+		$ok = $model->setPermits($allowed_roles , $super_admin) ;
 
 		//Return...
-		return $this->jsonAjaxSaveFeedback($ok) ;
+		return $this->jsonAjaxSaveFeedback($ok , [
+			'success_refresh' => $level_changed? true : false
+		]) ;
 	}
 
 

@@ -14,10 +14,8 @@ class TestController extends Controller
 	public function index()
 	{
 
-		$post = User::find(1) ;
-		$post->spreadMeta() ;
+		$post = User::find(2) ;
 
-
-		dd($post->full_name) ;
+		dd($post->getRoles()) ;
 	}
 }

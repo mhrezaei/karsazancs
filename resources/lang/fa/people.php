@@ -8,16 +8,16 @@ return [
 		] ,
 
 		"event" => [
-				'email_reset_password_title' => 'بازآوری رمز عبور',
-				'sms_reset_content' => 'کد بازآوری رمز عبور: ',
+				'email_reset_password_title' => 'بازآوری گذرواژه',
+				'sms_reset_content' => 'کد بازآوری گذرواژه: ',
 				'volunteer_publish_notice_email' => 'فعال سازی حساب کاربری',
 				'volunteer_publish_notice_sms' => 'حساب کاربری شما فعال گردید.',
-				'volunteer_new_password_sms' => 'رمز عبور شما در سامانه عبارتست از: ',
-				'current_password_incorrect' => 'رمز عبور فعلی را اشتباه وارد کرده‌اید.' ,
+				'volunteer_new_password_sms' => 'گذرواژه شما در سامانه عبارتست از: ',
+				'current_password_incorrect' => 'گذرواژه فعلی را اشتباه وارد کرده‌اید.' ,
 		],
 
 		"commands" => [
-				"change_password" => 'تغییر رمز عبور',
+				"change_password" => 'تغییر گذرواژه',
 				"activate" => 'فعال‌سازی حساب',
 				'login' => 'ورود' ,
 				'login_into_site' => 'ورود به مجموعه' ,
@@ -103,7 +103,9 @@ return [
 		],
 
 		'admins' => [
+			'ordinary' => 'مدیر عملیات' ,
 			'ordinaries' => 'مدیران عملیات' ,
+			'super' => 'مدیر کل' ,
 			'supers' => 'مدیران کل' ,
 			'bin' => 'مسدودشده‌ها' ,
 			'create' => 'افزودن مدیر' ,
@@ -111,6 +113,7 @@ return [
 			'last_login' => 'آخرین حضور' ,
 			'history' => 'تاریخچه‌ی فعالیت',
 			'roles' => 'منصب' ,
+			'superAdmin_hint' => 'مدیر کل علاوه بر دسترسی‌های داده‌شده، می‌تواند به تنظیمات سایت و اطلاعات مدیران دیگر دست‌رسی داشته باشد.' ,
 		]
 
 ]
