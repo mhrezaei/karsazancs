@@ -62,13 +62,34 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	});
 
 	/*
+	| Customers
+	*/
+
+	Route::group(['prefix'=>'customers', 'middleware' => 'can:customers'] , function() {
+		Route::get('/' , 'CustomersController@browse') ;
+		Route::get('/browse/{request_tab?}' , 'CustomersController@browse') ;
+		Route::get('/create/' , 'CustomersController@editor') ;
+		Route::get('/search' , 'CustomersController@search');
+		Route::get('/{user_id}/edit' , 'CustomersController@editor');
+		Route::get('/{user_id}/{modal_action}' , 'CustomersController@modalActions');
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/' , 'CustomersController@save');
+			Route::post('/change_password' , 'CustomersController@change_password');
+			Route::post('/soft_delete' , 'CustomersController@soft_delete');
+			Route::post('/undelete' , 'CustomersController@undelete');
+			Route::post('/hard_delete' , 'CustomersController@hard_delete');
+		});
+	});
+
+
+	/*
 	| Admins
 	*/
 
-	Route::group(['prefix'=>'admins', 'middleware_' => 'can:super'] , function() { //@TODO: Middleware to check permission
+	Route::group(['prefix'=>'admins', 'middleware' => 'can:super'] , function() {
 		Route::get('/' , 'AdminsController@browse') ;
-		Route::get('/browse' , 'AdminsController@browse') ;
-		Route::get('/browse/{request_tab}' , 'AdminsController@browse') ;
+		Route::get('/browse/{request_tab?}' , 'AdminsController@browse') ;
 		Route::get('/create/' , 'AdminsController@editor') ;
 		Route::get('/search' , 'AdminsController@search');
 //		Route::get('/reports' , 'AdminsController@reports');

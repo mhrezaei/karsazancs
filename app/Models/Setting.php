@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Session;
 
 class Setting extends Model
 {
-	public static $available_data_types = ['text' , 'textarea' , 'boolean' , 'date' , 'photo'] ;
+	public static $available_data_types = ['text' , 'textarea' , 'boolean' , 'date' , 'photo' , 'array'] ;
 	public static $available_categories = ['socials' , 'contact' , 'template'] ;
 	public static $default_when_not_found = '-' ;
 	public static $unset_signals = ['unset' , 'default' , '=' , ''] ;
@@ -27,15 +27,34 @@ class Setting extends Model
 
 	}
 
-	public static function get($slug)
+	public function formattedValue($need_default = false)
 	{
-		$model = self::where('slug' , $slug) ;
+		$value = $this->value($need_default) ;
+
+		switch($this->data_type) {
+			case 'boolean' :
+				return boolval($value) ;
+			case 'array' :
+				$array = array_filter(preg_split("/\\r\\n|\\r|\\n/",  $value)) ;
+				return $array ;
+		}
+
+		return $value ;
+	}
+
+
+	public static function get($slug , $formatted = true)
+	{
+		$model = self::where('slug' , $slug)->first() ;
 
 		//If not found...
 		if(!$model)
 			return self::$default_when_not_found ;
 		else
-			return $model->value() ;
+			if($formatted)
+				return $model->formattedValue() ;
+			else
+				return $model->value() ;
 
 	}
 

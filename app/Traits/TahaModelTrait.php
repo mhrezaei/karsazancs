@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
@@ -37,6 +38,18 @@ trait TahaModelTrait
 	public static function none()
 	{
 		return self::whereNull('id') ;
+	}
+
+	public function settingCombo($slug)
+	{
+		$options = Setting::get($slug) ;
+		$result = [] ;
+
+		foreach($options as $option) {
+			array_push($result , [$option]);
+		}
+
+		return $result ;
 	}
 
 	/*

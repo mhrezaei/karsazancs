@@ -40,7 +40,7 @@
 		'selector' => true ,
 		'headings' => [
 			trans('validation.attributes.name_first') ,
-			trans('people.admins.last_login'),
+			trans('people.commands.last_login'),
 			trans('people.admins.roles'),
 			trans('validation.attributes.status'),
 			trans('forms.button.action'),

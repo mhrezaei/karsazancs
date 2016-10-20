@@ -178,6 +178,12 @@ class ValidationServiceProvider extends ServiceProvider
 		$this->app['validator']->extend('code_melli', function ($attribute, $value, $parameters, $validator) {
 			return self::validateCodeMelli($attribute, $value, $parameters, $validator);
 		});
+		$this->app['validator']->extend('national_id', function ($attribute, $value, $parameters, $validator) {
+			return self::validateNationalId($attribute, $value, $parameters, $validator);
+		});
+		$this->app['validator']->extend('postal_code', function ($attribute, $value, $parameters, $validator) {
+			return self::validatePostalCode($attribute, $value, $parameters, $validator);
+		});
 		$this->app['validator']->extend('persian', function($attribute, $value, $parameters, $validator){
 			return self::persianChar($attribute, $value, $parameters, $validator);
 		});
@@ -228,6 +234,40 @@ class ValidationServiceProvider extends ServiceProvider
 
 	}
 
+	private static function validateNationalId($attribute, $value, $parameters, $validator)
+	{
+		if(strlen($value) != 11 or !is_numeric($value))
+			return false ;
+
+		if(intval(substr($value , 3 , 6)) == 0)
+			return false ;
+
+		$c = intval(substr($value,10,1)) ;
+		$d = intval(substr($value,9,1)) + 2 ;
+		$z = [29,27,23,19,17] ;
+		$s = 0 ;
+
+		for($i=0 ; $i<10 ; $i++) {
+			$s += ($d + intval(substr($value,$i,1))) * $z[$i%5] ;
+		}
+
+		$s = $s % 11 ;
+		if($s==10)
+			$s = 0 ;
+
+		return $c==$s ;
+
+	}
+	private static function validatePostalCode($attribute, $value, $parameters, $validator)
+	{
+		if(strlen($value) != 10 or !is_numeric($value))
+			return false ;
+
+		if(str_contains($value , '2') or str_contains($value , '0'))
+			return false ;
+
+		return true ;
+	}
 	private static function validateCodeMelli($attribute, $value, $parameters, $validator)
 	{
 		if(!preg_match("/^\d{10}$/", $value)) {
@@ -252,7 +292,10 @@ class ValidationServiceProvider extends ServiceProvider
 
 	private static function persianChar($attribute, $value, $parameters, $validator) {
 		$str = $value;
-		$percent = $parameters[0];
+		if(isset($parameters[0]))
+			$percent = $parameters[0];
+		else
+			$percent = 70 ;
 		if(mb_detect_encoding($str) !== 'UTF-8')
 		{
 			$str = mb_convert_encoding($str,mb_detect_encoding($str),'UTF-8');

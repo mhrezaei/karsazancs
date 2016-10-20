@@ -5,6 +5,9 @@ if(isset($class)) {
 	}
 }
 
+if(is_object($value))
+	$value = $value->$name ;
+
 if(!isset($in_form))
 	$in_form = true ;
 ?>

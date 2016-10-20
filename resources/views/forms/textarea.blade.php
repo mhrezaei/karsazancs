@@ -2,6 +2,10 @@
 if(isset($class) && str_contains($class, 'form-required')) {
     $required = true;
 }
+
+if(is_object($value))
+    $value = $value->$name ;
+
 ?>
 
 <div class="form-group">

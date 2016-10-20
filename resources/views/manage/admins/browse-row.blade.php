@@ -33,7 +33,7 @@
 		'id' => $model->id ,
 		'actions' => [
 			['pencil' , trans('manage.permits.edit') , "modal:manage/admins/-id-/edit"],
-			['history' , trans('people.admins.history') , "urlN:manage/admins/-id-/history"],
+			['history' , trans('people.commands.history') , "urlN:manage/admins/-id-/history"],
 			['key' , trans('people.commands.change_password') , 'modal:manage/admins/-id-/change_password' , 'any' ,  !$model->trashed() ],
 			['shield' , trans('manage.permits.permits') , 'modal:manage/admins/-id-/permits' , 'any' , $model->canBePermitted()],
 

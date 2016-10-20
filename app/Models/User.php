@@ -15,14 +15,12 @@ class User extends Authenticatable
 	use Notifiable , TahaModelTrait , PermitsTrait , SoftDeletes ;
 
 	protected $guarded = ['id' , 'deleted_at' ] ;
-	protected static $search_fields = ['name_first' , 'name_last' , 'code_melli' , 'email' , 'mobile'] ;
+	protected static $search_fields = ['name_first' , 'name_last' , 'name_firm' , 'code_melli' , 'national_id' , 'email' , 'mobile'] ;
 
 	protected static $settings_fields = [] ;
 
-	public static $mandatory_info_for_legals = [] ;
-	public static $optional_info_for_legals = [] ;
-	public static $mandatory_info_for_individuals = [] ;
-	public static $optional_info_for_individuals = [] ;
+	public static $info_for_legals = [ 'name_first*' , 'name_last*' , 'code_melli*' , 'mobile*' , 'gender*' , 'firm_name*' , 'national_id*' , 'register_no*' , 'register_date*' , 'register_firm*' , 'economy_code*' , 'gazette_url' , 'city_id*' , 'province_id*' , 'address' , 'telephone' , 'postal_code' , 'familization'] ;
+	public static $info_for_individuals = ['name_first*' , 'name_last*' , 'code_melli*' , 'mobile*' , 'email*' , 'code_id*' , 'name_father*' , 'birth_date*' , 'birth_city*' , 'gender*' , 'marital' , 'city_id*' , 'province_id*' , 'address' , 'telephone' , 'postal_code' , 'edu_level' , 'job' , 'familization'] ;
 
 	public static $mandatory_media_for_legals = [] ;
 	public static $optional_media_for_legals = [] ;
@@ -71,6 +69,7 @@ class User extends Authenticatable
 	|--------------------------------------------------------------------------
 	|
 	*/
+
 
 	public function getAdminRoleAttribute()
 	{
@@ -408,7 +407,7 @@ class User extends Authenticatable
 			$table = $table->where('email' , '!=' , 'chieftaha@gmail.com' );
 
 		//Process Criteria...
-		if($role=='user' or $role=='users') {
+		if($role=='customer' or $role=='customers') {
 			$table = $table->whereBetween('status', [1, 89]) ;
 
 			switch ($criteria) {
@@ -418,14 +417,22 @@ class User extends Authenticatable
 					return $table->onlyTrashed()->whereRaw("`deleted_by` = `id`");
 				case 'bin' :
 					return $table->onlyTrashed();
-				case 'stealthy_signed_up' :
+				case 'stealthy_signed_ups' :
 					return $table->where('status', 1);
-				case 'willingly_signed_up' :
+				case 'willingly_signed_ups' :
 					return $table->where('status', 2);
-				case 'pending' :
+				case 'pendings' :
 					return $table->where('status', 3);
-				case 'active' :
+				case 'actives' :
 					return $table->whereBetween('status', [8, 9]);
+				case 'active_legals':
+					return $table->whereBetween('status', [8, 9])->where('customer_type' , 2);
+				case 'active_individuals' :
+					return $table->whereBetween('status', [8, 9])->where('customer_type' , 1);
+				case 'legals' :
+					return $table->where('customer_type' , 2);
+				case 'individuals' :
+					return $table->where('customer_type' , 1);
 				case 'newsletter' :
 					return $table->where('newsletter', 1);
 				case 'search' :
@@ -499,10 +506,21 @@ class User extends Authenticatable
 
 	/*
 	|--------------------------------------------------------------------------
-	| Actions
+	| Helpers
 	|--------------------------------------------------------------------------
 	|
 	*/
 
+	public function registerFirms()
+	{
+		$options = Setting::get('register_firms') ;
+		$result = [] ;
+
+		foreach($options as $option) {
+			array_push($result , [$option]);
+		}
+
+		return $result ;
+	}
 
 }

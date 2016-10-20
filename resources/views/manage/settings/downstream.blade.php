@@ -70,8 +70,8 @@
 						<td>
 							<a href="javascript:void(0)" onclick="masterModal('{{url("manage/upstream/downstream/$model->id")}}')">
 								@if($model->value())
-									@if($model->data_type== 'text' or $model->data_type== 'textarea')
-										{{ str_limit($model->value() , 100) }}
+									@if(in_array($model->data_type , ['text' , 'textarea' , 'array']))
+										{{ str_limit($model->value() , 50) }}
 									@elseif($model->data_type == 'boolean')
 										<i class="fa fa-check"></i>
 									@elseif($model->data_type == 'date')

@@ -23,29 +23,33 @@
 {{--])--}}
 
 
-{{--@include('manage.frame.widgets.sidebar-link' , [--}}
-	{{--'icon' => 'credit-card' ,--}}
-	{{--'caption' => trans('manage.modules.cards') ,--}}
-	{{--'link' => 'cards' ,--}}
-	{{--'permission' => 'cards' ,--}}
-	{{--'sub_menus' => [--}}
-		{{--['cards/create' , trans('people.cards.manage.create') , 'plus-square-o' , 'cards.create'] ,--}}
-		{{--['cards/browse/all' , trans('people.cards.manage.all') , 'bars' , 'cards.browse'],--}}
-		{{--['cards/browse/incomplete' , trans('people.cards.manage.incomplete') , 'star-half' , 'cards.browse'],--}}
-		{{--['cards/browse/print_request' , trans('people.cards.manage.print_request') , 'flag-checkered' , 'cards.browse'],--}}
-		{{--['cards/browse/print_control' , trans('people.cards.manage.print_control') , 'qrcode' , 'cards.browse'],--}}
-		{{--['cards/browse/under_print' , trans('people.cards.manage.under_print') , 'print' , 'cards.print'],--}}
-		{{--['cards/browse/newsletter_member' , trans('people.cards.manage.newsletter_member') , 'newspaper-o' , 'cards.send'],--}}
-		{{--['cards/search' , trans('forms.button.search') , 'search' , 'cards.search'],--}}
-	{{--]--}}
-{{--])--}}
+@include('manage.frame.widgets.sidebar-link' , [
+	'icon' => 'user' ,
+	'caption' => trans('manage.modules.customers') ,
+	'link' => 'customers' ,
+	'permission' => 'customers' ,
+	'sub_menus' => [
+		['customers/browse/active_individuals' , trans('people.status.active_individuals') , 'female'] ,
+		['customers/browse/active_legals' , trans('people.status.active_legals') , 'industry'] ,
+		['customers/browse/pendings' , trans('people.status.pending') , 'legal' , 'customers.activation'],
+		['customers/browse/profile_completion' , trans('people.status.profile_completion') , 'star-half-o'],
+
+		['customers/browse/willingly_signed_up' , trans('people.status.willingly_signed_up') , 'check-square-o' ],
+		['customers/browse/stealthy_signed_up' , trans('people.status.stealthy_signed_up') , 'paw'],
+		['customers/browse/newsletter_member' , trans('people.status.newsletter_member') , 'paper-plane-o' , 'customers.send'],
+		['customers/browse/bin' , trans('manage.permits.bin') , 'trash-o' , 'customers.bin'],
+		['customers/search' , trans('forms.button.search') , 'search' , 'cards.search'],
+	]
+])
+
+
 
 @foreach(Taha::sidebarPostsMenu() as $item)
 	@include('manage.frame.widgets.sidebar-link' , $item)
 @endforeach
 
 @include('manage.frame.widgets.sidebar-link' , [
-	'icon' => 'user-secret',
+	'icon' => ' universal-access',
 	'caption' => trans('manage.admins'),
 	'link' => 'admins' ,
 	'permission' => 'admins' ,

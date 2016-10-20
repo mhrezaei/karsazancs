@@ -170,5 +170,14 @@ class TahaServiceProvider extends ServiceProvider
         return $array ;
     }
 
+	/**
+      * A shortcut for Auth::user()->can() which is located in PermitsTrait, used in User model.
+      * @param $permit
+      * @return mixed
+      */
+    public static function can($permit)
+    {
+        return Auth::user()->can($permit) ;
+    }
 
 }
