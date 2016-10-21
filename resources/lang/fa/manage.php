@@ -7,12 +7,14 @@ return [
 		'admins' => 'مدیران سایت' ,
 
 		'modules' => [
+			'content_management' => 'مدیریت محتوا' ,
 			'admins' => 'مدیران سایت' ,
 			'customers' => 'مشتریان' ,
 			'orders' => 'سفارش‌ها' ,
 			'tickets' => 'پشتیبانی' ,
 			'chats' => 'گفت‌وگوی آنلاین' ,
 			'products' => 'محصولات' ,
+			'currencies' => 'مدیریت ارزها' ,
 		],
 
 		"permits" => [

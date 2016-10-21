@@ -73,9 +73,9 @@ return [
 		"same"             => ":attribute و :other باید مانند هم باشند.",
 		"size"             => array(
 				"numeric" => ":attribute باید برابر با :size باشد.",
-				"file"    => ":attribute باید برابر با :size کیلوبایت باشد.",
-				"string"  => ":attribute باید برابر با :size کاراکتر باشد.",
-				"array"   => ":attribute باسد شامل :size آیتم باشد.",
+				"file"    => ":attribute باید :size کیلوبایت باشد.",
+				"string"  => ":attribute باید :size کاراکتر باشد.",
+				"array"   => ":attribute باید شامل :size آیتم باشد.",
 		),
 		"timezone"         => "The :attribute must be a valid zone.",
 		"unique"           => ":attribute تکراری است.",
@@ -339,6 +339,12 @@ return [
 				'beneficiary' => 'نام صاحب حساب' ,
 				'branch_name' => 'نام شعبه' ,
 				'branch_code' => 'کد شعبه' ,
+
+				'currency_title' => 'نام ارز' ,
+				'currency_slug' => 'نشان اختصاری' ,
+				'price_to_sell' => 'بهای فروش' ,
+				'price_to_buy' => 'بهای خرید' ,
+				'' => '' ,
 		],
 
 		"http" => [

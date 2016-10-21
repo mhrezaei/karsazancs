@@ -42,11 +42,17 @@
 	]
 ])
 
-
-
 @foreach(Taha::sidebarPostsMenu() as $item)
 	@include('manage.frame.widgets.sidebar-link' , $item)
 @endforeach
+
+@include('manage.frame.widgets.sidebar-link' , [
+	'icon' => 'money',
+	'caption' => trans('manage.modules.currencies'),
+	'link' => 'currencies' ,
+	'permission' => 'currencies' ,
+])
+
 
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'universal-access',

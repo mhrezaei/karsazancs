@@ -1,5 +1,4 @@
 @if(Auth::user()->can("$module.*"))
-	@include('forms.sep')
 	@include('forms.group-start' , [
 		'label' => $label,
 	])

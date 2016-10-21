@@ -10,6 +10,7 @@ trait PermitsTrait
 		'customers' => ['create' , 'view' , 'activation' , 'send' , 'edit' , 'report' , 'delete' , 'bin'] ,
 		'products' => ['create' , 'edit' , 'delete' , 'bin'],
 		'orders' => ['browse' , 'process' , 'edit' , 'report'  ,  'delete' , 'bin' ] ,
+		'currencies' => ['create' , 'edit' , 'process' , 'delete' , 'bin'],
 		'tickets' => ['browse' , 'process' , 'edit' , 'report' , 'delete' , 'bin'] ,
 		'chats' => ['browse' , 'process' , 'report' , 'delete' , 'bin'] ,
 		'posts' => ['create','edit','publish','report','delete','bin'] ,
@@ -24,11 +25,11 @@ trait PermitsTrait
 			'create',
 			'edit',
 			'publish',
+			'activation',
 			'report',
 			'cats',
 			'delete',
 			'bin',
-			'activation'
 	];
 
 	protected static $public_modules = [

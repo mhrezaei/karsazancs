@@ -15,7 +15,7 @@ class User extends Authenticatable
 {
 	use Notifiable , TahaModelTrait , PermitsTrait , SoftDeletes ;
 
-	protected $guarded = ['id' , 'deleted_at' ] ;
+	protected $guarded = ['id' , 'deleted_at' , 'deleted_by' , 'destroyed_by'] ;
 	protected static $search_fields = ['name_first' , 'name_last' , 'name_firm' , 'code_melli' , 'national_id' , 'email' , 'mobile'] ;
 
 	protected static $settings_fields = [] ;
@@ -507,8 +507,9 @@ class User extends Authenticatable
 		if($this->isSuperAdmin() and !$logged_user->isSuperAdmin())
 			return false ;
 
-		if($logged_user->id = $this->id)
+		if($logged_user->id == $this->id)
 			return false ;
+
 
 		if($logged_user->isSuperAdmin() and $this->isAdmin())
 			return true ;

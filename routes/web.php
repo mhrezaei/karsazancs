@@ -83,6 +83,24 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 		});
 	});
 
+	/*
+	| Currencies
+	*/
+	Route::group(['prefix'=>'currencies', 'middleware' => 'can:currencies'] , function() {
+		Route::get('/' , 'CurrenciesController@browse') ;
+		Route::get('/browse/{request_tab?}' , 'CurrenciesController@browse') ;
+		Route::get('/create/' , 'CurrenciesController@editor') ;
+		Route::get('/search' , 'CurrenciesController@search');
+		Route::get('/{user_id}/edit' , 'CurrenciesController@editor');
+		Route::get('/{user_id}/{modal_action}' , 'CurrenciesController@modalActions');
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/' , 'CurrenciesController@save');
+			Route::post('/soft_delete' , 'CurrenciesController@soft_delete');
+			Route::post('/undelete' , 'CurrenciesController@undelete');
+			Route::post('/hard_delete' , 'CurrenciesController@hard_delete');
+		});
+	});
 
 	/*
 	| Admins

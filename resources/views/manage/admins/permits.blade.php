@@ -38,6 +38,7 @@
 	|--------------------------------------------------------------------------
 	|
 	--}}
+	@include('forms.sep')
 
 	@foreach($opt['modules'] as $module => $permits)
 		@if( !in_array($module , ['posts' , 'admins']) )
@@ -49,6 +50,11 @@
 		@endif
 	@endforeach
 
+	@include('forms.sep' , [
+		'label' => trans('manage.modules.content_management') ,
+	])
+
+
 	@foreach($opt['branches'] as $branch)
 		@include('manage.admins.permits-role' , [
 			'module' => $branch->slug ,
@@ -57,10 +63,15 @@
 		])
 	@endforeach
 
+	@include('forms.sep')
+
+
 	@include('forms.group-start')
 		<a href="javascript:void(0)" onclick="$('.-permits').prop('checked', true)" class="p20">{{trans('forms.general.all')}}</a>
 		<a href="javascript:void(0)" onclick="$('.-permits').prop('checked', false)" class="">{{trans('forms.general.none')}}</a>
 	@include('forms.group-end')
+
+	@include('forms.sep')
 
 	{{--
 	|--------------------------------------------------------------------------
