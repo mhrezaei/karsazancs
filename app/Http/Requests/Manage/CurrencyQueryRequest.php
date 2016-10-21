@@ -38,7 +38,7 @@ class CurrencyQueryRequest extends Request
         $value	= parent::all();
         $purified = ValidationServiceProvider::purifier($value,[
             'currency_id' => 'number' ,
-            'time' => 'ed' ,
+            'time' => 'ed|time' ,
         ]);
         return $purified;
 

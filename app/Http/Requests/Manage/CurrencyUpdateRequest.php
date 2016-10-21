@@ -41,7 +41,7 @@ class CurrencyUpdateRequest extends Request
         $value	= parent::all();
         $purified = ValidationServiceProvider::purifier($value,[
             'currency_id' => 'number' ,
-            'time' => 'ed' ,
+            'time' => 'ed|time' ,
             'price_to_buy' => 'ed' ,
             'price_to_sell' => 'ed' ,
         ]);

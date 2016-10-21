@@ -154,6 +154,11 @@ class ValidationServiceProvider extends ServiceProvider
 				$data = $carbon->toDateString();
 				break ;
 
+			case 'time' :
+				if(strlen($data)==4)
+					$data = $data[0].$data[1].':'.$data['2'].$data[3] ;
+				break;
+
 			case 'stripUrl' :
 				$data = str_replace(url('') , null , $data);
 				break;

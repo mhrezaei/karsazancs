@@ -9,12 +9,19 @@
 
 <td>@pd( number_format($model->price_to_buy) )</td>
 <td>@pd( number_format($model->price_to_sell) )</td>
+
 <td>
-	@if($model->latest_update == '-')
-		-
-	@else
-		@pd(jDate::forge($model->latest_update)->ago())</td>
-	@endif
+	<a href="javascript:void(0)" onclick="masterModal('{{ url("manage/currencies/$model->id/update") }}')">
+		@if($model->latest_update == '-')
+			<span class="null-content">
+				{{ trans('forms.general.never') }}
+			</span>
+		@else
+			@pd(jDate::forge($model->latest_update)->ago())</td>
+		@endif
+	</a>
+</td>
+
 <td>
 	@include('manage.frame.widgets.grid-action' , [
 		'id' => $model->id ,
