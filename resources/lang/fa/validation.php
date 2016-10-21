@@ -38,7 +38,8 @@ return [
 		"boolean"          => "The :attribute field must be true or false",
 		"confirmed"        => ":attribute با تاییدیه مطابقت ندارد.",
 		"date"             => ":attribute یک تاریخ معتبر نیست.",
-		"date_format"      => ":attribute با الگوی :format مطاقبت ندارد.",
+//		"date_format"      => ":attribute با الگوی :format مطاقبت ندارد.",
+		"date_format"      => ":attribute با الگوی تعریف‌شده مطاقبت ندارد.",
 		"different"        => ":attribute و :other باید متفاوت باشند.",
 		"digits"           => ":attribute باید :digits رقم باشد.",
 		"digits_between"   => ":attribute باید بین :min و :max رقم باشد.",
@@ -191,6 +192,7 @@ return [
 				"alloc_time" => "(تعداد روز، فقط عدد)" ,
 				"home_postal_code" => "(۱۰ رقم بدون خط تیره)" ,
 				"work_postal_code" => "(۱۰ رقم بدون خط تیره)" ,
+				"time" => 'ساعت و دقیقه، در قالب مرسوم دقیقه:ساعت. مثل ۲۰:۴۲' ,
 		],
 
 
@@ -344,6 +346,9 @@ return [
 				'currency_slug' => 'نشان اختصاری' ,
 				'price_to_sell' => 'بهای فروش' ,
 				'price_to_buy' => 'بهای خرید' ,
+				'effective_date' => 'زمان مؤثر'  ,
+				'date' => 'تاریخ' ,
+				'time' => 'ساعت' ,
 				'' => '' ,
 		],
 

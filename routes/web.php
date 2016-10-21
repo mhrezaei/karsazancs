@@ -96,6 +96,8 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'CurrenciesController@save');
+			Route::post('/update' , 'CurrenciesController@update');
+			Route::post('/query' , 'CurrenciesController@query');
 			Route::post('/soft_delete' , 'CurrenciesController@soft_delete');
 			Route::post('/undelete' , 'CurrenciesController@undelete');
 			Route::post('/hard_delete' , 'CurrenciesController@hard_delete');

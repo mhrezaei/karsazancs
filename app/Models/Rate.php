@@ -25,4 +25,9 @@ class Rate extends Model
 		return $this->belongsTo('App\Models\Currency');
 	}
 
+	public function user()
+	{
+		return $this->belongsTo('App\Models\User' , 'created_by');
+	}
+
 }

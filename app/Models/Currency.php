@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\TahaModelTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -15,6 +16,8 @@ class Currency extends Model
 	protected $casts = [
 			'meta' => 'array' ,
 	];
+	protected $rates_loaded = false ;
+	protected $current_rates = [0,0] ;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -27,13 +30,31 @@ class Currency extends Model
 		return $this->hasMany('App\Models\Rate') ;
 	}
 
-	public function loadCurrentRates()
+	public function loadCurrentRates($fresh = false)
 	{
-		$this->loadRates() ;
+		//Bypass if already loaded...
+		if($this->rates_loaded and !$fresh)
+			return $this->rates ;
+
+		//Calculation...
+		$rate = $this->loadRates('NOW' , $fresh) ;
+		$this->rates_loaded = true ;
+		$this->rates = $rate ;
+		return $rate ;
 	}
 
-	public function loadRates($request_date = 'NOW')
+	public function loadRates($request_date = 'NOW' , $fresh = false)
 	{
+		if($request_date == 'NOW')
+			$request_date = Carbon::now()->toDateTimeString() ;
+		else
+			$request_date = Carbon::createFromFormat('Y/m/d H:i' , $request_date)->toDateTimeString() ;
+
+		$rate = $this->rates()->where('effective_date' , '<=' , $request_date)->orderBy('effective_date' , 'desc')->orderBy('created_at' , 'desc')->first();
+		if(!$rate)
+			return new Rate()  ;
+		else
+			return $rate ;
 
 	}
 
@@ -48,8 +69,24 @@ class Currency extends Model
 		return $this->title . " ($this->slug) " ;
 	}
 
+	public function getPriceToBuyAttribute()
+	{
+		return $this->loadCurrentRates()->price_to_buy ;
+	}
 
+	public function getPriceToSellAttribute()
+	{
+		return $this->loadCurrentRates()->price_to_sell ;
+	}
 
+	public function getLatestUpdateAttribute()
+	{
+		$rate = $this->rates()->orderBy('created_at' , 'desc')->first() ;
+		if(!$rate)
+			return '-' ;
+		else
+			return $rate->created_at ;
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| Selectors

@@ -58,6 +58,8 @@ return [
 				'ask_confirm' => 'همین را می‌خواهید؟' ,
 				"select_default" => 'انتخاب کنید...',
 				'disabled' => 'غیرفعال' ,
+				'now' => 'همین حالا' ,
+				'custom_time' => 'زمان دل‌خواه' ,
 		],
 
 

@@ -204,6 +204,24 @@ function downstreamPhotoPreview($input_selector)
 		window.open(url($url)) ;
 }
 
+function currencyRateUpdateEditor()
+{
+	$type = $('#cmbEffectiveDate').val() ;
+
+	switch($type) {
+		case 'now' :
+			$('.-custom_time').parent().parent().hide() ;
+			$('input[name=price_to_buy]').focus() ;
+			break;
+
+		case 'custom' : //legal
+			$('.-custom_time').parent().parent().show() ;
+			$('.-individual').parent().parent().hide() ;
+			$('input[name=date]').focus() ;
+	}
+
+}
+
 function customerEditor()
 {
 	$type = $('#cmbCustomerType').val() ;

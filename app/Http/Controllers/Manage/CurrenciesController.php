@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Manage;
 use App\Models\Account;
 use App\models\Branch;
 use App\Models\Currency;
+use App\Models\Rate;
 use App\Models\State;
 use App\Models\User;
+use App\Providers\AppServiceProvider;
 use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
+use Morilog\Jalali\jDate;
 
 
 class CurrenciesController extends Controller
@@ -95,9 +98,17 @@ class CurrenciesController extends Controller
 		$permit = 'customers' ;
 
 		switch($view_file) {
+			case 'query' :
+				break ;
+
+			case 'update' :
+				$permit .= '.process' ;
+				break ;
+
 			case 'soft_delete' :
 				$permit .= '.delete' ;
 				break;
+
 			case 'undelete' :
 			case 'hard_delete' :
 				$permit .= '.bin' ;
@@ -203,6 +214,48 @@ class CurrenciesController extends Controller
 
 	}
 
+	public function query(Requests\Manage\CurrencyQueryRequest $request)
+	{
+		$currency = Currency::find($request->currency_id) ;
+		if(!$currency)
+			return $this->jsonFeedback(trans('validation.http.Error410'));
 
+		$rate = $currency->loadRates($request->date . ' ' . $request->time) ;
+
+
+		if(!$rate->id)
+			return $this->jsonFeedback(trans('currencies.query_failed'));
+		else
+			return $this->jsonFeedback([
+				'ok' => 1 ,
+				'message' => trans('currencies.query_result' , [
+					'buy' => AppServiceProvider::pd(number_format($rate->price_to_buy)) ,
+					'sell' => AppServiceProvider::pd(number_format($rate->price_to_sell)) ,
+					'effective' => AppServiceProvider::pd(jDate::forge($rate->effective_date)->format('j F Y [H:m]')),
+					'user' => $rate->user->full_name ,
+					'date' => AppServiceProvider::pd(jDate::forge($rate->created_at)->format('j F Y [H:m]')),
+				]) ,
+			]);
+
+
+
+	}
+
+	public function update(Requests\Manage\CurrencyUpdateRequest $request)
+	{
+		$data = $request->toArray() ;
+		$data['id'] = 0 ;
+		if($request->effective_date == 'custom') {
+			$data['effective_date'] = Carbon::createFromFormat('Y/m/d H:i' , $request->date . ' ' . $request->time)->toDateTimeString() ;
+		}
+		else {
+			$data['effective_date'] = Carbon::now()->toDateTimeString() ;
+		}
+
+		$ok = Rate::store($data , [ 'date' , 'time']);
+		return $this->jsonAjaxSaveFeedback($ok , [
+				'success_refresh' => true ,
+		]);
+	}
 
 }

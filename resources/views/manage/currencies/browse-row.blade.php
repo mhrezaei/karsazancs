@@ -7,17 +7,21 @@
 	</a>
 </td>
 
-<td>-</td>
-<td>-</td>
-<td>-</td>
-
+<td>@pd( number_format($model->price_to_buy) )</td>
+<td>@pd( number_format($model->price_to_sell) )</td>
+<td>
+	@if($model->latest_update == '-')
+		-
+	@else
+		@pd(jDate::forge($model->latest_update)->ago())</td>
+	@endif
 <td>
 	@include('manage.frame.widgets.grid-action' , [
 		'id' => $model->id ,
 		'actions' => [
 			['pencil' , trans('manage.permits.edit') , "modal:manage/currencies/-id-/edit" , "currencies.edit"],
 			['money' , trans('currencies.update_price') , 'modal:manage/currencies/-id-/update' , 'currencies.process'],
-			['eye' , trans('currencies.price_on_a_day') , 'modal:manage/customers/-id-/query' ],
+			['eye' , trans('currencies.query') , 'modal:manage/currencies/-id-/query' ],
 			['history' , trans('currencies.price_history') , "urlN:manage/currencies/-id-/history" , 'currencies.process'],
 
 			['ban' , trans('forms.button.soft_delete') , 'modal:manage/currencies/-id-/soft_delete' , 'currencies.delete' , !$model->trashed()] ,
