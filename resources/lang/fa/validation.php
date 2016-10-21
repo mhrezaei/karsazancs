@@ -19,6 +19,7 @@ return [
 		'code_melli'        => ":attribute درست وارد نشده است.",
 		'national_id'        => ":attribute درست وارد نشده است.",
 		'postal_code'        => ":attribute درست وارد نشده است.",
+		'sheba'             => ":attribute درست وارد نشده است.",
 
 		"accepted"         => ":attribute باید پذیرفته شده باشد.",
 		"active_url"       => "نشانی :attribute معتبر نیست",
@@ -331,6 +332,13 @@ return [
 				'register_firm' => 'سازمان ثبت‌کننده' ,
 				'economy_code' => 'کد اقتصادی' ,
 				'gazette_url' => 'نشانی اینترنتی روزنامه رسمی' ,
+
+				'bank_name' => 'نام بانک' ,
+				'sheba' => 'شماره شبا' ,
+				'account_no' => 'شماره حساب' ,
+				'beneficiary' => 'نام صاحب حساب' ,
+				'branch_name' => 'نام شعبه' ,
+				'branch_code' => 'کد شعبه' ,
 		],
 
 		"http" => [

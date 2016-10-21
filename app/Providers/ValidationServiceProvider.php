@@ -157,6 +157,10 @@ class ValidationServiceProvider extends ServiceProvider
 			case 'stripUrl' :
 				$data = str_replace(url('') , null , $data);
 				break;
+
+			case 'sheba' :
+				if(!str_contains($data,'IR'))
+					$data = "IR".$data ;
 		}
 
 		$this->input[$key] = $data;
@@ -184,6 +188,9 @@ class ValidationServiceProvider extends ServiceProvider
 		$this->app['validator']->extend('postal_code', function ($attribute, $value, $parameters, $validator) {
 			return self::validatePostalCode($attribute, $value, $parameters, $validator);
 		});
+		$this->app['validator']->extend('sheba', function ($attribute, $value, $parameters, $validator) {
+			return self::validateSheba($attribute, $value, $parameters, $validator);
+		});
 		$this->app['validator']->extend('persian', function($attribute, $value, $parameters, $validator){
 			return self::persianChar($attribute, $value, $parameters, $validator);
 		});
@@ -207,6 +214,10 @@ class ValidationServiceProvider extends ServiceProvider
 			return true ;
 		else
 			return false ;
+	}
+	private static function validateSheba($attribute, $value, $parameters, $validator)
+	{
+		return true ; //@TODO: write this!
 	}
 
 	private static function validatePhoneNo($attribute, $value, $parameters, $validator)

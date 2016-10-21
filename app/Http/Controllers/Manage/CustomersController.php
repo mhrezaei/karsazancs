@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Models\Account;
 use App\models\Branch;
 use App\Models\State;
 use App\Models\User;
@@ -80,39 +81,70 @@ class CustomersController extends Controller
 		if($user_id==0)
 			return $this->modalBulkAction($view_file);
 
-		$view = "manage.customers.$view_file" ;
-		$permit = 'customers' ;
 		$opt = [] ;
 
-		//Model and Permission...
+		//Model...
+		if(str_contains($user_id , 'n')) {
+			$user_id = intval($user_id) ;
+		}
+		else {
+			$model = User::findCustomer($user_id, in_array($view_file, ['undelete', 'hard_delete']) ? true : false);
+			if(!$model)
+				return view('errors.m410');
+		}
+
+		//Permission...
+		$permit = 'customers' ;
+
 		switch($view_file) {
 			case 'change_password' :
-				$model = User::findCustomer($user_id) ;
 				$permit .= '.edit' ;
 				break;
 
 			case 'soft_delete' :
-				$model = User::findCustomer($user_id) ;
 				$permit .= '.delete' ;
 				break;
 
+			case 'accounts' :
+				$page = $this->page ;
+				$page[1] = [null , trans('people.commands.bank_accounts').' '. $model->full_name , ' '] ;
+				$model_data = $model->accounts()->paginate(50) ;
+				break ;
+
+			case 'new_account' :
+				$permit .= 'edit' ;
+				$view_file = 'accounts-editor' ;
+				$user = $model ;
+				$model = new User() ;
+				$model->user_id = $user->id ;
+				$model->user_name = $user->full_name ;
+				break ;
+
+			case 'edit_account' :
+				$permit .= 'edit' ;
+				$view_file = 'accounts-editor' ;
+				$model = Account::find($user_id) ;
+				if(!$model)
+					return view('errors.m410');
+				$model->spreadMeta() ;
+				break ;
+
 			case 'undelete' :
 			case 'hard_delete' :
-				$model = User::findCustomer($user_id , true);
 				$permit .= '.bin' ;
 				break;
 
 			default:
-				dd($view_file);
+				dd("$view_file: $user_id");
 		}
 
 		if(!Auth::user()->can($permit))
 			return view('errors.m403');
 
-		if(!$model) return view('errors.m410');
+		//View...
+		$view = "manage.customers.$view_file" ;
 		if(!View::exists($view)) return view('errors.m404');
-
-		return view($view , compact('model' , 'opt')) ;
+		return view($view , compact('model' , 'opt' , 'page' , 'model_data')) ;
 	}
 
 	private function modalBulkAction($view_file)
@@ -189,7 +221,7 @@ class CustomersController extends Controller
 		$saved = User::store($data , ['customer_type']);
 
 		return $this->jsonAjaxSaveFeedback($saved , [
-			'success_refresh' => true ,
+				'success_refresh' => true ,
 		]);
 
 	}
@@ -206,7 +238,7 @@ class CustomersController extends Controller
 
 		if($is_saved and $request->sms_notify)
 			;//@TODO: Call the event
-			//Event::fire(new VolunteerPasswordManualReset($model , $request->password));
+		//Event::fire(new VolunteerPasswordManualReset($model , $request->password));
 
 		return $this->jsonAjaxSaveFeedback($is_saved);
 	}
@@ -226,7 +258,7 @@ class CustomersController extends Controller
 
 		$done = $model->delete();
 		return $this->jsonAjaxSaveFeedback($done , [
-			'success_refresh' => true ,
+				'success_refresh' => true ,
 		]);
 
 	}
@@ -262,51 +294,20 @@ class CustomersController extends Controller
 
 	}
 
-
-	public function permits(Request $request)
+	public function account(Requests\Manage\AccountSaveRequest $request)
 	{
-		//Preparations...
-		$model = User::find($request->id) ;
-		$logged_user = Auth::user() ;
-		$allowed_roles = [] ;
+		$user = User::findCustomer($request->user_id) ;
+		if(!$user)
+			return $this->jsonFeedback(trans('validation.http.Error403'));
 
-		//Security...
-		if(!$model)
-			return $this->jsonFeedback(trans('validation.http.Error410')) ;
+		if($request->_submit == 'save')
+			$ok = Account::store($request) ;
+		else
+			$ok = Account::destroy($request->id) ;
 
-		if(!$model->canBePermitted())
-			return $this->jsonFeedback(trans('validation.http.Error403')) ;
-
-		//is level changed?
-		$level_changed = $model->admin_role != $request->level ;
-
-
-		//Roles...
-		if($logged_user->isSuperAdmin() and $request->level == 'super') {
-			array_push($allowed_roles , 'admins');
-			array_push($allowed_roles , 'settings');
-			$super_admin = true ;
-		}
-		else {
-			$super_admin = false ;
-		}
-		foreach($request->toArray() as $field => $value) {
-			if(!str_contains($field , 'role_') or !$value)
-				continue ;
-
-			$role = str_replace('role_' , null , $field) ;
-			$role = str_replace('_' , '.' , $role) ;
-			if($logged_user->can($role))
-				array_push($allowed_roles , $role) ;
-		}
-
-		//Save...
-		$ok = $model->setPermits($allowed_roles , $super_admin) ;
-
-		//Return...
 		return $this->jsonAjaxSaveFeedback($ok , [
-			'success_refresh' => $level_changed? true : false
-		]) ;
+				'success_refresh' => true
+		]);
 	}
 
 

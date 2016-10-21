@@ -79,6 +79,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 			Route::post('/soft_delete' , 'CustomersController@soft_delete');
 			Route::post('/undelete' , 'CustomersController@undelete');
 			Route::post('/hard_delete' , 'CustomersController@hard_delete');
+			Route::post('/account' , 'CustomersController@account');
 		});
 	});
 

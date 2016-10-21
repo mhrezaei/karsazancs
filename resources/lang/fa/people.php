@@ -41,6 +41,11 @@ return [
 				'last_transaction' => 'آخرین تراکنش' ,
 				'account_charge' => 'شارژ حساب' ,
 				'activity' => 'فعالیت' ,
+				'register_date' => 'ثبت نام در سایت' ,
+				'publish_date' => 'فعال‌سازی حساب' ,
+
+				'bank_accounts' => 'حساب‌های بانکی' ,
+				'bank_account' => 'حساب بانکی' ,
 		],
 		"form" => [
 				"notify-with-email" => 'به کاربر از طریق ایمیل اطلاع‌رسانی شود.' ,

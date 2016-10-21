@@ -15,7 +15,11 @@
 </td>
 
 <td>
-	-
+	@if($model->published_at)
+		<div class="f10">{{ trans('people.commands.publish_date') }}: {{$model->say('published_at')}}</div>
+	@else
+		<div class="f10">{{ trans('people.commands.register_date') }}: {{$model->say('created_at')}}</div>
+	@endif
 </td>
 
 <td>
@@ -23,6 +27,7 @@
 		'id' => $model->id ,
 		'actions' => [
 			['pencil' , trans('manage.permits.edit') , "modal:manage/customers/-id-/edit" , "customers.edit"],
+			['money' , trans('people.commands.bank_accounts') , 'urlN:manage/customers/-id-/accounts'],
 			['history' , trans('people.commands.history') , "urlN:manage/customers/-id-/history"],
 			['key' , trans('people.commands.change_password') , 'modal:manage/customers/-id-/change_password' , 'customers.edit' ,  !$model->trashed() ],
 
