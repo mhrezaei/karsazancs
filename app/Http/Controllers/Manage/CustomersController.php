@@ -26,7 +26,7 @@ class CustomersController extends Controller
 		$this->page[0] = ['customers' , trans('manage.modules.customers')];
 	}
 
-	public function search(Requests\Manage\AdminSearchRequest $request)
+	public function search(Requests\Manage\CustomerSearchRequest $request)
 	{
 		//Preparation...
 		$page = $this->page ;
@@ -36,12 +36,12 @@ class CustomersController extends Controller
 		//IF SEARCHED...
 		$keyword = $request->keyword ;
 		if(isset($request->searched)) {
-			$model_data = User::selector('admins' ,"search_admin:$keyword")->orderBy('created_at' , 'desc')->paginate(50);
-			return view('manage.admins.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
+			$model_data = User::selector('customers' ,"search_customer:$keyword")->orderBy('created_at' , 'desc')->paginate(50);
+			return view('manage.customers.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
 		}
 
 		//IF JUST FORM...
-		return view("manage.admins.search" , compact('page' , 'db'));
+		return view("manage.customers.search" , compact('page' , 'db'));
 
 	}
 

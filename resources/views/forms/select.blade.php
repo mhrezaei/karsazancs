@@ -3,7 +3,7 @@ if(isset($class) && str_contains($class, 'form-required')) {
 	$required = true;
 }
 
-if(is_object($value))
+if(isset($value) and is_object($value))
 	$value = $value->$name ;
 
 ?>
