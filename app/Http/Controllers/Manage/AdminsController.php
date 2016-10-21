@@ -83,7 +83,7 @@ class AdminsController extends Controller
 
 			case 'undelete' :
 			case 'hard_delete' :
-				$model = User::where('id' , 2)->withTrashed()->first();
+				$model = User::where('id' , $user_id)->withTrashed()->first();
 				break;
 		}
 

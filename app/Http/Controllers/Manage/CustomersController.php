@@ -77,34 +77,30 @@ class CustomersController extends Controller
 
 	public function modalActions($user_id , $view_file)
 	{
-
 		if($user_id==0)
 			return $this->modalBulkAction($view_file);
 
-		$model = User::find($user_id) ;
-		$view = "manage.admins.$view_file" ;
+		$view = "manage.customers.$view_file" ;
+		$permit = 'customers' ;
 		$opt = [] ;
 
-		//Particular Actions...
+		//Model and Permission...
 		switch($view_file) {
-			case 'permits' :
-				if(!$model->canBePermitted())
-					return view('errors.m403');
-
-				$opt['branches'] = Branch::orderBy('plural_title')->get() ;
-				$opt['modules'] = User::availableModules() ;
+			case 'change_password' :
+				$model = User::findCustomer($user_id) ;
+				$permit .= '.edit' ;
 				break;
 
 			case 'undelete' :
 			case 'hard_delete' :
-				$model = User::where('id' , 2)->withTrashed()->first();
+				$model = User::findCustomer($user_id , true);
 				break;
 		}
 
 		if(!$model) return view('errors.m410');
 		if(!View::exists($view)) return view('errors.m404');
 
-		return view($view , compact('model' , 'opt' , 'states')) ;
+		return view($view , compact('model' , 'opt')) ;
 	}
 
 	private function modalBulkAction($view_file)
@@ -186,14 +182,10 @@ class CustomersController extends Controller
 
 	}
 
-	public function change_password(Requests\Manage\AdminChangePasswordRequest $request)
+	public function change_password(Requests\Manage\CustomerChangePasswordRequest $request)
 	{
 		//Preparations...
-		$model = $user = User::find($request->id) ;
-		if(!$user or !$user->isAdmin())
-			return $this->jsonFeedback(trans('validation.http.Error403'));
-		if($user->isDeveloper() and !Auth::user()->isDeveloper())
-			return $this->jsonFeedback(trans('validation.http.Error403'));
+		$model = User::findCustomer($request->id) ;
 
 		//Save...
 		$model->password = Hash::make($request->password) ;

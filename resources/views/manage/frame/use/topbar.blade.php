@@ -17,11 +17,10 @@
 	{{--])--}}
 {{--@endif--}}
 
-
 @include('manage.frame.widgets.topbar' , [
 	'icon' => 'user' ,
 	'color' => 'grey' ,
-	'text' => Auth::user()->fullName() ,
+	'text' => Auth::user()->full_name ,
 	'items' => [
 		['manage/account' , trans('manage.account.account_settings') , 'sliders'] ,
 //		['-'] ,

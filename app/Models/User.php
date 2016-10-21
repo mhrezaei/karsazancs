@@ -105,7 +105,15 @@ class User extends Authenticatable
 
 	public function getFullNameAttribute()
 	{
-		return $this->fullName() ;
+		if($this->customer_type==2)
+			return $this->name_firm ;
+		else
+			return $this->name_first . " " . $this->name_last ;
+	}
+
+	public function fullName()
+	{
+		return $this->full_name ;
 	}
 
 
@@ -258,16 +266,6 @@ class User extends Authenticatable
 		return $title ;
 	}
 
-	public function fullName($with_title = false)
-	{
-		if(!$this) return false ;
-		$return = $this->name_first . " " . $this->name_last ;
-		if($with_title)
-			$return = $this->title() . " " . $return ;
-
-		return $return ;
-	}
-
 
 	public function say($property, $default='-')
 	{
@@ -378,6 +376,15 @@ class User extends Authenticatable
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public static function findCustomer($user_id , $trashed=false)
+	{
+		$model = self::where('id' , $user_id)->where('status' , '<' , '90') ;
+		if($trashed)
+			$model = $model->onlyTrashed() ;
+
+		return $model->first() ;
+	}
 
 	public static function counter($role, $criteria , $persian=false)
 	{

@@ -30,7 +30,7 @@
 	'permission' => 'customers' ,
 	'sub_menus' => [
 		['customers/browse/active_individuals' , trans('people.status.active_individuals') , 'female'] ,
-		['customers/browse/active_legals' , trans('people.status.active_legals') , 'industry'] ,
+		['customers/browse/active_legals' , trans('people.status.active_legals') , 'user-secret'] ,
 		['customers/browse/pendings' , trans('people.status.pending') , 'legal' , 'customers.activation'],
 		['customers/browse/profile_completion' , trans('people.status.profile_completion') , 'star-half-o'],
 
@@ -49,7 +49,7 @@
 @endforeach
 
 @include('manage.frame.widgets.sidebar-link' , [
-	'icon' => ' universal-access',
+	'icon' => 'universal-access',
 	'caption' => trans('manage.admins'),
 	'link' => 'admins' ,
 	'permission' => 'admins' ,

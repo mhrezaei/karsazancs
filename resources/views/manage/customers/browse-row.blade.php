@@ -9,32 +9,22 @@
 
 
 <td>
-	-
-</td>
-
-<td>
-	@if($model->canBePermitted())
-		<a href="javascript:void(0)" onclick="masterModal('{{ url("manage/customers/$model->id/permits") }}')">
-			{{ trans("people.customers.$model->admin_role") }}
-		</a>
-	@else
-		{{ trans("people.customers.$model->admin_role") }}
-	@endif
-</td>
-
-<td>
 	<span class="text-{{ $model->status_color }}">
 		{{ $model->status_text }}
 	</span>
 </td>
 
 <td>
+	-
+</td>
+
+<td>
 	@include('manage.frame.widgets.grid-action' , [
 		'id' => $model->id ,
 		'actions' => [
-			['pencil' , trans('manage.permits.edit') , "modal:manage/customers/-id-/edit"],
+			['pencil' , trans('manage.permits.edit') , "modal:manage/customers/-id-/edit" , "customers.edit"],
 			['history' , trans('people.commands.history') , "urlN:manage/customers/-id-/history"],
-			['key' , trans('people.commands.change_password') , 'modal:manage/customers/-id-/change_password' , 'any' ,  !$model->trashed() ],
+			['key' , trans('people.commands.change_password') , 'modal:manage/customers/-id-/change_password' , 'customers.edit' ,  !$model->trashed() ],
 			['shield' , trans('manage.permits.permits') , 'modal:manage/customers/-id-/permits' , 'any' , $model->canBePermitted()],
 
 			['ban' , trans('people.commands.block') , 'modal:manage/customers/-id-/soft_delete' , 'any' , !$model->trashed()] ,

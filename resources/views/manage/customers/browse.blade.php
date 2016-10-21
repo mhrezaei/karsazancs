@@ -71,9 +71,7 @@
 		'headings' => [
 			trans('validation.attributes.name_first') ,
 			trans('validation.attributes.status'),
-			trans('people.commands.last_login'),
-			trans('people.commands.last_transaction'),
-			trans('people.commands.account_charge'),
+			trans('people.commands.activity'),
 			trans('forms.button.action'),
 		],
 	])
