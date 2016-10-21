@@ -236,6 +236,7 @@ class ValidationServiceProvider extends ServiceProvider
 
 	private static function validateNationalId($attribute, $value, $parameters, $validator)
 	{
+		return true ; //@TODO: Remove this line on production!
 		if(strlen($value) != 11 or !is_numeric($value))
 			return false ;
 

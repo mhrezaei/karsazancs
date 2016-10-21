@@ -381,7 +381,7 @@ class User extends Authenticatable
 	{
 		$model = self::where('id' , $user_id)->where('status' , '<' , '90') ;
 		if($trashed)
-			$model = $model->onlyTrashed() ;
+			$model = $model->onlyTrashed()->whereNull('destroyed_by') ;
 
 		return $model->first() ;
 	}
@@ -419,11 +419,11 @@ class User extends Authenticatable
 
 			switch ($criteria) {
 				case 'blocked' :
-					return $table->onlyTrashed()->whereRaw("`deleted_by` != `id`");
+					return $table->onlyTrashed()->whereRaw("`deleted_by` != `id`")->whereNull('destroyed_by');
 				case 'deleted' :
-					return $table->onlyTrashed()->whereRaw("`deleted_by` = `id`");
+					return $table->onlyTrashed()->whereRaw("`deleted_by` = `id`")->whereNull('destroyed_by');
 				case 'bin' :
-					return $table->onlyTrashed();
+					return $table->onlyTrashed()->whereNull('destroyed_by');
 				case 'stealthy_signed_ups' :
 					return $table->where('status', 1);
 				case 'willingly_signed_ups' :
@@ -528,6 +528,24 @@ class User extends Authenticatable
 		}
 
 		return $result ;
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Actions...
+	|--------------------------------------------------------------------------
+	|
+	*/
+	
+
+	public function fakeDestroy()
+	{
+		$this->destroyed_by = Auth::user()->id ;
+		$this->email .= '_destroyed_' ;
+		$this->code_melli .= '_destroyed_' ;
+		$this->national_id .= '_destroyed_' ;
+		$this->mobile .= '_destroyed_' ;
+		return $this->save() ;
 	}
 
 }

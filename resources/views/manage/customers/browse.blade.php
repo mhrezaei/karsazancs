@@ -30,7 +30,7 @@
 				]
 			])
 
-			@if(Taha::can('customers.create'))
+			@if(Auth::user()->can('customers.create'))
 				@include('manage.frame.widgets.toolbar_button' , [
 					'target' => 'masterModal("'. url('manage/customers/create') . '") ',
 					'type' => 'success' ,

@@ -91,11 +91,23 @@ class CustomersController extends Controller
 				$permit .= '.edit' ;
 				break;
 
+			case 'soft_delete' :
+				$model = User::findCustomer($user_id) ;
+				$permit .= '.delete' ;
+				break;
+
 			case 'undelete' :
 			case 'hard_delete' :
 				$model = User::findCustomer($user_id , true);
+				$permit .= '.bin' ;
 				break;
+
+			default:
+				dd($view_file);
 		}
+
+		if(!Auth::user()->can($permit))
+			return view('errors.m403');
 
 		if(!$model) return view('errors.m410');
 		if(!View::exists($view)) return view('errors.m404');
@@ -202,18 +214,17 @@ class CustomersController extends Controller
 	public function soft_delete(Request $request)
 	{
 		//Security...
+		if(!Auth::user()->can('customers.delete'))
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+
 		$model = User::find($request->id) ;
 		if(!$model)
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 
-		if($model->id == Auth::user()->id)
-			return $this->jsonFeedback();
-
-		if($model->isDeveloper())
+		if($model->isAdmin())
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 
 		$done = $model->delete();
-
 		return $this->jsonAjaxSaveFeedback($done , [
 			'success_refresh' => true ,
 		]);
@@ -222,7 +233,10 @@ class CustomersController extends Controller
 
 	public function undelete(Request $request)
 	{
-		$done = User::withTrashed()->where('id', $request->id)->restore();
+		if(!Auth::user()->can('customers.bin'))
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+
+		$done = User::onlyTrashed()->where('id', $request->id)->restore();
 		return $this->jsonAjaxSaveFeedback($done , [
 				'success_refresh' => true ,
 		]);
@@ -233,17 +247,14 @@ class CustomersController extends Controller
 	public function hard_delete(Request $request)
 	{
 		//Security...
-		$model = User::withTrashed()->where('id' , $request->id )->first() ;
+		if(!Auth::user()->can('customers.bin'))
+			return $this->jsonFeedback(trans('validation.http.Error403'));
+
+		$model = User::findCustomer($request->id , true) ;
 		if(!$model)
 			return $this->jsonFeedback(trans('validation.http.Error410'));
 
-		if($model->id == Auth::user()->id)
-			return $this->jsonFeedback();
-
-		if($model->isDeveloper())
-			return $this->jsonFeedback(trans('validation.http.Error403'));
-
-		$done = $model->forceDelete() ;
+		$done = $model->fakeDestroy() ;
 
 		return $this->jsonAjaxSaveFeedback($done , [
 				'success_refresh' => true ,

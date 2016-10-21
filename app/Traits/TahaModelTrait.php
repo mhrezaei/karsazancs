@@ -267,4 +267,5 @@ trait TahaModelTrait
 		return Self::whereIn('id',$ids)->update($setting);
 	}
 
+
 }

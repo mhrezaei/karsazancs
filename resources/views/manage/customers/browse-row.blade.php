@@ -25,11 +25,10 @@
 			['pencil' , trans('manage.permits.edit') , "modal:manage/customers/-id-/edit" , "customers.edit"],
 			['history' , trans('people.commands.history') , "urlN:manage/customers/-id-/history"],
 			['key' , trans('people.commands.change_password') , 'modal:manage/customers/-id-/change_password' , 'customers.edit' ,  !$model->trashed() ],
-			['shield' , trans('manage.permits.permits') , 'modal:manage/customers/-id-/permits' , 'any' , $model->canBePermitted()],
 
-			['ban' , trans('people.commands.block') , 'modal:manage/customers/-id-/soft_delete' , 'any' , !$model->trashed()] ,
-			['undo' , trans('people.commands.unblock') , 'modal:manage/customers/-id-/undelete' , 'any' , $model->trashed()] ,
-			['times' , trans('people.commands.hard_delete') , 'modal:manage/customers/-id-/hard_delete' , 'any' , $model->trashed()] ,
+			['ban' , trans('people.commands.block') , 'modal:manage/customers/-id-/soft_delete' , 'customers.delete' , !$model->trashed()] ,
+			['undo' , trans('people.commands.unblock') , 'modal:manage/customers/-id-/undelete' , 'customers.bin' , $model->trashed()] ,
+			['times' , trans('people.commands.hard_delete') , 'modal:manage/customers/-id-/hard_delete' , 'customers.bin' , $model->trashed()] ,
 
 			['user' , trans('people.commands.login_as') , 'modal:manage/customers/-id-/login_as' , 'developer' , !$model->trashed()] ,
 
