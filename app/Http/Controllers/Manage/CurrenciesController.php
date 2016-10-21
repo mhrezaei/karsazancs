@@ -74,19 +74,19 @@ class CurrenciesController extends Controller
 
 	}
 
-	public function modalActions($user_id , $view_file)
+	public function modalActions($item_id , $view_file)
 	{
-		if($user_id==0)
+		if($item_id==0)
 			return $this->modalBulkAction($view_file);
 
 		$opt = [] ;
 
 		//Model...
-		if(str_contains($user_id , 'n')) {
-			$user_id = intval($user_id) ;
+		if(str_contains($item_id , 'n')) {
+			$item_id = intval($item_id) ;
 		}
 		else {
-			$model = User::findCustomer($user_id, in_array($view_file, ['undelete', 'hard_delete']) ? true : false);
+			$model = Currency::withTrashed()->find($item_id);
 			if(!$model)
 				return view('errors.m410');
 		}
@@ -95,52 +95,23 @@ class CurrenciesController extends Controller
 		$permit = 'customers' ;
 
 		switch($view_file) {
-			case 'change_password' :
-				$permit .= '.edit' ;
-				break;
-
 			case 'soft_delete' :
 				$permit .= '.delete' ;
 				break;
-
-			case 'accounts' :
-				$page = $this->page ;
-				$page[1] = [null , trans('people.commands.bank_accounts').' '. $model->full_name , ' '] ;
-				$model_data = $model->accounts()->paginate(50) ;
-				break ;
-
-			case 'new_account' :
-				$permit .= 'edit' ;
-				$view_file = 'accounts-editor' ;
-				$user = $model ;
-				$model = new User() ;
-				$model->user_id = $user->id ;
-				$model->user_name = $user->full_name ;
-				break ;
-
-			case 'edit_account' :
-				$permit .= 'edit' ;
-				$view_file = 'accounts-editor' ;
-				$model = Account::find($user_id) ;
-				if(!$model)
-					return view('errors.m410');
-				$model->spreadMeta() ;
-				break ;
-
 			case 'undelete' :
 			case 'hard_delete' :
 				$permit .= '.bin' ;
 				break;
 
 			default:
-				dd("$view_file: $user_id");
+				dd("$view_file: $item_id");
 		}
 
 		if(!Auth::user()->can($permit))
 			return view('errors.m403');
 
 		//View...
-		$view = "manage.customers.$view_file" ;
+		$view = "manage.currencies.$view_file" ;
 		if(!View::exists($view)) return view('errors.m404');
 		return view($view , compact('model' , 'opt' , 'page' , 'model_data')) ;
 	}
@@ -194,17 +165,11 @@ class CurrenciesController extends Controller
 	public function soft_delete(Request $request)
 	{
 		//Security...
-		if(!Auth::user()->can('customers.delete'))
+		if(!Auth::user()->can('currencies.delete'))
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 
-		$model = User::find($request->id) ;
-		if(!$model)
-			return $this->jsonFeedback(trans('validation.http.Error410'));
-
-		if($model->isAdmin())
-			return $this->jsonFeedback(trans('validation.http.Error403'));
-
-		$done = $model->delete();
+		//Delete...
+		$done = Currency::destroy($request->id);
 		return $this->jsonAjaxSaveFeedback($done , [
 				'success_refresh' => true ,
 		]);
@@ -213,10 +178,10 @@ class CurrenciesController extends Controller
 
 	public function undelete(Request $request)
 	{
-		if(!Auth::user()->can('customers.bin'))
+		if(!Auth::user()->can('currencies.bin'))
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 
-		$done = User::onlyTrashed()->where('id', $request->id)->restore();
+		$done = Currency::onlyTrashed()->where('id', $request->id)->restore();
 		return $this->jsonAjaxSaveFeedback($done , [
 				'success_refresh' => true ,
 		]);
@@ -227,14 +192,10 @@ class CurrenciesController extends Controller
 	public function hard_delete(Request $request)
 	{
 		//Security...
-		if(!Auth::user()->can('customers.bin'))
+		if(!Auth::user()->can('currencies.bin'))
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 
-		$model = User::findCustomer($request->id , true) ;
-		if(!$model)
-			return $this->jsonFeedback(trans('validation.http.Error410'));
-
-		$done = $model->fakeDestroy() ;
+		$done = Currency::onlyTrashed()->where('id',$request->id)->forceDelete() ;
 
 		return $this->jsonAjaxSaveFeedback($done , [
 				'success_refresh' => true ,
@@ -242,21 +203,6 @@ class CurrenciesController extends Controller
 
 	}
 
-	public function account(Requests\Manage\AccountSaveRequest $request)
-	{
-		$user = User::findCustomer($request->user_id) ;
-		if(!$user)
-			return $this->jsonFeedback(trans('validation.http.Error403'));
-
-		if($request->_submit == 'save')
-			$ok = Account::store($request) ;
-		else
-			$ok = Account::destroy($request->id) ;
-
-		return $this->jsonAjaxSaveFeedback($ok , [
-				'success_refresh' => true
-		]);
-	}
 
 
 }
