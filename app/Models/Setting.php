@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 class Setting extends Model
 {
 	public static $available_data_types = ['text' , 'textarea' , 'boolean' , 'date' , 'photo' , 'array'] ;
-	public static $available_categories = ['socials' , 'contact' , 'template'] ;
+	public static $available_categories = ['socials' , 'contact' , 'template' , 'database'] ;
 	public static $default_when_not_found = '-' ;
 	public static $unset_signals = ['unset' , 'default' , '=' , ''] ;
 	public static $reserved_slugs = 'none,setting' ;
@@ -36,6 +36,7 @@ class Setting extends Model
 				return boolval($value) ;
 			case 'array' :
 				$array = array_filter(preg_split("/\\r\\n|\\r|\\n/",  $value)) ;
+				$array = array_sort_recursive($array ); //@TODO: Sort correctly!
 				return $array ;
 		}
 

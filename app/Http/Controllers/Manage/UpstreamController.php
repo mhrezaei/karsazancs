@@ -47,7 +47,7 @@ class UpstreamController extends Controller
 				break ;
 
 			case 'downstream' :
-				$model_data = Setting::orderBy('title')->paginate(100) ;
+				$model_data = Setting::orderBy('category')->orderBy('title')->paginate(100) ;
 				break;
 
 			case 'categories' :

@@ -107,7 +107,16 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 		});
 	});
 
+	/*
+	| SuperAdmin Settings
+	*/
+		Route::group(['prefix'=>'settings'  , 'middleware' => 'can:super'], function() {
+			Route::get('/' , 'SettingsController@index') ;
+			Route::get('/{request_tab}/' , 'SettingsController@index') ;//@TODO: INTACT
 
+			Route::post('/save' , 'settingsController@save');
+
+		});
 
 	/*
 	| Upstream Settings
