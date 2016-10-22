@@ -31,22 +31,22 @@ class CurrenciesController extends Controller
 		$this->page[0] = ['currencies' , trans('manage.modules.currencies')];
 	}
 
-	public function search(Requests\Manage\CustomerSearchRequest $request)
+	public function search(Requests\Manage\CurrencySearchRequest $request)
 	{
 		//Preparation...
 		$page = $this->page ;
 		$page[1] = ["search" , trans("forms.button.search") , "search"] ;
-		$db = new User();
+		$db = new Currency();
 
 		//IF SEARCHED...
 		$keyword = $request->keyword ;
 		if(isset($request->searched)) {
-			$model_data = User::selector('customers' ,"search_customer:$keyword")->orderBy('created_at' , 'desc')->paginate(50);
-			return view('manage.customers.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
+			$model_data = Currency::selector("search:$keyword")->orderBy('created_at' , 'desc')->paginate(50);
+			return view('manage.currencies.browse' , compact('page' , 'model_data' , 'db' , 'keyword'));
 		}
 
 		//IF JUST FORM...
-		return view("manage.customers.search" , compact('page' , 'db'));
+		return view("manage.currencies.search" , compact('page' , 'db'));
 
 	}
 

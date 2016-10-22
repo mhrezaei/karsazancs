@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Providers\AppServiceProvider;
 use App\Traits\TahaModelTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ class Currency extends Model
 	use TahaModelTrait , SoftDeletes;
 
 	protected $guarded = ['id', 'deleted_at' , 'deleted_by'];
-	protected $search_fields = ['slug' , 'title'] ;
+	protected static $search_fields = ['slug' , 'title'] ;
 	protected $casts = [
 			'meta' => 'array' ,
 	];
