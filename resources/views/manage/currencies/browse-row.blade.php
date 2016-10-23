@@ -17,9 +17,9 @@
 				{{ trans('forms.general.never') }}
 			</span>
 		@else
-			@pd(jDate::forge($model->latest_update)->ago())</td>
+			@pd(jDate::forge($model->latest_update)->ago())
 		@endif
-	</a>
+</a>
 </td>
 
 <td>

@@ -101,6 +101,13 @@ class CurrenciesController extends Controller
 			case 'query' :
 				break ;
 
+			case 'history' :
+				$page = $this->page ;
+				$page[1] = [null , $model->title , ' '] ;
+				$page[2] = [null , trans('currencies.price_history')] ;
+				$model_data = $model->rates()->orderBy('effective_date' , 'desc')->paginate(50) ;
+				break ;
+
 			case 'update' :
 				$permit .= '.process' ;
 				break ;
