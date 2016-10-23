@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manage;
 use App\Models\Activity;
 use App\models\Branch;
 use App\Models\Category;
+use App\Models\Department;
 use App\Models\Domain;
 use App\Models\Post_cat;
 use App\Models\Setting;
@@ -45,6 +46,10 @@ class UpstreamController extends Controller
 			case 'branches' :
 				$model_data = Branch::orderBy('plural_title')->get();
 				break ;
+
+			case 'departments' :
+				$model_data = Department::orderBy('title')->get() ;
+				break;
 
 			case 'downstream' :
 				$model_data = Setting::orderBy('category')->orderBy('title')->paginate(100) ;
@@ -109,6 +114,19 @@ class UpstreamController extends Controller
 					$model = new Setting() ;
 				}
 				return view('manage.settings.downstream-edit' , compact('model'));
+
+			case 'department' :
+				if($item_id) {
+					$model = Department::find($item_id) ;
+					if(!$model)
+						return view('errors.m410');
+				}
+				else {
+					$model = new Department() ;
+				}
+				return view('manage.settings.departments-edit' , compact('model'));
+				break;
+
 
 			case 'branch' :
 				if($item_id) {
@@ -236,6 +254,28 @@ class UpstreamController extends Controller
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function saveDepartment(Requests\Manage\DepartmentSaveRequest $request)
+	{
+		//If Save...
+		if($request->_submit == 'save') {
+			return $this->jsonAjaxSaveFeedback(Department::store($request) ,[
+					'success_refresh' => 1,
+			]);
+		}
+
+		//If Delete...
+		if($request->_submit == 'delete') {
+			$model = Department::find($request->id) ;
+			if(!$model)
+				return $this->jsonFeedback();
+
+			return $this->jsonAjaxSaveFeedback($model->delete() ,[
+					'success_refresh' => 1,
+			]);
+		}
+
+	}
 
 	public function saveBranch(Requests\Manage\BranchSaveRequest $request)
 	{

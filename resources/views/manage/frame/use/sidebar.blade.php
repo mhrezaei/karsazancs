@@ -22,6 +22,8 @@
 
 {{--])--}}
 
+@include('manage.frame.widgets.sidebar-link' , Taha::sidebarTicketsMenu())
+
 
 @include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'user' ,

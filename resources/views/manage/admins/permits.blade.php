@@ -41,7 +41,7 @@
 	@include('forms.sep')
 
 	@foreach($opt['modules'] as $module => $permits)
-		@if( !in_array($module , ['posts' , 'admins']) )
+		@if( !in_array($module , ['posts' , 'admins' , 'tickets']) )
 			@include('manage.admins.permits-role' , [
 				'module' => $module ,
 				'permits' => $module ,
@@ -51,13 +51,25 @@
 	@endforeach
 
 	@include('forms.sep' , [
+		'label' => trans('manage.modules.tickets') ,
+	])
+
+	@foreach($opt['departments'] as $department)
+		@include('manage.admins.permits-role' , [
+			'module' => 'tickets-'.$department->slug ,
+			'permits' => 'tickets' ,
+			'label' => $department->title ,
+		])
+	@endforeach
+
+
+	@include('forms.sep' , [
 		'label' => trans('manage.modules.content_management') ,
 	])
 
-
 	@foreach($opt['branches'] as $branch)
 		@include('manage.admins.permits-role' , [
-			'module' => $branch->slug ,
+			'module' => 'posts-'.$branch->slug ,
 			'permits' => 'posts' ,
 			'label' => $branch->plural_title ,
 		])

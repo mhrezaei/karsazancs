@@ -15,7 +15,9 @@ class TestController extends Controller
 {
 	public function index()
 	{
-		return Carbon::now();
+		$user = User::find(4) ;
+
+		dd($user->getRoles()) ;
 
 	}
 

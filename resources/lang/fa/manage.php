@@ -69,6 +69,14 @@ return [
 				'branches_delete_alert_posts' => 'اصلاً به سرنوشت :count پستی که به این شاخه تعلق دارد فکر کرده‌ای عزیز جان؟',
 				'branches_delete_alert' => 'این حذف به شیوه‌ی نرم انجام می‌شود، اما در داخل برنامه راهی برای بازیافت وجود ندارد.' ,
 
+				'departments' => 'واحدهای پشتیبانی' ,
+				'department' => 'واحد' ,
+				'edit_department' => 'ویرایش واحد' ,
+				'new_department' => 'واحد پشتیبانی جدید' ,
+				'online_feature' => 'قابلیت چت آنلاین' ,
+				'department_delete_alert_tickets' => 'اصلاً به سرنوشت :count پستی که به این شاخه تعلق دارد فکر کرده‌ای عزیز جان؟',
+				'' => '' ,
+
 				'categories' => 'دسته‌بندی مطالب' ,
 				'category' => 'دسته‌بندی',
 				'category_new' => 'دسته‌بندی تازه' ,

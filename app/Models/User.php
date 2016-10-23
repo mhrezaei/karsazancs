@@ -49,6 +49,11 @@ class User extends Authenticatable
 	|
 	*/
 
+	public function tickets()
+	{
+		return $this->hasMany('App\Models\Ticket' , 'created_by');
+	}
+
 	public function orders()
 	{
 		//@TODO: Complete this

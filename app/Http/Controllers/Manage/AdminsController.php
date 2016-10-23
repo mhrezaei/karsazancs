@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Manage;
 
 use App\models\Branch;
+use App\Models\Department;
 use App\Models\State;
 use App\Models\User;
 use App\Traits\TahaControllerTrait;
@@ -79,6 +80,7 @@ class AdminsController extends Controller
 
 				$opt['branches'] = Branch::orderBy('plural_title')->get() ;
 				$opt['modules'] = User::availableModules() ;
+				$opt['departments'] = Department::orderBy('title')->get() ;
 				break;
 
 			case 'undelete' :
