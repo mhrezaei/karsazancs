@@ -8,16 +8,16 @@ return [
 		] ,
 
 		"event" => [
-				'email_reset_password_title' => 'بازآوری رمز عبور',
-				'sms_reset_content' => 'کد بازآوری رمز عبور: ',
+				'email_reset_password_title' => 'بازآوری گذرواژه',
+				'sms_reset_content' => 'کد بازآوری گذرواژه: ',
 				'volunteer_publish_notice_email' => 'فعال سازی حساب کاربری',
 				'volunteer_publish_notice_sms' => 'حساب کاربری شما فعال گردید.',
-				'volunteer_new_password_sms' => 'رمز عبور شما در سامانه عبارتست از: ',
-				'current_password_incorrect' => 'رمز عبور فعلی را اشتباه وارد کرده‌اید.' ,
+				'volunteer_new_password_sms' => 'گذرواژه شما در سامانه عبارتست از: ',
+				'current_password_incorrect' => 'گذرواژه فعلی را اشتباه وارد کرده‌اید.' ,
 		],
 
 		"commands" => [
-				"change_password" => 'تغییر رمز عبور',
+				"change_password" => 'تغییر گذرواژه',
 				"activate" => 'فعال‌سازی حساب',
 				'login' => 'ورود' ,
 				'login_into_site' => 'ورود به مجموعه' ,
@@ -35,12 +35,26 @@ return [
 				'add_admin' => 'افزودن مدیر تازه' ,
 				'add_user' => 'افزودن کاربر تازه' ,
 				'newsletter' => 'عضویت در خبرنامه‌ی ایمیل' ,
+				'hard_delete' => 'حذف برای همیشه' ,
+				'last_login' => 'آخرین حضور' ,
+				'history' => 'تاریخچه‌ی حضور',
+				'last_transaction' => 'آخرین تراکنش' ,
+				'account_charge' => 'شارژ حساب' ,
+				'activity' => 'فعالیت' ,
+				'register_date' => 'ثبت نام در سایت' ,
+				'publish_date' => 'فعال‌سازی حساب' ,
+
+				'bank_accounts' => 'حساب‌های بانکی' ,
+				'bank_account' => 'حساب بانکی' ,
 		],
 		"form" => [
 				"notify-with-email" => 'به کاربر از طریق ایمیل اطلاع‌رسانی شود.' ,
 				"notify-with-sms" => 'به کاربر از طریق پیامک اطلاع‌رسانی شود.' ,
 				"notify" => 'به کاربر از طریق پیامک و ایمیل اطلاع‌رسانی شود.' ,
 				"will-be-notified" => 'به کاربر از طریق پیامک و ایمیل اطلاع‌رسانی می‌شود.' ,
+				"default_password" => 'شماره‌ی تلفن همراه به عنوان گذرواژه در نظر گرفته می‌شود و کاربر در اولین ورود ملزم به تغییر خواهد بود.' ,
+				"hard_delete_notice" => 'این حذف غیر قابل بازگشت خواهد بود.' ,
+				"password_hint" => 'حداقل هشت کاراکتر حساس به کوچکی و بزرگی حروف. تمام ارقام به انگلیسی تبدیل می‌شوند.' ,
 		],
 
 		"status" => [
@@ -50,22 +64,21 @@ return [
 				'willingly_signed_up' => 'اقدام به ثبت نام' ,
 				'profile_completion' => 'در حال تکمیل اطلاعات' ,
 				'pending' => 'منتظر تأیید مدیر',
+				'pendings' => 'منتظر تأیید مدیر',
 				'active' => 'فعال',
 				'admin' => 'مدیر' ,
+				'bin' => 'زباله‌دان' ,
 				'super_admin' => 'مدیر کل' ,
 				'newsletter_member' => 'عضو خبرنامه' ,
+
+				'active_individuals' => 'مشتریان حقیقی' ,
+				'active_individual' => 'مشتری حقیقی' ,
+				'active_legals' => 'مشتریان حقوقی' ,
+				'active_legal' => 'مشتری حقوقی' ,
 		],
 
 		"profile" => [
 				'delete_notice' => '' ,
-		],
-
-		"familization" => [
-				'0' => 'نامشخص',
-				'1' => 'دوست‌ها و آشنایان',
-				'2' => 'رسانه‌ها',
-				'3' => 'سایت',
-				'4' => 'راه‌های دیگر',
 		],
 
 		"marital" => [
@@ -100,6 +113,28 @@ return [
 				'2' => 'خانم' ,
 				'3' => 'سایر' ,
 		],
+
+		'customers' => [
+			'create' => 'افزودن مشتری' ,
+			'edit' => 'ویرایش اطلاعات مشتری' ,
+			'agent_details' => 'رابط یا نماینده‌ی شخصیت حقوقی' ,
+			'legal_details' => 'اطلاعات شخصیت حقوقی' ,
+			'primary_details' => 'اطلاعات اولیه' ,
+			'location_address' => 'نشانی محل استقرار' ,
+			'about_site' => 'در مورد سایت' ,
+		],
+
+		'admins' => [
+			'ordinary' => 'مدیر عملیات' ,
+			'ordinaries' => 'مدیران عملیات' ,
+			'super' => 'مدیر کل' ,
+			'supers' => 'مدیران کل' ,
+			'bin' => 'مسدودشده‌ها' ,
+			'create' => 'افزودن مدیر' ,
+			'edit' => 'ویرایش اطلاعات مدیر' ,
+			'roles' => 'منصب' ,
+			'superAdmin_hint' => 'مدیر کل علاوه بر دسترسی‌های داده‌شده، می‌تواند به تنظیمات سایت و اطلاعات مدیران دیگر دست‌رسی داشته باشد.' ,
+		] ,
 
 ]
 ?>

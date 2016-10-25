@@ -9,8 +9,16 @@ use App\Http\Controllers\Controller;
 
 class ManageController extends Controller
 {
+	private $page = array() ;
+
+	public function __construct()
+	{
+		$this->page[0] = ['index' , trans('manage.index')] ;
+	}
+
 	public function index()
 	{
-		echo 'hello' ;
+		$page = $this->page ;
+		return view('manage.index.index' , compact('page'));
     }
 }

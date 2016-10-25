@@ -192,26 +192,6 @@ function postPhotoRemoved($selector)
 
 }
 
-function cardEditor($mood , $para='')
-{
-	$('#divCard').slideUp('fast') ;
-
-	switch($mood) {
-		case 1 :
-			$('#divInquiry,#divForm').slideToggle('fast');
-			$('#frmEditor [name=code_melli]').val( $('#txtInquiry').val() ) ;
-			$('#frmEditor [name=name_first]').focus() ;
-			break;
-
-		case 2:
-			$('#imgCard').attr('src' , url('/card/show_card/mini/'+$para));
-			$('#txtCard').val( $para );
-			$('#divCard').slideDown('fast');
-			break;
-	}
-
-}
-
 function downstreamPhotoSelected($input_selector)
 {
 	$($input_selector).val($($input_selector).val().replace(url(),''));
@@ -224,3 +204,39 @@ function downstreamPhotoPreview($input_selector)
 		window.open(url($url)) ;
 }
 
+function currencyRateUpdateEditor()
+{
+	$type = $('#cmbEffectiveDate').val() ;
+
+	switch($type) {
+		case 'now' :
+			$('.-custom_time').parent().parent().hide() ;
+			$('input[name=price_to_buy]').focus() ;
+			break;
+
+		case 'custom' : //legal
+			$('.-custom_time').parent().parent().show() ;
+			$('.-individual').parent().parent().hide() ;
+			$('input[name=date]').focus() ;
+	}
+
+}
+
+function customerEditor()
+{
+	$type = $('#cmbCustomerType').val() ;
+
+	switch($type) {
+		case '1' : //individual
+			$('.-individual').parent().parent().show() ;
+			$('.-legal').parent().parent().hide() ;
+			$('input[name=name_first]').focus() ;
+			break;
+
+		case '2' : //legal
+			$('.-legal').parent().parent().show() ;
+			$('.-individual').parent().parent().hide() ;
+			$('input[name=name_firm]').focus() ;
+	}
+
+}

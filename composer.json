@@ -10,7 +10,8 @@
         "morilog/jalali": "^2.2",
         "barryvdh/laravel-debugbar": "^2.3" ,
         "laravelcollective/html": "5.3.*",
-        "twbs/bootstrap": "^3.3"
+        "twbs/bootstrap": "^3.3",
+        "unisharp/laravel-filemanager": "^1.6"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
@@ -39,17 +40,98 @@ trait TahaModelTrait
 		return self::whereNull('id') ;
 	}
 
+	public function settingCombo($slug)
+	{
+		$options = Setting::get($slug) ;
+		$result = [] ;
+
+		foreach($options as $option) {
+			array_push($result , [$option]);
+		}
+
+		return $result ;
+	}
+
 	/*
 	|--------------------------------------------------------------------------
-	| Stators
+	| Meta Enrichment Methods
 	|--------------------------------------------------------------------------
 	|
 	*/
-	public function meta($field, $in_array_format)
+
+	/**
+	 * To be used only inside the `store` method.
+	 * @param $data
+	 * @return array $data
+	 */
+	public static function storeMeta($data)
 	{
-		return json_decode($this->$field , $in_array_format) ;
+		//Bypass...
+		if(!self::hasColumn('meta'))
+			return $data ;
+
+		//Current Data...
+		$model = self::find($data['id']) ;
+		if($model)
+			if(is_array($model->meta))
+				$meta = $model->meta ;
+			else
+				$meta = json_decode($model->meta , true) ;
+		else
+			$meta = [] ;
+
+		//Process...
+		foreach($data as $field => $value) {
+			if(self::hasColumn($field))
+				continue ;
+
+			$meta[$field] = $value ;
+			unset($data[$field]);
+		}
+		$data['meta'] = json_encode($meta);
+		return $data ;
 	}
 
+	/**
+	 * Spreads Meta fields into the table columns, all together!
+	 * @return $this!
+	 */
+	public function spreadMeta()
+	{
+		//Bypass...
+		if(!self::hasColumn('meta'))
+			return $this ;
+
+		//Retreive...
+		if(is_array($this->meta))
+			$meta = $this->meta ;
+		else
+			$meta = json_decode($this->meta , true) ;
+
+		//safety...
+		if(!$meta)
+			return ;
+
+		//Process...
+		foreach($meta as $field => $value) {
+			$this->$field = $value ;
+		}
+
+		return ;
+
+	}
+
+	public function meta($slug, $field = 'meta')
+	{
+		$data = $this->$field ;
+		if(!is_array($data))
+			$data = json_encode($data , true) ;
+
+		if(isset($data[$slug]))
+			return $data[$slug];
+		else
+			return null ;
+	}
 
 	/*
 	|--------------------------------------------------------------------------
@@ -98,6 +180,9 @@ trait TahaModelTrait
 				unset($data[$key]);
 		}
 
+		//Meta...
+		$data = self::storeMeta($data) ;
+
 		//Action...
 		if(isset($data['id']) and $data['id'] > 0) {
 			$affected = Self::where('id', $data['id'])->update($data);
@@ -132,7 +217,7 @@ trait TahaModelTrait
 
 	public function unpublish()
 	{
-		$this->published_at = null ;
+//		$this->published_at = null ;
 		if(self::hasColumn('published_by'))
 			$this->published_by = null ;
 		return $this->save() ;
@@ -140,7 +225,7 @@ trait TahaModelTrait
 
 	public function delete()
 	{
-		if(self::hasColumn('deleted_at'))
+		if(self::hasColumn('deleted_at') and !$this->forceDeleting)
 			$this->deleted_at = Carbon::now()->toDateTimeString();
 		else
 			return parent::delete() ;
@@ -181,5 +266,6 @@ trait TahaModelTrait
 
 		return Self::whereIn('id',$ids)->update($setting);
 	}
+
 
 }

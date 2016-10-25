@@ -1,5 +1,5 @@
 <a class="navbar-brand" href="{{ url ('manage') }}">
-	{{ trans('manage.global.page_title') }}
+	{{ trans('manage.page_title') }}
 </a>
 
 <?php $trans = $link = 'manage'; ?>

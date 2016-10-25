@@ -5,8 +5,8 @@
     <span class=" form-feed-wait" style="color: black;">
         <div style="width: 100%; text-align: center;">
             {{  $feed_wait or trans('forms.feed.wait')  }}
-            <br>
-            <img src="{{ url('assets/site/images/64.gif') }}">
+            {{--<br>--}}
+            {{--<img src="{{ url('assets/site/images/64.gif') }}">--}}
         </div>
     </span>
     <span class=" form-feed-error">{{ $feed_error or trans('forms.feed.error') }}</span>

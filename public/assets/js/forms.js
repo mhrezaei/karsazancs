@@ -53,12 +53,12 @@ function forms_listener() {
 		});
 	});
 
-	$(".form-datepicker").each(function () {
-		$datepicker_id = $(this).attr('id');
-		if (!$('#' + $datepicker_id + 'Extra').length) {
-			forms_date_picker(this);
-		}
-	});
+//	$(".form-datepicker").each(function () {
+//		$datepicker_id = $(this).attr('id');
+//		if (!$('#' + $datepicker_id + 'Extra').length) {
+//			forms_date_picker(this);
+//		}
+//	});
 
 	$(".persian").each(function () {
 		$(this).removeClass('persian');
