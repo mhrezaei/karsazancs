@@ -349,6 +349,10 @@ return [
 				'effective_date' => 'زمان مؤثر'  ,
 				'date' => 'تاریخ' ,
 				'time' => 'ساعت' ,
+				'sender' => 'فرستنده' ,
+				'priority' => 'فوریت' ,
+				'department' => 'بخش' ,
+				'feedback' => 'بازخورد' ,
 				'' => '' ,
 		],
 

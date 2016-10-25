@@ -12,7 +12,6 @@ trait PermitsTrait
 		'orders' => ['browse' , 'process' , 'edit' , 'report'  ,  'delete' , 'bin' ] ,
 		'currencies' => ['create' , 'edit' , 'process' , 'delete' , 'bin'],
 		'tickets' => ['browse' , 'process' , 'edit' , 'report' , 'delete' , 'bin'] ,
-//		'chats' => ['browse' , 'process' , 'report' , 'delete' , 'bin'] ,
 		'posts' => ['create','edit','publish','report','delete','bin'] ,
 	];
 

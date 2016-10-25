@@ -51,7 +51,7 @@ class User extends Authenticatable
 
 	public function tickets()
 	{
-		return $this->hasMany('App\Models\Ticket' , 'created_by');
+		return $this->hasMany('App\Models\Ticket');
 	}
 
 	public function orders()
@@ -388,6 +388,15 @@ class User extends Authenticatable
 	|
 	*/
 
+	public static function findAdmin($user_id, $trashed = false)
+	{
+		$model = self::where('id' , $user_id)->where('status' , '>' , '90') ;
+		if($trashed)
+			$model = $model->onlyTrashed()->whereNull('destroyed_by') ;
+
+		return $model->first() ;
+
+	}
 	public static function findCustomer($user_id , $trashed=false)
 	{
 		$model = self::where('id' , $user_id)->where('status' , '<' , '90') ;

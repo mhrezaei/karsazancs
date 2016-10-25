@@ -2,7 +2,7 @@
 	<input id="gridSelector-{{$model->id}}" data-value="{{$model->id}}" class="gridSelector" type="checkbox" onchange="gridSelector('selector','{{$model->id}}')">
 </td>
 <td>
-	<a href="javascript:void(0)" onclick="masterModal('{{ url("manage/customers/$model->id/edit") }}')">
+	<a href="javascript:void(0)" onclick="masterModal('{{ url("manage/customers/$model->id/view") }}')">
 		{{ $model->full_name }}
 	</a>
 </td>

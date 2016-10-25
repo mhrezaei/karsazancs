@@ -11,7 +11,7 @@ class Department extends Model
 	use TahaModelTrait , SoftDeletes;
 
 	protected $guarded = ['id'];
-	public static $reserved_slugs = 'root,admin,support,supports,ticket,tickets' ;
+	public static $reserved_slugs = 'root,admin,support,supports,ticket,tickets,all' ;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -21,6 +21,13 @@ class Department extends Model
 	*/
 	public function tickets()
 	{
-		return $this->hasMany('App\Models\Ticket');
+//		return $this->hasMany('App\Models\Ticket');
 	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Helpers
+	|--------------------------------------------------------------------------
+	|
+	*/
 }

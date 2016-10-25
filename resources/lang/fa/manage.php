@@ -33,7 +33,7 @@ return [
 				'delete' => 'پاک کردن' ,
 				'bin' => 'زباله‌دان' ,
 				'print' => 'چاپ' ,
-				'process' => 'پردازش' ,
+				'process' => 'اقدام' ,
 				'activation' => 'فعال‌سازی' ,
 		],
 
