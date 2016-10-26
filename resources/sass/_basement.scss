@@ -255,4 +255,10 @@ div.mce-fullscreen {
 
 .loading {
   opacity: 0.2;
+  cursor: wait;
+}
+
+.refresh {
+  display: none;
+  visibility: hidden;
 }

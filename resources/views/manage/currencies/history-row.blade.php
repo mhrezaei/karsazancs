@@ -1,6 +1,6 @@
-<td>
-	@pd($i+1)
-</td>
+@include('manage.frame.widgets.grid-rowHeader' , [
+	'refresh_url' => "manage/tickets/update/$model->id"
+])
 <td>
 	@pd(jDate::forge($model->effective_date)->format('j F Y [H:m]'))
 </td>

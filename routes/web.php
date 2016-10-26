@@ -49,6 +49,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	| Posts
 	*/
 	Route::group(['prefix'=>'posts'] , function() {
+		Route::get('/update/{item_id}' , 'PostsController@update');
 		Route::get('/{branch_slug}' , 'PostsController@browse') ;
 		Route::get('{branch_slug}/edit/{post_id}' , 'PostsController@editor');
 		Route::get('{branch_slug}/searched' , 'PostsController@searchResult');
@@ -65,6 +66,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	| Tickets
 	*/
 	Route::group(['prefix'=>'tickets'] , function() {
+		Route::get('/update/{item_id}' , 'TicketsController@update');
 		Route::get('/{department_slug}' , 'TicketsController@browse') ;
 		Route::get('{department_slug}/create/{user_id?}' , 'TicketsController@create');
 		Route::get('{department_slug}/edit/{ticket_id}' , 'TicketsController@editor');
@@ -83,6 +85,8 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	*/
 
 	Route::group(['prefix'=>'customers', 'middleware' => 'can:customers'] , function() {
+		Route::get('/update/{item_id}' , 'CustomersController@update');
+		Route::get('/updateAccount/{item_id}' , 'CustomersController@updateAccount');
 		Route::get('/' , 'CustomersController@browse') ;
 		Route::get('/browse/{request_tab?}' , 'CustomersController@browse') ;
 		Route::get('/create/' , 'CustomersController@editor') ;
@@ -104,6 +108,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	| Currencies
 	*/
 	Route::group(['prefix'=>'currencies', 'middleware' => 'can:currencies'] , function() {
+		Route::get('/update/{item_id}' , 'CurrenciesController@update');
 		Route::get('/' , 'CurrenciesController@browse') ;
 		Route::get('/browse/{request_tab?}' , 'CurrenciesController@browse') ;
 		Route::get('/create/' , 'CurrenciesController@editor') ;
@@ -113,7 +118,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'CurrenciesController@save');
-			Route::post('/update' , 'CurrenciesController@update');
+			Route::post('/update' , 'CurrenciesController@updateRate');
 			Route::post('/query' , 'CurrenciesController@query');
 			Route::post('/soft_delete' , 'CurrenciesController@soft_delete');
 			Route::post('/undelete' , 'CurrenciesController@undelete');
@@ -126,6 +131,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	*/
 
 	Route::group(['prefix'=>'admins', 'middleware' => 'can:super'] , function() {
+		Route::get('/update/{item_id}' , 'AdminsController@update');
 		Route::get('/' , 'AdminsController@browse') ;
 		Route::get('/browse/{request_tab?}' , 'AdminsController@browse') ;
 		Route::get('/create/' , 'AdminsController@editor') ;

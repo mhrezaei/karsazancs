@@ -1,6 +1,6 @@
-<td>
-	<input id="gridSelector-{{$model->id}}" data-value="{{$model->id}}" class="gridSelector" type="checkbox" onchange="gridSelector('selector','{{$model->id}}')">
-</td>
+@include('manage.frame.widgets.grid-rowHeader' , [
+	'refresh_url' => "manage/posts/update/$model->id"
+])
 <td>
 	@if($model->canEdit())
 		<a href="{{ url("manage/posts/".$model->branch()->slug."/edit/".$model->id) }}">
@@ -31,25 +31,8 @@
 	@endif
 </td>
 
-@if($branch->hasFeature('domain') and Auth::user()->isGlobal())
-	<td>
-		{{ $model->say('domains') }}
-		@if(str_contains($model->domains , '*') )
-			<i class="fa fa-globe mh5 text-success"></i>
-		@endif
-	</td>
-@endif
-
-
-<td>
-	@include('manage.frame.widgets.grid-action' , [
-		'id' => $model->id ,
-		'actions' => [
-			['eye' , trans('manage.permits.view') , "urlN:".$model->say('preview')],
-			['pencil' , trans('manage.permits.edit') , "url:manage/posts/".$model->branch()->slug."/edit/-id-" , '*' , $model->canEdit()],
-			['times' , trans('forms.button.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , "$module.bin" , $model->trashed() and Auth::user()->isDeveloper()] ,
-
-
-		],
-	])
-</td>
+@include('manage.frame.widgets.grid-actionCol' , [ 'actions' => [
+		['eye' , trans('manage.permits.view') , "urlN:".$model->say('preview')],
+		['pencil' , trans('manage.permits.edit') , "url:manage/posts/".$model->branch()->slug."/edit/-id-" , '*' , $model->canEdit()],
+		['times' , trans('forms.button.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , $model->branch()->slug.".bin" , $model->trashed() and Auth::user()->isDeveloper()] ,
+]])

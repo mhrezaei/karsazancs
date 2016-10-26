@@ -33,28 +33,16 @@
 	|
 	--}}
 
-	@include('manage.frame.widgets.grid-start' , [
-		'selector' => false ,
+	@include('manage.frame.widgets.grid' , [
+		'table_id' => 'tblAccounts' ,
+		'row_view' => 'manage.customers.accounts-row' ,
+		'counter' => true ,
 		'headings' => [
-			'#' ,
 			trans('validation.attributes.bank_name') ,
 			trans('validation.attributes.beneficiary'),
 			trans('validation.attributes.sheba'),
 		],
 	])
 
-	@foreach($model_data as $i => $model)
-		<tr id="tr-{{$model->id}}" class="grid" ondblclick="gridSelector('tr','{{$model->id}}')">
-			@include('manage.customers.accounts-row' , ['model'=>$model])
-		</tr>
-	@endforeach
-
-	@include('manage.frame.widgets.browse-null')
-
-	@include('manage.frame.widgets.grid-end')
-
-	<div class="paginate">
-		{!! $model_data->render() !!}
-	</div>
 
 @endsection

@@ -1,6 +1,7 @@
-<td>
-	<input id="gridSelector-{{$model->id}}" data-value="{{$model->id}}" class="gridSelector" type="checkbox" onchange="gridSelector('selector','{{$model->id}}')">
-</td>
+@include('manage.frame.widgets.grid-rowHeader' , [
+	'refresh_url' => "manage/customers/update/$model->id"
+])
+
 <td>
 	<a href="javascript:void(0)" onclick="masterModal('{{ url("manage/customers/$model->id/view") }}')">
 		{{ $model->full_name }}
@@ -22,10 +23,7 @@
 	@endif
 </td>
 
-<td>
-	@include('manage.frame.widgets.grid-action' , [
-		'id' => $model->id ,
-		'actions' => [
+@include('manage.frame.widgets.grid-actionCol' , [ 'actions' => [
 			['pencil' , trans('manage.permits.edit') , "modal:manage/customers/-id-/edit" , "customers.edit"],
 			['ticket' , trans('tickets.new_support_ticket') , "modal:manage/tickets/0/create/-id-"],
 			['money' , trans('people.commands.bank_accounts') , 'urlN:manage/customers/-id-/accounts'],
@@ -37,7 +35,4 @@
 			['times' , trans('people.commands.hard_delete') , 'modal:manage/customers/-id-/hard_delete' , 'customers.bin' , $model->trashed()] ,
 
 			['user' , trans('people.commands.login_as') , 'modal:manage/customers/-id-/login_as' , 'developer' , !$model->trashed()] ,
-
-		],
-	])
-</td>
+]])

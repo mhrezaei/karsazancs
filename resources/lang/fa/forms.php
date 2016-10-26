@@ -23,6 +23,7 @@ return [
 				'undo_changes' => 'لغو تغییرات' ,
 				'browse_image' => 'انتخاب عکس' ,
 				'login'		=> 'ورود',
+				'refresh'      => 'بازخوانی' ,
 				'add'		=> 'افزودن',
 				'search' => 'جست‌وجو' ,
 				'search_for' => 'جست‌وجو به دنبال' ,

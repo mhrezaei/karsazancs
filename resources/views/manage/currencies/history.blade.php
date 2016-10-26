@@ -39,10 +39,11 @@
 	|
 	--}}
 
-	@include('manage.frame.widgets.grid-start' , [
-		'selector' => false ,
+	@include('manage.frame.widgets.grid' , [
+		'table_id' => 'tblHistory' ,
+		'row_view' => 'manage.currencies.history-row' ,
+		'counter' => true ,
 		'headings' => [
-			'#' ,
 			trans('validation.attributes.effective_date') ,
 			trans('validation.attributes.price_to_buy'),
 			trans('validation.attributes.price_to_sell'),
@@ -50,19 +51,5 @@
 			trans('forms.general.by')
 		],
 	])
-
-	@foreach($model_data as $i => $model)
-		<tr id="tr-{{$model->id}}" class="grid" ondblclick="gridSelector('tr','{{$model->id}}')">
-			@include('manage.currencies.history-row' , ['model'=>$model])
-		</tr>
-	@endforeach
-
-	@include('manage.frame.widgets.browse-null')
-
-	@include('manage.frame.widgets.grid-end')
-
-	<div class="paginate">
-		{!! $model_data->render() !!}
-	</div>
 
 @endsection

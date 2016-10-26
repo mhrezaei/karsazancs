@@ -112,6 +112,16 @@ class TicketsController extends Controller
 
 	}
 
+	public function update($model_id)
+	{
+		$model = Ticket::withTrashed()->find($model_id);
+		$selector = true ;
+		if(!$model)
+			return view('errors.m410');
+		else
+			return view('manage.tickets.browse-row' , compact('model' , 'selector'));
+	}
+
 	public function modalActions($post_id, $view_file)
 	{
 		if($post_id==0)
@@ -283,7 +293,7 @@ class TicketsController extends Controller
 		$is_saved = Ticket::store($data , ['code_melli']) ;
 
 		return $this->jsonAjaxSaveFeedback($is_saved , [
-			'success_refresh' => 1 ,
+			'success_callback' => "rowUpdate('tblTickets','$request->id')",
 		]);
 
 

@@ -56,7 +56,9 @@
 	|
 	--}}
 
-	@include('manage.frame.widgets.grid-start' , [
+	@include('manage.frame.widgets.grid' , [
+		'table_id' => 'tblCustomers' ,
+		'row_view' => 'manage.customers.browse-row' ,
 		'selector' => true ,
 		'headings' => [
 			trans('validation.attributes.name_first') ,
@@ -65,19 +67,4 @@
 			trans('forms.button.action'),
 		],
 	])
-
-	@foreach($model_data as $model)
-		<tr id="tr-{{$model->id}}" class="grid" ondblclick="gridSelector('tr','{{$model->id}}')">
-			@include('manage.customers.browse-row' , ['model'=>$model])
-		</tr>
-	@endforeach
-
-	@include('manage.frame.widgets.browse-null')
-
-	@include('manage.frame.widgets.grid-end')
-
-	<div class="paginate">
-		{!! $model_data->render() !!}
-	</div>
-
 @endsection

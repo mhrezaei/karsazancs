@@ -39,7 +39,9 @@
 	|
 	--}}
 
-	@include('manage.frame.widgets.grid-start' , [
+	@include('manage.frame.widgets.grid' , [
+		'table_id' => 'tblCurrencies' ,
+		'row_view' => 'manage.currencies.browse-row' ,
 		'selector' => true ,
 		'headings' => [
 			trans('validation.attributes.currency_title') ,
@@ -49,19 +51,4 @@
 			trans('forms.button.action'),
 		],
 	])
-
-	@foreach($model_data as $model)
-		<tr id="tr-{{$model->id}}" class="grid" ondblclick="gridSelector('tr','{{$model->id}}')">
-			@include('manage.currencies.browse-row' , ['model'=>$model])
-		</tr>
-	@endforeach
-
-	@include('manage.frame.widgets.browse-null')
-
-	@include('manage.frame.widgets.grid-end')
-
-	<div class="paginate">
-		{!! $model_data->render() !!}
-	</div>
-
 @endsection

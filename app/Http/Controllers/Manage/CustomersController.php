@@ -75,6 +75,25 @@ class CustomersController extends Controller
 		return view("manage.customers.browse" , compact('page','model_data' , 'db'));
 
 	}
+	public function update($model_id)
+	{
+		$model = User::withTrashed()->find($model_id);
+		$selector = true ;
+		if(!$model)
+			return view('errors.m410');
+		else
+			return view('manage.customers.browse-row' , compact('model' , 'selector'));
+	}
+
+	public function updateAccount($model_id)
+	{
+		$model = Account::find($model_id);
+		$counter = true ;
+		if(!$model)
+			return view('errors.m410');
+		else
+			return view('manage.customers.accounts-row' , compact('model' , 'counter'));
+	}
 
 	public function modalActions($user_id , $view_file)
 	{
@@ -221,7 +240,7 @@ class CustomersController extends Controller
 		$saved = User::store($data , ['customer_type']);
 
 		return $this->jsonAjaxSaveFeedback($saved , [
-				'success_refresh' => true ,
+			'success_callback' => "rowUpdate('tblCustomers','$request->id')",
 		]);
 
 	}
@@ -258,7 +277,7 @@ class CustomersController extends Controller
 
 		$done = $model->delete();
 		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
+				'success_callback' => "rowHide('tblCustomers','$request->id')",
 		]);
 
 	}
@@ -270,7 +289,7 @@ class CustomersController extends Controller
 
 		$done = User::onlyTrashed()->where('id', $request->id)->restore();
 		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
+				'success_callback' => "rowHide('tblCustomers','$request->id')",
 		]);
 
 
@@ -289,7 +308,7 @@ class CustomersController extends Controller
 		$done = $model->fakeDestroy() ;
 
 		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
+				'success_callback' => "rowHide('tblCustomers','$request->id')",
 		]);
 
 	}
@@ -300,13 +319,17 @@ class CustomersController extends Controller
 		if(!$user)
 			return $this->jsonFeedback(trans('validation.http.Error403'));
 
-		if($request->_submit == 'save')
+		if($request->_submit == 'save') {
 			$ok = Account::store($request) ;
-		else
-			$ok = Account::destroy($request->id) ;
+			$callback = "rowUpdate('tblAccounts','$request->id')" ;
+		}
+		else {
+			$ok = Account::destroy($request->id);
+			$callback = "rowHide('tblAccounts','$request->id')" ;
+		}
 
 		return $this->jsonAjaxSaveFeedback($ok , [
-				'success_refresh' => true
+				'success_callback' => $callback,
 		]);
 	}
 
