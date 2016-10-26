@@ -4,8 +4,8 @@
 
 <td>
 	<div>
-		@if(Auth::user()->can('tickets-'.$model->department.'.edit'))
-			<a href="javascript:void(0)" onclick="masterModal('{{ url("manage/tickets/".$model->department."/edit/".$model->id) }}')" >
+		@if($model->canEdit())
+			<a href="javascript:void(0)" onclick="masterModal('{{ url("manage/tickets/edit/".$model->id) }}')" >
 				{{ $model->title }}
 			</a>
 		@else
@@ -71,6 +71,5 @@
 </td>
 
 @include('manage.frame.widgets.grid-actionCol' , [ 'actions' => [
-		['pencil' , trans('manage.permits.edit') , "url:manage/posts/".$model->department."/edit/-id-" , '*' , true or $model->canEdit()],
-//		['times' , trans('forms.button.hard_delete') , 'modal:manage/posts/-id-/hard_delete' , "$module.bin" , $model->trashed() and Auth::user()->isDeveloper()] ,
+		['pencil' , trans('manage.permits.edit') , "modal:manage/tickets/edit/-id-" , '*' , $model->canEdit()],
 ]])

@@ -67,9 +67,9 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	*/
 	Route::group(['prefix'=>'tickets'] , function() {
 		Route::get('/update/{item_id}' , 'TicketsController@update');
-		Route::get('/{department_slug}' , 'TicketsController@browse') ;
 		Route::get('{department_slug}/create/{user_id?}' , 'TicketsController@create');
-		Route::get('{department_slug}/edit/{ticket_id}' , 'TicketsController@editor');
+		Route::get('/edit/{ticket_id}' , 'TicketsController@editor');
+		Route::get('/{department_slug}' , 'TicketsController@browse') ;
 		Route::get('{department_slug}/searched' , 'TicketsController@searchResult');
 		Route::get('{department_slug}/search' , 'TicketsController@searchPanel');
 		Route::get('/{department_slug}/{request_tab}' , 'TicketsController@browse') ;

@@ -6,6 +6,7 @@ use App\Providers\AppServiceProvider;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\jDate;
 
 class Ticket extends Model
@@ -135,7 +136,7 @@ class Ticket extends Model
 	*/
 	public function getTextLimitedAttribute()
 	{
-		return str_limit($this->text , 100);
+		return str_limit($this->text , 60);
 	}
 
 	public function getArchivedAttribute()
@@ -180,7 +181,10 @@ class Ticket extends Model
 		return AppServiceProvider::pd(jDate::forge($this->meta('first_replied_at'))->format('j F Y [H:m]')) ;
 	}
 
-
+	public function canEdit()
+	{
+		return Auth::user()->can('tickets-'.$this->department.'.edit') ;
+	}
 
 	/*
 	|--------------------------------------------------------------------------

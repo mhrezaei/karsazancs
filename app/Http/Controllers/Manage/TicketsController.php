@@ -195,7 +195,7 @@ class TicketsController extends Controller
 
 	}
 
-	public function editor($department_slug , $ticket_id)
+	public function editor($ticket_id)
 	{
 		//Model...
 		$model = Ticket::withTrashed()->find($ticket_id) ;
