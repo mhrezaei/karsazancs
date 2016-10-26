@@ -1,6 +1,7 @@
 <?php
 return [
 	'new_ticket' => 'ثبت درخواست جدید' ,
+	'new_support_ticket' => 'ثبت درخواست پشتیبانی' ,
 	'edit_ticket' => 'ویرایش درخواست' ,
 	'online_chat' => 'گفت‌وگوی زنده' ,
 	'online_chat_hull' => 'تالار گفت‌وگوی زنده' ,

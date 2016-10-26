@@ -168,9 +168,13 @@ class TicketsController extends Controller
 				return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
 
-		$model->department = $department_slug ;
-		if(!$model->department())
-			return view('errors.410');
+		if($department_slug) {
+			$model->department = $department_slug;
+			if(!$model->department())
+				$model->department = null;
+		}
+		else
+			$model->department = null ;
 
 		//Permission...
 		if(!Auth::user()->can("tickets-$department_slug.create"))

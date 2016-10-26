@@ -27,6 +27,7 @@
 		'id' => $model->id ,
 		'actions' => [
 			['pencil' , trans('manage.permits.edit') , "modal:manage/customers/-id-/edit" , "customers.edit"],
+			['ticket' , trans('tickets.new_support_ticket') , "modal:manage/tickets/0/create/-id-"],
 			['money' , trans('people.commands.bank_accounts') , 'urlN:manage/customers/-id-/accounts'],
 			['history' , trans('people.commands.history') , "urlN:manage/customers/-id-/history"],
 			['key' , trans('people.commands.change_password') , 'modal:manage/customers/-id-/change_password' , 'customers.edit' ,  !$model->trashed() ],
@@ -36,7 +37,6 @@
 			['times' , trans('people.commands.hard_delete') , 'modal:manage/customers/-id-/hard_delete' , 'customers.bin' , $model->trashed()] ,
 
 			['user' , trans('people.commands.login_as') , 'modal:manage/customers/-id-/login_as' , 'developer' , !$model->trashed()] ,
-
 
 		],
 	])
