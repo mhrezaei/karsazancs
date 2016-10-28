@@ -20,6 +20,7 @@ return [
 				'oh_no' => 'نه! اشتباه شد!' ,
 				'details' => 'جزئیات بیش‌تر' ,
 				'save'		=> 'ذخیره',
+				'send_and_save' => 'ذخیره و ارسال' ,
 				'undo_changes' => 'لغو تغییرات' ,
 				'browse_image' => 'انتخاب عکس' ,
 				'login'		=> 'ورود',

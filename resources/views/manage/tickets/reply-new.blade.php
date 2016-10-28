@@ -43,9 +43,10 @@
 @include('forms.group-start')
 
 	@include('forms.button' , [
-		'label' => trans('forms.button.save'),
+		'label' => trans('forms.button.send_and_save'),
 		'shape' => 'success',
 		'type' => 'submit' ,
+		'value' => 'save' ,
 	])
 	@include('forms.button' , [
 		'label' => trans('forms.button.details'),

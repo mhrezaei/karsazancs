@@ -303,12 +303,15 @@ class TicketsController extends Controller
 			'title' => $request->title ,
 			'priority' => $request->priority ,
 		]);
-		$is_saved = Talk::store([
-			'ticket_id' => $ticket->id ,
-			'text' => $request->text ,
-			'created_by' => Auth::user()->id ,
-			'is_admin' => 1 ,
-		]) ;
+
+		if($request->text) {
+			$is_saved = Talk::store([
+				'ticket_id' => $ticket->id ,
+				'text' => $request->text ,
+				'created_by' => Auth::user()->id ,
+				'is_admin' => 1 ,
+			]) ;
+		}
 
 		//Feedback...
 		return $this->jsonAjaxSaveFeedback($is_saved , [
@@ -324,6 +327,7 @@ class TicketsController extends Controller
 	public function save(Requests\Manage\TicketSaveRequest $request)
 	{
 		$data = $request->toArray() ;
+
 		//Validation...
 		if($request->user_id)
 			$user = User::findCustomer($request->user_id) ;
@@ -332,6 +336,20 @@ class TicketsController extends Controller
 		if(!$user)
 			return $this->jsonFeedback(trans('forms.feed.user_not_found'));
 		$data['user_id'] = $user->id ;
+
+		//Close and reopen...
+		if($request->_submit == 'archive') {
+			$data['archived_at'] = Carbon::now()->toDateTimeString() ;
+			$data['archived_by'] = Auth::user()->id ;
+			$page_refresh = true ;
+		}
+		elseif($request->_submit == 'reopen') {
+			$data['archived_at'] = null ;
+			$data['archived_by'] = null ;
+			$page_refresh = true ;
+		}
+		else
+			$page_refresh = false ;
 
 		//Save...
 		$is_saved = Ticket::store($data , ['code_melli' , 'text']) ;
@@ -345,6 +363,7 @@ class TicketsController extends Controller
 
 		return $this->jsonAjaxSaveFeedback($is_saved , [
 			'success_callback' => "rowUpdate('tblTickets','$request->id')",
+			'success_refresh' => $page_refresh? 1 : 0 ,
 		]);
 
 
