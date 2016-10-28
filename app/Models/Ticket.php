@@ -134,6 +134,18 @@ class Ticket extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function getDepartmentEnAttribute($value)
+	{
+		return encrypt($this->department);
+	}
+
+	public function getTextAttribute($value)
+	{
+		$talk = Talk::firstOrNew(['ticket_id' => $this->id]) ;
+		return $talk->text ;
+	}
+
+
 	public function getTextLimitedAttribute()
 	{
 		return str_limit($this->text , 60);
@@ -167,23 +179,20 @@ class Ticket extends Model
 		return $this->feedback_codes[$this->feedback][1];
 	}
 
-	public function getFirstRepliedByAttribute($value)
+	public function getFirstReplyAttribute($value)
 	{
-		$user = User::findAdmin($this->meta('first_replied_by'));
-		if(!$user)
-			return new User();
-		else
-			return $user ;
+		return $this->talks()->where('is_admin' , '1')->first() ;
 	}
 
-	public function getFirstRepliedAtFormattedAttribute()
-	{
-		return AppServiceProvider::pd(jDate::forge($this->meta('first_replied_at'))->format('j F Y [H:m]')) ;
-	}
 
 	public function canEdit()
 	{
 		return Auth::user()->can('tickets-'.$this->department.'.edit') ;
+	}
+
+	public function canReply()
+	{
+		return !$this->trashed() and Auth::user()->can('tickets-'.$this->department.'.process');
 	}
 
 	/*

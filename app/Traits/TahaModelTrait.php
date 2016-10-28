@@ -71,6 +71,8 @@ trait TahaModelTrait
 			return $data ;
 
 		//Current Data...
+		if(!isset($data['id']))
+			$data['id'] = 0 ;
 		$model = self::find($data['id']) ;
 		if($model)
 			if(is_array($model->meta))

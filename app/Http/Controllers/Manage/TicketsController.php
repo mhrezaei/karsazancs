@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manage;
 use App\models\department;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Talk;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Traits\TahaControllerTrait;
@@ -210,6 +211,22 @@ class TicketsController extends Controller
 		return view('manage.tickets.editor' , compact('model'));
 
 	}
+
+	public function reply($ticket_id)
+	{
+		//$model...
+		$model = Ticket::withTrashed()->find($ticket_id) ;
+		if(!$model)
+			return view('errors.410');
+
+		//Permission...
+		if(!Auth::user()->can("tickets-$model->department"))
+			return view('errors.m403');
+
+		//View...
+		return view('manage.tickets.reply' , compact('model'));
+
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| Save Methods
@@ -273,6 +290,33 @@ class TicketsController extends Controller
 
 	}
 
+	public function saveReply(Requests\Manage\TicketReplyRequest $request)
+	{
+		//Model...
+		$ticket = Ticket::find($request->id) ;
+		if(!$ticket)
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+
+		//Save...
+		$ticket->update([
+			'department' => $request->department ,
+			'title' => $request->title ,
+			'priority' => $request->priority ,
+		]);
+		$is_saved = Talk::store([
+			'ticket_id' => $ticket->id ,
+			'text' => $request->text ,
+			'created_by' => Auth::user()->id ,
+			'is_admin' => 1 ,
+		]) ;
+
+		//Feedback...
+		return $this->jsonAjaxSaveFeedback($is_saved , [
+				'success_callback' => "rowUpdate('tblTickets','$request->id')",
+		]);
+
+	}
+
 	/**
 	 * @param Requests\PostSaveRequest $request
 	 * @return string
@@ -290,7 +334,14 @@ class TicketsController extends Controller
 		$data['user_id'] = $user->id ;
 
 		//Save...
-		$is_saved = Ticket::store($data , ['code_melli']) ;
+		$is_saved = Ticket::store($data , ['code_melli' , 'text']) ;
+		if($is_saved) {
+			$talk = Talk::firstOrNew(['ticket_id' => $is_saved]);
+			$talk->text = $request->text ;
+			$talk->created_by = $user->id ;
+			$talk->updated_by = Auth::user()->id ;
+			$talk->save();
+		}
 
 		return $this->jsonAjaxSaveFeedback($is_saved , [
 			'success_callback' => "rowUpdate('tblTickets','$request->id')",

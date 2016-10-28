@@ -2,6 +2,13 @@
 	'refresh_url' => "manage/tickets/update/$model->id"
 ])
 
+{{--
+|--------------------------------------------------------------------------
+| Title Column
+|--------------------------------------------------------------------------
+| Title, first text, ticket owner and raised date
+--}}
+
 <td>
 	<div>
 		@if($model->canEdit())
@@ -31,10 +38,17 @@
 	</div>
 </td>
 
-<td>
+{{--
+|--------------------------------------------------------------------------
+| Talks Coloumn
+|--------------------------------------------------------------------------
+| Number of replies, together with name and date of the first reply
+--}}
+
+<td fake="{{ $replies = $model->talks()->count() - 1 }}">
 	<div>
-		<a href="javascript:void(0)" onclick="masterModal('{{ url("manage/tickets/".$model->department."/reply/".$model->id) }}')" >
-			@if($replies = $model->talks()->count())
+		<a href="javascript:void(0)" onclick="masterModal('{{ url("manage/tickets/reply/".$model->id) }}')" >
+			@if($replies > 0)
 				@pd($replies.' '.trans('tickets.reply'))
 			@else
 				{{ trans('tickets.no_reply') }}
@@ -42,15 +56,21 @@
 		</a>
 	</div>
 	<div class="mv5 f8 text-grey">
-		@if($model->first_replied_by->id)
+		@if($model->first_reply)
 			{{ trans('tickets.first_reply_on' , [
-				'name' => $model->first_replied_by->full_name ,
-				'date' => $model->first_replied_at_formatted ,
+				'name' => $model->first_reply->user->full_name ,
+				'date' => $model->first_reply->created_at_formatted ,
 			])}}
 		@endif
 	</div>
 </td>
 
+{{--
+|--------------------------------------------------------------------------
+| Status
+|--------------------------------------------------------------------------
+|
+--}}
 
 <td>
 	@if($model->archived)
@@ -64,11 +84,25 @@
 	@endif
 </td>
 
+{{--
+|--------------------------------------------------------------------------
+| Feedback...
+|--------------------------------------------------------------------------
+|
+--}}
 <td>
 	@if($model->archived)
 		<i class="fa fa-{{$model->feedback_icon}} text-{{$model->feedback_color}} f20"></i>
 	@endif
 </td>
+
+
+{{--
+|--------------------------------------------------------------------------
+| Actions
+|--------------------------------------------------------------------------
+|
+--}}
 
 @include('manage.frame.widgets.grid-actionCol' , [ 'actions' => [
 		['pencil' , trans('manage.permits.edit') , "modal:manage/tickets/edit/-id-" , '*' , $model->canEdit()],
