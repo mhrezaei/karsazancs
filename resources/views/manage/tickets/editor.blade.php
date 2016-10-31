@@ -70,20 +70,22 @@
 			'value' => 'save' ,
 		])
 
-		@if($model->archived)
-			@include('forms.button' , [
-				'label' => trans('tickets.reopen_ticket'),
-				'shape' => 'warning',
-				'type' => 'submit' ,
-				'value' => 'reopen' ,
-			])
-		@else
-			@include('forms.button' , [
-				'label' => trans('tickets.archive_ticket'),
-				'shape' => 'danger',
-				'type' => 'submit' ,
-				'value' => 'archive' ,
-			])
+		@if($model->id)
+			@if($model->archived)
+				@include('forms.button' , [
+					'label' => trans('tickets.reopen_ticket'),
+					'shape' => 'warning',
+					'type' => 'submit' ,
+					'value' => 'reopen' ,
+				])
+			@else
+				@include('forms.button' , [
+					'label' => trans('tickets.archive_ticket'),
+					'shape' => 'danger',
+					'type' => 'submit' ,
+					'value' => 'archive' ,
+				])
+			@endif
 		@endif
 
 

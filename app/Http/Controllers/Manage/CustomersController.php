@@ -62,7 +62,7 @@ class CustomersController extends Controller
 				$permit = 'send';
 				break;
 			default:
-				$permit = 'any' ;
+				$permit = '*' ;
 		}
 		if(!Auth::user()->can("customers.$permit"))
 			return view('errors.403');

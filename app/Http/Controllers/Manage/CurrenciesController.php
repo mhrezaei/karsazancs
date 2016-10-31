@@ -63,7 +63,7 @@ class CurrenciesController extends Controller
 				$permit = 'bin';
 				break;
 			default:
-				$permit = 'any' ;
+				$permit = '*' ;
 		}
 		if(!Auth::user()->can("currencies.$permit"))
 			return view('errors.403');
@@ -105,7 +105,7 @@ class CurrenciesController extends Controller
 		}
 
 		//Permission...
-		$permit = 'customers' ;
+		$permit = 'currencies' ;
 
 		switch($view_file) {
 			case 'query' :
