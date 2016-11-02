@@ -195,6 +195,16 @@ class Ticket extends Model
 		return !$this->trashed() and Auth::user()->can('tickets-'.$this->department.'.process');
 	}
 
+	public function canDelete()
+	{
+		return !$this->trashed() and Auth::user()->can('tickets-'.$this->department.'.delete');
+	}
+
+	public function canBin()
+	{
+		return $this->trashed() and Auth::user()->can('tickets-'.$this->department.'.bin');
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Helpers

@@ -10,6 +10,7 @@
 
 @include('forms.textarea' , [
 	'name' => 'text',
+	'class' => 'form-default form-required' ,
 ])
 
 <div class="-more noDisplay">

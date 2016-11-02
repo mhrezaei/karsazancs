@@ -47,7 +47,7 @@
 
 <td fake="{{ $replies = $model->talks()->count() - 1 }}">
 	<div>
-		<a href="javascript:void(0)" onclick="masterModal('{{ url("manage/tickets/reply/".$model->id) }}')" >
+		<a href="javascript:void(0)" onclick="masterModal('{{ url("manage/tickets/edit/".$model->id)."/reply" }}')" >
 			@if($replies > 0)
 				@pd($replies.' '.trans('tickets.reply'))
 			@else
@@ -106,4 +106,9 @@
 
 @include('manage.frame.widgets.grid-actionCol' , [ 'actions' => [
 		['pencil' , trans('manage.permits.edit') , "modal:manage/tickets/edit/-id-" , '*' , $model->canEdit()],
+		['reply-all' , trans('tickets.reply') , "modal:manage/tickets/edit/-id-/reply" , '*' , $model->canReply()],
+
+		['ban' , trans('forms.button.soft_delete') , 'modal:manage/tickets/edit/-id-/soft_delete' , '*' , $model->canDelete()] ,
+		['undo' , trans('forms.button.undelete') , 'modal:manage/tickets/edit/-id-/undelete' , '*' , $model->canBin()] ,
+		['times' , trans('forms.button.hard_delete') , 'modal:manage/tickets/edit/-id-/hard_delete' , '*' , $model->canBin()] ,
 ]])
