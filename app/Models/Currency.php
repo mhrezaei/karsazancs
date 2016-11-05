@@ -118,7 +118,7 @@ class Currency extends Model
 			return $return ;
 	}
 
-	public static function selector($criteria='active')
+	public static function selector($criteria='actives')
 	{
 
 		$table = self::where('id' , '>' , 0) ;

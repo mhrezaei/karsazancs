@@ -6,6 +6,7 @@ use App\Providers\AppServiceProvider;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Product extends Model
 {
@@ -41,6 +42,18 @@ class Product extends Model
 	{
 		//@TODO: Complete this
 	}
+
+	public function canSave()
+	{
+		if($this->id)
+			$permit = 'edit' ;
+		else
+			$permit = 'create' ;
+
+		return Auth::user()->can("products.$permit") ;
+
+	}
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -89,9 +102,9 @@ class Product extends Model
 			case 'all' :
 				return $table ;
 			case 'available' :
-				return $table->where('is_available' , '1') ;
+				return $table->where('inventory' , '>' , '0')->whereRaw("`inventory` >= `inventory_low_action`") ;
 			case "not_available" :
-				return $table->where('is_available' , '0') ;
+				return $table->whereRaw("(`inventory` = 0 OR `inventory` < `inventory_low_action`)") ;
 			case 'alarm' :
 				return $table->whereRaw("`inventory` < `inventory_low_alarm`") ;
 			case 'search' :
@@ -102,4 +115,14 @@ class Product extends Model
 
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Helpers
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function currenciesCombo()
+	{
+		return Currency::selector() ;
+	}
 }

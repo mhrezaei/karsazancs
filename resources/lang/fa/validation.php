@@ -344,6 +344,7 @@ return [
 
 				'currency_title' => 'نام ارز' ,
 				'currency_slug' => 'نشان اختصاری' ,
+				'currency' => 'ارز' ,
 				'price' => 'بها' ,
 				'card_price' => 'بهای کارت' ,
 				'price_to_sell' => 'بهای فروش' ,
@@ -360,7 +361,9 @@ return [
 				'max_charge' => 'حداکثر شارژ' ,
 				'inventory' => 'موجودی انبار' ,
 				'inventory_low_alarm' => 'هشدار موجودی' ,
-				'inventory_low_action' => 'حداقل موجودی مجاز' ,
+				'inventory_low_action' => 'حداقل موجودی' ,
+				'description' => 'توضیحات' ,
+				'max_purchasable' => 'محدودیت خرید' ,
 				'' => '' ,
 		],
 

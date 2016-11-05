@@ -1,3 +1,8 @@
+<?php
+if(isset($value) and is_object($value))
+$value = $value->$name ;
+?>
+
 <div id="{{$id or ''}}" class="checkbox {{$div_class or ''}}">
     <label title="{{ $title or '' }}">
 		<input type="hidden" name="{{$name}}" value="0">

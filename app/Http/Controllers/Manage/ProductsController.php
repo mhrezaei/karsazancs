@@ -71,16 +71,6 @@ class ProductsController extends Controller
 
 	}
 
-	public function update($model_id)
-	{
-		$model = Product::withTrashed()->find($model_id);
-		$selector = true ;
-		if(!$model)
-			return view('errors.m410');
-		else
-			return view('manage.products.browse-row' , compact('model' , 'selector'));
-	}
-
 	public function modalActions($item_id , $view_file)
 	{
 		if($item_id==0)
@@ -143,13 +133,14 @@ class ProductsController extends Controller
 	{
 		//Model...
 		if($model_id) {
-			$permit = 'products.edit' ;
-			$model = Product::find($model_id);
+			$permit = 'products' ;
+			$model = Product::withTrashed()->find($model_id);
 			$model->spreadMeta();
 		}
 		else {
 			$permit = 'products.create' ;
 			$model = new Product();
+			$model->currency = 'EUR' ;
 		}
 
 		//Permission...
@@ -170,13 +161,16 @@ class ProductsController extends Controller
 
 	public function save(Requests\Manage\ProductSaveRequest $request)
 	{
-		//Preparations...
-		$data = $request->toArray() ;
-		$data['title'] = $data['Product_title'] ;
-		$data['slug'] = $data['Product_slug'] ;
+		//More Validations...
+		if($request->charge > 0 and $request->min_charge > 0 and $request->charge < $request->min_charge)
+			return $this->jsonFeedback(trans('products.form.error_charge_less_than_min'));
+		if($request->charge > 0 and $request->max_charge > 0 and $request->charge > $request->max_charge)
+			return $this->jsonFeedback(trans('products.form.error_charge_less_than_min'));
+		if($request->min_charge > 0 and $request->max_charge > 0 and $request->min_charge > $request->max_charge)
+			return $this->jsonFeedback(trans('products.form.error_min_more_than_max'));
 
 		//Save and Return...
-		$saved = Product::store($data , ['Product_title' , 'Product_slug']);
+		$saved = Product::store($request);
 
 		return $this->jsonAjaxSaveFeedback($saved , [
 				'success_callback' => "rowUpdate('tblProducts','$request->id')",
