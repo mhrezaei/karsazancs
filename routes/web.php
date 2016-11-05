@@ -69,11 +69,9 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 		Route::get('/update/{item_id}' , 'TicketsController@update');
 		Route::get('{department_slug}/create/{user_id?}' , 'TicketsController@create');
 		Route::get('/edit/{ticket_id}/{action?}' , 'TicketsController@modalActions');
-//		Route::get('/edit/{ticket_id}' , 'TicketsController@editor');
-//		Route::get('/reply/{ticket_id}' , 'TicketsController@reply');
 		Route::get('/{department_slug}' , 'TicketsController@browse') ;
-		Route::get('{department_slug}/searched' , 'TicketsController@searchResult');
-		Route::get('{department_slug}/search' , 'TicketsController@searchPanel');
+//		Route::get('{department_slug}/searched' , 'TicketsController@searchResult');
+//		Route::get('{department_slug}/search' , 'TicketsController@searchPanel');
 		Route::get('/{department_slug}/{request_tab}' , 'TicketsController@browse') ;
 
 		Route::group(['prefix'=>'save'] , function() {
@@ -106,6 +104,25 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 			Route::post('/undelete' , 'CustomersController@undelete');
 			Route::post('/hard_delete' , 'CustomersController@hard_delete');
 			Route::post('/account' , 'CustomersController@account');
+		});
+	});
+
+	/*
+	| Products
+	*/
+	Route::group(['prefix'=>'products', 'middleware' => 'can:products'] , function() {
+		Route::get('/' , 'ProductsController@browse') ;
+		Route::get('/browse/{request_tab?}' , 'ProductsController@browse') ;
+		Route::get('/create/' , 'ProductsController@editor') ;
+		Route::get('/search' , 'ProductsController@search');
+		Route::get('/{user_id}/edit' , 'ProductsController@editor');
+		Route::get('/{user_id}/{modal_action}' , 'ProductsController@modalActions');
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/' , 'ProductsController@save');
+			Route::post('/soft_delete' , 'ProductsController@soft_delete');
+			Route::post('/undelete' , 'ProductsController@undelete');
+			Route::post('/hard_delete' , 'ProductsController@hard_delete');
 		});
 	});
 

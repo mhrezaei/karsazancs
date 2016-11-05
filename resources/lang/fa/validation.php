@@ -344,6 +344,8 @@ return [
 
 				'currency_title' => 'نام ارز' ,
 				'currency_slug' => 'نشان اختصاری' ,
+				'price' => 'بها' ,
+				'card_price' => 'بهای کارت' ,
 				'price_to_sell' => 'بهای فروش' ,
 				'price_to_buy' => 'بهای خرید' ,
 				'effective_date' => 'زمان مؤثر'  ,
@@ -353,6 +355,12 @@ return [
 				'priority' => 'فوریت' ,
 				'department' => 'بخش' ,
 				'feedback' => 'بازخورد' ,
+				'charge' => 'شارژ' ,
+				'min_charge' => 'حداقل شارژ' ,
+				'max_charge' => 'حداکثر شارژ' ,
+				'inventory' => 'موجودی انبار' ,
+				'inventory_low_alarm' => 'هشدار موجودی' ,
+				'inventory_low_action' => 'حداقل موجودی مجاز' ,
 				'' => '' ,
 		],
 

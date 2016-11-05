@@ -49,6 +49,13 @@
 @endforeach
 
 @include('manage.frame.widgets.sidebar-link' , [
+	'icon' => 'credit-card',
+	'caption' => trans('manage.modules.products'),
+	'link' => 'products' ,
+	'permission' => 'products' ,
+])
+
+@include('manage.frame.widgets.sidebar-link' , [
 	'icon' => 'money',
 	'caption' => trans('manage.modules.currencies'),
 	'link' => 'currencies' ,
