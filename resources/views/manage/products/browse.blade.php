@@ -24,7 +24,7 @@
 			@endif
 
 			@include('manage.frame.widgets.toolbar_search_inline' , [
-				'target' => url('manage/currencies/search/') ,
+				'target' => url('manage/products/search/') ,
 				'label' => trans('forms.button.search') ,
 				'value' => isset($keyword)? $keyword : '' ,
 			])

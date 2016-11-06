@@ -14,7 +14,7 @@ class Product extends Model
     use TahaModelTrait , SoftDeletes ;
 
 	protected $guarded = ['id', 'deleted_at' , 'deleted_by'];
-	protected static $search_fields = ['slug' , 'title' , 'abstract'] ;
+	protected static $search_fields = ['slug' , 'title' , 'description'] ;
 	protected static $meta_fields = ['min_charge' , 'max_charge' , 'is_rechargeable' , 'is_extensible' , 'image' , 'max_purchasable'] ;
 	protected $casts = [
 		'meta' => 'array' ,
