@@ -7,6 +7,7 @@ use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Morilog\Jalali\jDate;
 
 class Product extends Model
 {
@@ -32,6 +33,15 @@ class Product extends Model
 		return $this->hasMany('App\Models\Order');
 	}
 
+	public function currency()
+	{
+		$currency = Currency::findBySlug($this->currency) ;
+		if(!$currency)
+			return new Currency() ;
+		else
+			return $currency ;
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors & Mutators
@@ -42,6 +52,95 @@ class Product extends Model
 	{
 		//@TODO: Complete this
 	}
+
+	public function getCurrencyTitleAttribute()
+	{
+		return $this->currency()->title ;
+	}
+
+	public function getMinChargePersianAttribute()
+	{
+		return AppServiceProvider::pd(number_format($this->min_charge)) ;
+	}
+	public function getMaxChargePersianAttribute()
+	{
+		return AppServiceProvider::pd(number_format($this->max_charge)) ;
+	}
+	public function getInventoryPersianAttribute()
+	{
+		return AppServiceProvider::pd(number_format($this->inventory)) ;
+	}
+	public function getStatusAttribute()
+	{
+		if($this->inventory==0)
+			return 'available' ;
+		elseif($this->inventory < $this->inventory_low_action)
+			return 'not_available' ;
+		elseif($this->inventory < $this->inventory_low_alarm)
+			return 'alarm' ;
+		else
+			return 'available' ;
+	}
+
+	public function getStatusColorAttribute()
+	{
+		switch($this->status) {
+			case 'available' :
+				return 'success' ;
+			case 'alarm' :
+				return 'warning' ;
+			case 'not_available' :
+				return 'danger' ;
+		}
+	}
+
+	public function getStatusIconAttribute()
+	{
+		switch($this->status) {
+			case 'available' :
+				return 'check' ;
+			case 'alarm' :
+				return 'exclamation-circle' ;
+			case 'not_available' :
+				return 'exclamation-triangle' ;
+		}
+	}
+
+	public function getCreatorAttribute()
+	{
+		$user = User::findAdmin($this->created_by) ;
+		if(!$user) {
+			$user = new User() ;
+			$user->name_first = trans('people.form.deleted_person') ;
+		}
+
+		return $user ;
+	}
+
+	public function getCreatedAtFormattedAttribute()
+	{
+		return AppServiceProvider::pd(jDate::forge($this->created_at)->format('j F Y [H:m]')) ;
+	}
+	public function getDeleterAttribute()
+	{
+		$user = User::findAdmin($this->deleted_by) ;
+		if(!$user) {
+			$user = new User() ;
+			$user->name_first = trans('people.form.deleted_person') ;
+		}
+
+		return $user ;
+
+	}
+
+	public function getDeletedAtFormattedAttribute()
+	{
+		return AppServiceProvider::pd(jDate::forge($this->deleted_at)->format('j F Y [H:m]')) ;
+	}
+
+
+
+
 
 	public function canSave()
 	{
@@ -102,11 +201,11 @@ class Product extends Model
 			case 'all' :
 				return $table ;
 			case 'available' :
-				return $table->where('inventory' , '>' , '0')->whereRaw("`inventory` >= `inventory_low_action`") ;
+				return $table->where('inventory' , '>' , '0')->whereRaw("`inventory` > `inventory_low_action`")->whereRaw("`inventory` > `inventory_low_alarm`") ;
 			case "not_available" :
 				return $table->whereRaw("(`inventory` = 0 OR `inventory` < `inventory_low_action`)") ;
 			case 'alarm' :
-				return $table->whereRaw("`inventory` < `inventory_low_alarm`") ;
+				return $table->whereRaw("`inventory` < `inventory_low_alarm`")->whereRaw("`inventory` > `inventory_low_action`") ;
 			case 'search' :
 				return $table->whereRaw(self::searchRawQuery($keyword, self::$search_fields));
 			default:

@@ -104,7 +104,6 @@
 	@include('forms.input' , [
 		'name' => 'inventory',
 		'value' => $model ,
-//		'hint' => trans('products.form.zero_for_no_limitation') ,
 		'class' => 'form-required' ,
 	])
 	@include('forms.input' , [

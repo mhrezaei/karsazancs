@@ -111,6 +111,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	| Products
 	*/
 	Route::group(['prefix'=>'products', 'middleware' => 'can:products'] , function() {
+		Route::get('/update/{item_id}' , 'ProductsController@update');
 		Route::get('/' , 'ProductsController@browse') ;
 		Route::get('/browse/{request_tab?}' , 'ProductsController@browse') ;
 		Route::get('/create/' , 'ProductsController@editor') ;

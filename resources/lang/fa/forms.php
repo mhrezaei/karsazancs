@@ -66,6 +66,11 @@ return [
 				'custom_time' => 'زمان دل‌خواه' ,
 				'never' => 'هرگز' ,
 				'online' => 'آنلاین' ,
+				'min' => 'حداقل' ,
+				'max' => 'حداکثر' ,
+				'min_value' => 'حداقل :value' ,
+				'max_value' => 'حداکثر :value' ,
+				'numbers' => 'عدد' ,
 		],
 
 

@@ -3,12 +3,19 @@ return [
 
 	'new' => 'ثبت محصول تازه' ,
 	'edit' => 'ویرایش محصول' ,
+	'custom_charge' => 'سفارشی' ,
+	'unlimited' => 'نامحدود' ,
+	'min_inventory' => 'حداقل موجودی' ,
+	'alarm_setting' => 'تنظیم هشدار' ,
+	'inventory' => ':count عدد' ,
+	'created_by' => 'ایجاد توسط :name در :date' ,
+	'deleted_by' => 'حذف توسط :name در :date' ,
 
 	'status' => [
 		'all' => 'همه محصولات' ,
 		'available' => 'موجود' ,
-		'not_available' => 'ناموجود' ,
-		'alarm' => 'هشدار' ,
+		'not_available' => 'کسر موجودی' ,
+		'alarm' => 'رو به اتمام' ,
 		'bin' => 'زباله‌دان',
 	],
 
@@ -32,6 +39,7 @@ return [
 			'error_charge_less_than_min' => 'میزان شارژ، نمی‌تواند کم‌تر از حداقل تعیین‌شده باشد.' ,
 			'error_charge_more_than_max' => 'میزان شارژ، نمی‌تواند بیش‌تر از حداکثر تعیین‌شده باشد.' ,
 			'error_min_more_than_max' => 'حداقل شارژ، نمی‌تواند بیش‌تر از حداکثر آن باشد.' ,
+			'error_alarm_less_than_action' => 'حداقل موجودی، نمی‌تواند بیش‌تر از میزان هشدار باشد.' ,
 			'' => '' ,
 	],
 

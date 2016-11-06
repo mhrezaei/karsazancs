@@ -71,6 +71,17 @@ class ProductsController extends Controller
 
 	}
 
+	public function update($model_id)
+	{
+		$model = Product::withTrashed()->find($model_id);
+		$selector = true ;
+		if(!$model)
+			return view('errors.m410');
+
+		$model->spreadMeta() ;
+		return view('manage.products.browse-row' , compact('model' , 'selector'));
+	}
+
 	public function modalActions($item_id , $view_file)
 	{
 		if($item_id==0)
@@ -168,6 +179,9 @@ class ProductsController extends Controller
 			return $this->jsonFeedback(trans('products.form.error_charge_less_than_min'));
 		if($request->min_charge > 0 and $request->max_charge > 0 and $request->min_charge > $request->max_charge)
 			return $this->jsonFeedback(trans('products.form.error_min_more_than_max'));
+
+		if($request->inventory > 0 and $request->inventory_low_alarm < $request->inventory_low_action )
+			return $this->jsonFeedback(trans('products.form.error_alarm_less_than_action'));
 
 		//Save and Return...
 		$saved = Product::store($request);

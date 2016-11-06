@@ -40,7 +40,7 @@
 	--}}
 
 	@include('manage.frame.widgets.grid' , [
-		'table_id' => 'tblCurrencies' ,
+		'table_id' => 'tblProducts' ,
 		'row_view' => 'manage.products.browse-row' ,
 		'selector' => true ,
 		'headings' => [
