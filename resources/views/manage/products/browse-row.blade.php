@@ -71,6 +71,7 @@
 
 @include('manage.frame.widgets.grid-actionCol' , [ 'actions' => [
 			['pencil' , trans('manage.permits.edit') , "modal:manage/products/-id-/edit" , "products.edit"],
+			['cart-plus' , trans('orders.new') , 'modal:manage/products/create/-id-' , 'orders'],
 			['shopping-basket' , trans('manage.modules.orders') , 'urlN:manage/currencies/-id-/update' , 'orders'],
 
 			['ban' , trans('forms.button.soft_delete') , 'modal:manage/products/-id-/soft_delete' , 'products.delete' , !$model->trashed()] ,

@@ -6,7 +6,7 @@
 ])
 <div class='modal-body'>
 
-	@if(!$model->canSave())
+	@if(!$savable)
 		@include('forms.note' , [
 			'text' => trans('products.form.not_editable') ,
 			'shape' => 'warning' ,
@@ -60,6 +60,13 @@
 		'value' => $model ,
 		'hint' => trans('products.form.max_purchasable_hint') ,
 	])
+
+	@include('forms.input' , [
+		'name' => 'expiry',
+		'value' => $model ,
+		'hint' => trans('products.form.expiry_hint') ,
+	])
+
 
 	@include('forms.check-form' , [
 		'label' => trans('products.form.extensible') ,
@@ -125,7 +132,7 @@
 			'label' => trans('forms.button.save'),
 			'shape' => 'success',
 			'type' => 'submit' ,
-			'extra' => $model->canSave() ? '' : 'disabled' ,
+			'extra' => $savable ? '' : 'disabled' ,
 		])
 		@include('forms.button' , [
 			'label' => trans('forms.button.cancel'),

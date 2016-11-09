@@ -364,7 +364,9 @@ return [
 				'inventory_low_action' => 'حداقل موجودی' ,
 				'description' => 'توضیحات' ,
 				'max_purchasable' => 'محدودیت خرید' ,
-				'' => '' ,
+				'product_id' => 'عنوان محصول' ,
+			'invoice' => 'صورتحساب',
+			'expiry' => 'انقضاء',
 		],
 
 		"http" => [

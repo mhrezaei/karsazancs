@@ -143,5 +143,26 @@ class Currency extends Model
 
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Helpers
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public static function irr($amount, $currency , $type = 'sell', $date = 'NOW')
+	{
+		// Rate Discovery...
+		if(!is_object($currency)) {
+			$currency = Currency::findBySlug($currency) ;
+			if(!$currency)
+				return 0 ;
+		}
+		$rates = $currency->loadRates($date) ;
+		$rate = $rates->toArray()["price_to_$type"] ;
+
+		//Return...
+		return round($amount * $rate) ;
+	}
+
 
 }

@@ -116,7 +116,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 		Route::get('/browse/{request_tab?}' , 'ProductsController@browse') ;
 		Route::get('/create/' , 'ProductsController@editor') ;
 		Route::get('/search' , 'ProductsController@search');
-		Route::get('/{user_id}/edit' , 'ProductsController@editor');
+		Route::get('/{user_id}/edit/{savable?}' , 'ProductsController@editor');
 		Route::get('/{user_id}/{modal_action}' , 'ProductsController@modalActions');
 
 		Route::group(['prefix'=>'save'] , function() {
@@ -124,6 +124,27 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 			Route::post('/soft_delete' , 'ProductsController@soft_delete');
 			Route::post('/undelete' , 'ProductsController@undelete');
 			Route::post('/hard_delete' , 'ProductsController@hard_delete');
+		});
+	});
+
+
+	/*
+	| Orders
+	*/
+	Route::group(['prefix'=>'orders', 'middleware' => 'can:orders'] , function() {
+		Route::get('/update/{item_id}' , 'OrdersController@update');
+		Route::get('/' , 'OrdersController@browse') ;
+		Route::get('/browse/{master?}/{request_tab?}' , 'OrdersController@browse') ;
+		Route::get('/create/{master?}' , 'OrdersController@create') ;
+		Route::get('/search' , 'OrdersController@search');
+		Route::get('/{user_id}/edit' , 'OrdersController@editor');
+		Route::get('/{user_id}/{modal_action}' , 'OrdersController@modalActions');
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/' , 'OrdersController@save');
+			Route::post('/soft_delete' , 'OrdersController@soft_delete');
+			Route::post('/undelete' , 'OrdersController@undelete');
+			Route::post('/hard_delete' , 'OrdersController@hard_delete');
 		});
 	});
 

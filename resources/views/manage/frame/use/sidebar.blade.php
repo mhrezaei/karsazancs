@@ -4,23 +4,12 @@
 	'link' => 'index' ,
 ])
 
-{{--@include('manage.frame.widgets.sidebar-link' , [--}}
-	{{--'icon' => 'child' ,--}}
-	{{--'caption' => trans('manage.modules.volunteers') ,--}}
-	{{--'link' => 'volunteers' ,--}}
-	{{--'permission' => 'volunteers' ,--}}
-	{{--'sub_menus' => [--}}
-		{{--['volunteers/create' , trans('people.volunteers.manage.create') , 'plus-square-o' , 'volunteers.create'] ,--}}
-		{{--['volunteers/browse/active' , trans('people.volunteers.manage.active') , 'check' , 'volunteers.browse'],--}}
-		{{--['volunteers/browse/pending' , trans('people.volunteers.manage.pending') , 'gavel' , 'volunteers.publish'],--}}
-		{{--['volunteers/browse/care' , trans('people.volunteers.manage.care') , 'ambulance' , 'volunteers.edit'],--}}
-		{{--['volunteers/browse/documentation' , trans('people.volunteers.manage.documentation') , 'adjust' , 'volunteers.edit'],--}}
-		{{--['volunteers/browse/examining' , trans('people.volunteers.manage.examining') , 'file-o' , 'volunteers.publish'],--}}
-		{{--['volunteers/browse/bin' , trans('people.volunteers.manage.bin') , 'times' , 'volunteers.bin'],--}}
-		{{--['volunteers/search' , trans('forms.button.search') , 'search' , 'volunteers.search'],--}}
-	{{--]--}}
-
-{{--])--}}
+@include('manage.frame.widgets.sidebar-link' , [
+	'icon' => 'shopping-basket',
+	'caption' => trans('manage.modules.orders'),
+	'link' => 'orders' ,
+	'permission' => 'orders.browse' ,
+])
 
 @include('manage.frame.widgets.sidebar-link' , Taha::sidebarTicketsMenu())
 

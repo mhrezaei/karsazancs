@@ -59,6 +59,7 @@ class ProductSaveRequest extends Request
 			'card_price' => 'ed' ,
 			'max_purchasable' => 'ed|number' ,
 			'charge' => 'ed' ,
+			'expiry' => 'ed|number' ,
 			'min_charge' => 'ed|number' ,
 			'max_charge' => 'ed|number' ,
 			'inventory' => 'ed' ,

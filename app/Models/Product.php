@@ -139,7 +139,16 @@ class Product extends Model
 	}
 
 
-
+	/*
+	|--------------------------------------------------------------------------
+	| Stators
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function irr($type = 'sell' , $date='NOW')
+	{
+		return Currency::irr($this->charge , $this->currency , $type , $date);
+	}
 
 
 	public function canSave()

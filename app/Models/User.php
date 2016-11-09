@@ -392,7 +392,7 @@ class User extends Authenticatable
 	{
 		$model = self::where('id' , $user_id)->where('status' , '>' , '90') ;
 		if($trashed)
-			$model = $model->onlyTrashed()->whereNull('destroyed_by') ;
+			$model = $model->withTrashed()->whereNull('destroyed_by') ;
 
 		return $model->first() ;
 
@@ -401,7 +401,7 @@ class User extends Authenticatable
 	{
 		$model = self::where('id' , $user_id)->where('status' , '<' , '90') ;
 		if($trashed)
-			$model = $model->onlyTrashed()->whereNull('destroyed_by') ;
+			$model = $model->withTrashed()->whereNull('destroyed_by') ;
 
 		return $model->first() ;
 	}
