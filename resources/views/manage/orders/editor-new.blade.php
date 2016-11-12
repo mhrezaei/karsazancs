@@ -18,6 +18,16 @@
 		'extra' => 'disabled' ,
 	])
 
+	@if($total_owned = $model->checkPurchaseLimit())
+		@include("forms.note" , [
+			'shape' => "danger",
+			'text' => trans('orders.form.purchase_limit_alarm' , [
+				'total' => $total_owned,
+				'limit' => $model->product->max_purchasable,
+			]),
+		])
+	@endif
+
 	@include('forms.input' , [
 		'name' => 'product_id',
 		'value' => $model->product->title ,

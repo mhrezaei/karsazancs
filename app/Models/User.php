@@ -174,6 +174,20 @@ class User extends Authenticatable
 			return false ;
 	}
 
+	public function isCustomer()
+	{
+		return !$this->isAdmin() ;
+	}
+
+	public function isActiveCustomer()
+	{
+		if($this->status == 8 or $this->status == 9)
+			return true ;
+		else
+			return false ;
+
+	}
+
 	public function isSuperAdmin()
 	{
 		if($this->status == 99 or $this->isDeveloper())

@@ -194,6 +194,15 @@ class Order extends Model
 			return false ;
 	}
 
+	public function checkPurchaseLimit()
+	{
+		if($this->status > 3)
+			return false ;
+
+		return 12 ;
+		//@TODO: Complete this when Cards are ready.
+		return $this->product->canPurchase($this->user) ;
+	}
 
 	/*
 	|--------------------------------------------------------------------------

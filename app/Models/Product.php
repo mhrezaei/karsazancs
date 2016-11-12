@@ -162,6 +162,32 @@ class Product extends Model
 
 	}
 
+	public function canPurchase($user = 'auto')
+	{
+		return 2 ;
+		//@TODO: Complete this after writing the Cards class
+
+
+		//Selection...
+		if($user=='auto')
+			$user = Auth::user() ;
+		elseif(is_integer($user))
+			$user = User::findUser($user) ;
+		elseif(is_object($user)) {
+			if(get_class($user) != 'App\Models\User')
+				return false ;
+		}
+		else
+			return false ;
+
+		//User Eligibility...
+		if(!$user or !$user->isActiveCustomer() or $user->trashed())
+			return false ;
+
+
+
+	}
+
 
 	/*
 	|--------------------------------------------------------------------------

@@ -11,18 +11,16 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class TestController extends Controller
 {
 	public function index()
 	{
-		Ticket::store( [
-			'id' => 1 ,
-			'archived_at' => null ,
-			'feedback' => 0 ,
-			'first_replied_by' => 3 ,
-			'first_replied_at' => Carbon::now()->toDateTimeString()
-		]);
+		$user = Auth::user() ;
+
+
+		dd(get_class($user))  ;
 	}
 
 }

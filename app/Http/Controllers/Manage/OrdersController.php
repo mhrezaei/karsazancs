@@ -202,6 +202,7 @@ class OrdersController extends Controller
 		//Full Form...
 		if($product_id * $user_id > 0) {
 			$model->initial_charge = $model->product->initial_charge ;
+			$model->product->spreadMeta() ;
 			$model->status = 2 ;
 			$model->rate = $model->product->currency()->loadCurrentRates()->price_to_sell ;
 		}
@@ -221,6 +222,8 @@ class OrdersController extends Controller
 			return view('errors.m410');
 
 		$model->spreadMeta();
+		$model->product->spreadMeta() ;
+
 		if($model->canEdit())
 			$model->rate = $model->product->currency()->loadCurrentRates()->price_to_sell ;
 		else
@@ -276,13 +279,16 @@ class OrdersController extends Controller
 		//Validation
 		if($request->id) {
 			$model = Order::find($request->id);
-			if(!$model)
+			if(!$model or $model->type != 'new')
 				return $this->jsonFeedback(trans('validation.http.Error410'));
 			if(!$model->canEdit())
 				return $this->jsonFeedback(trans('validation.http.Error403'));
 		}
-		else
-			$model = new Order() ;
+		else {
+			$model = new Order();
+			$model->product_id = $request->product_id ;
+			$model->type = 'new' ;
+		}
 
 		$customer = User::selector()->where('id' , $request->user_id)->first() ;
 		if(!$customer)
