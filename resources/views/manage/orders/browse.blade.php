@@ -53,7 +53,7 @@
 		'counter' => true ,
 		'headings' => [
 			trans('orders.type.title'),
-			trans('validation.attributes.product_id') ,
+//			trans('validation.attributes.product_id') ,
 			trans('validation.attributes.invoice'),
 			trans('validation.attributes.status'),
 			trans('forms.button.action'),

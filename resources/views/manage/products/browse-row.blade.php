@@ -24,8 +24,8 @@
 </td>
 
 <td>
-	@if($model->charge > 0)
-		@pd(number_format($model->charge))&nbsp;{{ $model->currency_title }}
+	@if($model->initial_charge > 0)
+		@pd(number_format($model->initial_charge))&nbsp;{{ $model->currency_title }}
 	@else
 		{{ trans('products.custom_charge') }}
 	@endif

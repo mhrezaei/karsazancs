@@ -414,7 +414,7 @@ class User extends Authenticatable
 		else
 			return $return ;
 	}
-	public static function selector($role = 'users' , $criteria='active')
+	public static function selector($role = 'customers' , $criteria='actives')
 	{
 
 		$table = self::where('id' , '>' , 0) ;

@@ -47,7 +47,7 @@
 		'headings' => [
 			trans('validation.attributes.title') ,
 			trans('validation.attributes.card_price'),
-			trans('validation.attributes.charge'),
+			trans('validation.attributes.initial_charge'),
 			trans('validation.attributes.inventory'),
 			trans('validation.attributes.status'),
 			trans('forms.button.action'),

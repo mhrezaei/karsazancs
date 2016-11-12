@@ -80,7 +80,7 @@
 	])
 
 	@include('forms.input' , [
-		'name' => 'charge',
+		'name' => 'initial_charge',
 		'value' => $model ,
 		'hint' => trans('products.form.charge_hint') ,
 	])

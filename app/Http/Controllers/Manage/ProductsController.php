@@ -176,9 +176,9 @@ class ProductsController extends Controller
 	public function save(Requests\Manage\ProductSaveRequest $request)
 	{
 		//More Validations...
-		if($request->charge > 0 and $request->min_charge > 0 and $request->charge < $request->min_charge)
+		if($request->initial_charge > 0 and $request->min_charge > 0 and $request->initial_charge < $request->min_charge)
 			return $this->jsonFeedback(trans('products.form.error_charge_less_than_min'));
-		if($request->charge > 0 and $request->max_charge > 0 and $request->charge > $request->max_charge)
+		if($request->initial_charge > 0 and $request->max_charge > 0 and $request->initial_charge > $request->max_charge)
 			return $this->jsonFeedback(trans('products.form.error_charge_less_than_min'));
 		if($request->min_charge > 0 and $request->max_charge > 0 and $request->min_charge > $request->max_charge)
 			return $this->jsonFeedback(trans('products.form.error_min_more_than_max'));

@@ -134,7 +134,7 @@ class ValidationServiceProvider extends ServiceProvider
 
 			case "number":
 			case "numeric" :
-				$data = $data + 0;
+				$data = floatval( str_replace(',',null,$data) );
 				break;
 
 			case "bool":

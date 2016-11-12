@@ -357,6 +357,7 @@ return [
 				'department' => 'بخش' ,
 				'feedback' => 'بازخورد' ,
 				'charge' => 'شارژ' ,
+			'initial_charge' => "شارژ اولیه",
 				'min_charge' => 'حداقل شارژ' ,
 				'max_charge' => 'حداکثر شارژ' ,
 				'inventory' => 'موجودی انبار' ,
@@ -365,8 +366,12 @@ return [
 				'description' => 'توضیحات' ,
 				'max_purchasable' => 'محدودیت خرید' ,
 				'product_id' => 'عنوان محصول' ,
+			'product' => "محصول",
 			'invoice' => 'صورتحساب',
+			'original_invoice' => "صورتحساب اصلی",
+			'amount_invoiced' => "مبلغ صورتحساب",
 			'expiry' => 'انقضاء',
+			'customer_id' => "مشتری",
 		],
 
 		"http" => [

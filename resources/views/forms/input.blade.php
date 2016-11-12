@@ -1,9 +1,22 @@
 <?php
+if(!isset($name))
+	$name = '' ;
+if(!isset($extra))
+	$extra = '' ;
+
 if(isset($class)) {
 	if(str_contains($class, 'form-required')) {
 		$required = true;
 	}
 }
+else
+	$class = '' ;
+
+if(isset($disabled) and $disabled) {
+	$required = false ;
+	$extra .= ' disabled ' ;
+}
+
 
 if(isset($value) and is_object($value))
 	$value = $value->$name ;
@@ -30,7 +43,7 @@ if(!isset($in_form))
 
 		<div class="col-sm-10">
 			@include('forms.input-self')
-			<span class="help-block {{$hint_class or ''}}">
+			<span class="help-block persian {{$hint_class or ''}}" style="{{$hint_style or ''}}">
 				{{ $hint or '' }}
 			</span>
 		</div>

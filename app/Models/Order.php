@@ -6,6 +6,7 @@ use App\Providers\AppServiceProvider;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Order extends Model
 {
@@ -16,6 +17,7 @@ class Order extends Model
 		'meta' => 'array' ,
 	];
 	public static $valid_types = ['new' , 'extend' , 'recharge' , 'refund' , 'block'] ;
+	protected static $meta_fields = ['initial_charge' , 'rate' ];
 
 	/*
 	|--------------------------------------------------------------------------
@@ -44,6 +46,16 @@ class Order extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function getAdminEditorTitleAttribute()
+	{
+		if(!$this->id)
+			return trans('orders.new');
+		elseif($this->canEdit())
+			return trans('orders.edit');
+		else
+			return trans('orders.view');
+	}
+
 	public function getStatusCodeAttribute()
 	{
 		switch($this->status) {
@@ -99,6 +111,54 @@ class Order extends Model
 		}
 	}
 
+	public function getInventoryAdminHintAttribute()
+	{
+		$product = $this->product ;
+		$hint = '' ;
+		$translate_parameters = [
+				'min_charge' => $product->inventory_low_action,
+				'inventory' => $product->inventory ,
+				'currency' => trans('forms.general.numbers'),
+		];
+
+		$hint = trans('orders.form.inventory_hint' , $translate_parameters).'. ';
+		if($product->inventory_low_action)
+			$hint .= trans('orders.form.original_charge_min' , $translate_parameters).'. ' ;
+
+		return $hint ;
+	}
+
+
+	public function getChargeAdminHintAttribute()
+	{
+		$product = $this->product ;
+		$product->spreadMeta() ;
+		$hint = '' ;
+		$translate_parameters = [
+			'min_charge' => number_format($product->min_charge),
+			'max_charge' => number_format($product->max_charge),
+			'charge' => number_format($product->initial_charge),
+			'currency' => $product->currency_title,
+		];
+
+		if($product->min_charge + $product->max_charge + $product->initial_charge == 0) {
+			$hint = trans('orders.form.original_charge_no_limit' , $translate_parameters);
+		}
+		if($product->charge>0) {
+			$hint = trans('orders.form.original_charge' , $translate_parameters).'. ' ;
+		}
+		if($product->min_charge>0) {
+			$hint .= trans('orders.form.original_charge_min' , $translate_parameters).'. ' ;
+		}
+		if($product->max_charge>0) {
+			$hint .= trans('orders.form.original_charge_max' , $translate_parameters).'. ' ;
+		}
+
+		return $hint ;
+
+	}
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Stators
@@ -107,9 +167,32 @@ class Order extends Model
 	*/
 	public function irr($type = 'sell' , $date='NOW')
 	{
-		return Currency::irr($this->charge , $this->currency , $type , $date);
+		return Currency::irr($this->initial_charge , $this->currency , $type , $date);
 	}
 
+	public function canEdit()
+	{
+		if($this->status>3 or $this->trashed() or !Auth::user()->can('orders.edit'))
+			return false ;
+		else
+			return true ;
+	}
+
+	public function canProcess()
+	{
+		if($this->trashed() or !Auth::user()->can('orders.process'))
+			return false ;
+		else
+			return true ;
+	}
+
+	public function canSave()
+	{
+		if(!$this->id or $this->canEdit())
+			return true ;
+		else
+			return false ;
+	}
 
 
 	/*

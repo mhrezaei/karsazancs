@@ -1,9 +1,15 @@
+String.prototype.replaceAll = function(search, replacement) {
+	var target = this;
+	return target.replace(new RegExp(search, 'g'), replacement);
+};
+
 $(document).ready(function () {
 	forms_listener();
 });
 
+
 ///////////////////////////////////////////////
-// form vlidate for:
+// form validation for:
 //    1) required    : .form-required
 //    2) number      : .form-number
 //    3) persian     : .form-persian
@@ -51,6 +57,14 @@ function forms_listener() {
 		$(this).on("keyup", function () {
 			forms_autoDirection(this);
 		});
+	});
+
+	$(".form-numberFormat").each(function () {
+		$(this).removeClass('form-numberFormat');
+		$(this).on("keyup", function () {
+			forms_numberFormat(this);
+		});
+		forms_numberFormat(this);
 	});
 
 //	$(".form-datepicker").each(function () {
@@ -815,7 +829,14 @@ function forms_markError(selector, handle) {
 		$(selector).parent().parent().removeClass('has-error').removeClass('has-success');
 	else //including "error"
 		$(selector).parent().parent().addClass("has-error").removeClass('has-success');//.effect	("shake"	,{times:2},100);
+}
 
+function forms_numberFormat(selector)
+{
+	var string = $(selector).val() ;
+	string = forms_digit_en(string.replaceAll(',',''));
+
+	$(selector).val( forms_digit_fa(addCommas(string)) );
 }
 
 function forms_autoDirection(selector) {
@@ -901,6 +922,8 @@ function forms_digit_en(perDigit) {
 }
 
 function forms_digit_fa(enDigit) {
+	return forms_pd(enDigit);
+
 	var newValue = "";
 	for (var i = 0; i < enDigit.length; i++) {
 		var ch = enDigit.charCodeAt(i);
@@ -965,164 +988,16 @@ function forms_national_code(code) {
 	}
 }
 
-function forms_date_picker(selector) {
-	var $elementID = $(selector).attr('id');
-	var $elementSelector = '#' + $elementID;
-	var $elementName = $($elementSelector).attr('name') ;
-	var $format = $(selector).attr('format');
-	var $time = $(selector).attr('time');
-	var $val = $(selector).attr('value');
 
-	var extra = $($elementSelector).parent().html() + '<input type="hidden" id="' + $elementID + 'Extra" name="' + $elementName + '">';
-	$($elementSelector).parent().append().html(extra);
+function addCommas(nStr) {
 
-
-	if (!$time) {
-		$format = "YYYY/MM/DD";
-		$time = false;
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
 	}
-	else {
-		$format = "YYYY/MM/DD ـ H:mm:ss";
-		$time = true;
-	}
-
-		$('#' + $elementID).pDatepicker({
-			persianDigit: true,
-			viewMode: false,
-			position: "auto",
-			autoClose: true,
-			format: $format,
-			observer: true,
-			altField: '#' + $elementID + 'Extra',
-			inputDelay: 800,
-			formatter: function (unixDate) {
-				var self = this;
-				var pdate = new persianDate(unixDate);
-				pdate.formatPersian = false;
-				return pdate.format(self.format);
-			},
-			altFormat: 'unix',
-			altFieldFormatter: function (unixDate) {
-				var self = this;
-				var thisAltFormat = self.altFormat.toLowerCase();
-				if (thisAltFormat === "gregorian" | thisAltFormat === "g") {
-					return new Date(unixDate) / 1000;
-				}
-				if (thisAltFormat === "unix" | thisAltFormat === "u") {
-					return unixDate / 1000;
-				} else {
-					return new persianDate(unixDate).format(self.altFormat) / 1000;
-				}
-			},
-			onShow: function (self) {},
-			onHide: function (self) {},
-			onSelect: function (unixDate) {
-				return this;
-			},
-			navigator: {
-				enabled: true,
-				text: {
-					btnNextText: "<",
-					btnPrevText: ">"
-				},
-				onNext: function (navigator) {
-					//log("navigator next ");
-				},
-				onPrev: function (navigator) {
-					//log("navigator prev ");
-				},
-				onSwitch: function (state) {
-					// console.log("navigator switch ");
-				}
-			},
-			toolbox: {
-				enabled: true,
-
-				text: {
-					btnToday: "امروز"
-				},
-				onToday: function (toolbox) {
-					//log("toolbox today btn");
-				}
-			},
-			timePicker: {
-				enabled: $time,
-				showSeconds: true,
-				showMeridian: true,
-				scrollEnabled: true
-			},
-			dayPicker: {
-				enabled: true,
-				scrollEnabled: true,
-				titleFormat: 'YYYY MMMM',
-				titleFormatter: function (year, month) {
-					if (this.datepicker.persianDigit == false) {
-						window.formatPersian = false;
-					}
-					var titleStr = new persianDate([year, month]).format(this.titleFormat);
-					window.formatPersian = true;
-					return titleStr
-				},
-				onSelect: function (selectedDayUnix) {
-					//log("daypicker month day :" + selectedDayUnix);
-				}
-
-			},
-			monthPicker: {
-				enabled: true,
-				scrollEnabled: true,
-				titleFormat: 'YYYY',
-				titleFormatter: function (unix) {
-					if (this.datepicker.persianDigit == false) {
-						window.formatPersian = false;
-					}
-					var titleStr = new persianDate(unix).format(this.titleFormat);
-					window.formatPersian = true;
-					return titleStr
-
-				},
-				onSelect: function (monthIndex) {
-					//log("daypicker select day :" + monthIndex);
-				}
-			},
-			yearPicker: {
-				enabled: true,
-				scrollEnabled: true,
-				titleFormat: 'YYYY',
-				titleFormatter: function (year) {
-					var remaining = parseInt(year / 12) * 12;
-					return remaining + "-" + (remaining + 11);
-				},
-				onSelect: function (monthIndex) {
-					//log("daypicker select Year :" + monthIndex);
-				}
-			},
-			onlyTimePicker: false,
-			justSelectOnDate: true,
-			minDate: false,
-			maxDate: false
-		});
-
-	if ($val.length > 6) {
-		$val = $val.split('/');
-		var $year = $val[0];
-		var $month = $val[1];
-		var $day = parseInt($val[2]);
-		var $hours = 12;
-		var $minutes = 12;
-		var $seconds = 12;
-		if ($time)
-		{
-			$hours = $val[3];
-			$minutes = $val[4];
-			$seconds = $val[5];
-		}
-		$('#' + $elementID).pDatepicker("setDate", [$year, $month, $day, $hours, $minutes, $seconds]);
-	}
-	if($val.length < 1 )
-	{
-		$($elementSelector).val('') ;
-		$('#' + $elementID + 'Extra').val('');
-	}
-
+	return x1 + x2;
 }

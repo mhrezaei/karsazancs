@@ -2,12 +2,26 @@
 return [
 		'new' => 'ثبت سفارش جدید' ,
 		'edit' => 'ویرایش سفارش' ,
+		'view' => "مشاهده‌ی سفارش",
 		'of' => 'سفارش‌های',
 		'all' => 'همه مشتریان' ,
 
+		'form' => [
+			'original_card_price' => "بهای اصلی محصول: :price ریال",
+			'feedback_order_next_step' => "سایر اطلاعات فرم را تکمیل نمایید.",
+			'original_charge' => 'شارژ پیش‌فرض: :charge :currency' ,
+			'original_charge_min' => "حداقل: :min_charge :currency" ,
+			'original_charge_max' => "حداکثر: :max_charge :currency",
+			'original_charge_no_limit' => "شارژ را بدون محدودیت از پیش تعیین‌شده، به :currency وارد کنید.",
+			'inventory_hint' => "موجودی انبار: :inventory عدد",
+			'inventory_alarm' => "موجودی این محصول در انبار، کمتر از حداقل تعیین‌شده است!",
+			'original_invoice_hint' => "حاصل جمع بهای کارت و معادل ریالی شارژ اولیه با نرخ روز ارز (:rate) به ریال",
+			'invoice_hint' => 'صورتحساب نهایی را می‌توانید با مبلغ دلخواه به ریال وارد نمایید.' ,
+		],
+
 		'status' => [
 				'unprocessed' => 'جدید',
-				'processing' => 'در دست بررسی' ,
+				'processing' => 'در دست اقدام' ,
 				'under_payment' => 'منتظر پرداخت',
 				'paid' => 'پرداخت‌شده',
 				'unpaid' => 'منتظر پرداخت' ,

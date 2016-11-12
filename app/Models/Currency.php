@@ -48,8 +48,8 @@ class Currency extends Model
 	{
 		if($request_date == 'NOW')
 			$request_date = Carbon::now()->toDateTimeString() ;
-		else
-			$request_date = Carbon::createFromFormat('Y/m/d H:i' , $request_date)->toDateTimeString() ;
+//		else
+//			$request_date = Carbon::createFromFormat('Y/m/d H:i' , $request_date)->toDateTimeString() ;
 
 		$rate = $this->rates()->where('effective_date' , '<=' , $request_date)->orderBy('effective_date' , 'desc')->orderBy('created_at' , 'desc')->first();
 		if(!$rate)

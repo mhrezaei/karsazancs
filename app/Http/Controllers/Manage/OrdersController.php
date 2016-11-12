@@ -167,28 +167,68 @@ class OrdersController extends Controller
 		return view($view , compact('model' , 'opt' , 'page' , 'model_data')) ;
 	}
 
+	public function create($product_id = 0 , $user_id = 0)
+	{
+		$product_id = 1 ; $user_id = 6 ; //@TODO: Remove this line!
+
+		//Permission...
+		if(!Auth::user()->can('orders.create'))
+			return view('errors.m403');
+
+		//Model...
+		$model = new Order() ;
+		$model->user_id = $user_id ;
+		$model->product_id = $product_id ;
+
+		//User...
+		if($user_id>0) {
+			$customer = User::selector()->where('id' , $user_id)->first() ;
+			if(!$customer)
+				return view('errors.m410');
+			$model->user_id = $customer->id ;
+		}
+
+		//Product...
+		if($product_id>0) {
+			$product = Product::selector('all')->where('id' , $product_id)->first() ;
+			if(!$product)
+				return view('errors.m410');
+			$model->product_id = $product->id ;
+		}
+		else {
+			$products = Product::selector('all')->orderBy('title')->get() ;
+		}
+
+		//Full Form...
+		if($product_id * $user_id > 0) {
+			$model->initial_charge = $model->product->initial_charge ;
+			$model->status = 2 ;
+			$model->rate = $model->product->currency()->loadCurrentRates()->price_to_sell ;
+		}
+
+		//View...
+		if($product_id * $user_id == 0)
+			return view('manage.orders.create' , compact('model' , 'products'));
+		else
+			return view('manage.orders.editor-new' , compact('model')); ;
+	}
 
 	public function editor($model_id=0)
 	{
 		//Model...
-		if($model_id) {
-			$permit = 'orders' ;
-			$model = Order::withTrashed()->find($model_id);
-			$model->spreadMeta();
-		}
-		else {
-			$permit = 'orders.create' ;
-			$model = new Order();
-			$model->currency = 'EUR' ;
-		}
+		$model = Order::withTrashed()->find($model_id);
+		if(!$model)
+			return view('errors.m410');
 
-		//Permission...
-		if(!Auth::user()->can($permit))
-			return view('errors.403');
+		$model->spreadMeta();
+		if($model->canEdit())
+			$model->rate = $model->product->currency()->loadCurrentRates()->price_to_sell ;
+		else
+			$model->rate = $model->product->currency()->loadRates($model->created_at)->price_to_sell ;
+
 
 		//View...
-		return view( 'manage.orders.editor', compact('model'));
-
+		return view( 'manage.orders.editor-new', compact('model'));
 	}
 
 	/*
@@ -197,6 +237,87 @@ class OrdersController extends Controller
 	|--------------------------------------------------------------------------
 	|
 	*/
+
+	public function createAction(Requests\Manage\OrderCreateRequest $request)
+	{
+
+		//Customer...
+		if($request->user_id > 0) {
+			$customer = User::selector()->where('id' , $request->user_id)->first() ;
+		}
+		else {
+			$customer = User::selector()->where('code_melli' , $request->code_melli)->first() ;
+
+		}
+		if(!$customer)
+			return $this->jsonFeedback(trans('forms.feed.user_not_found'));
+
+		//Product...
+		$product = Product::selector('all')->where('id' , $request->product_id)->first() ;
+		if(!$product)
+			return $this->jsonFeedback(trans('forms.feed.thing_not_found' , ['thing' => trans('validation.attributes.product'),]));
+
+		//Feedback...
+		return $this->jsonFeedback([
+			'ok' => 1 ,
+			'callback' => 'masterModal("'. url('manage/orders/create/'.$product->id.'/'.$customer->id) . '") ',
+			'message' => trans('orders.form.feedback_order_next_step') ,
+			'redirectTime' => "1",
+		]);
+
+
+
+	}
+
+	public function saveNew(Requests\Manage\OrderNewRequest $request)
+	{
+		$data = $request ;
+
+		//Validation
+		if($request->id) {
+			$model = Order::find($request->id);
+			if(!$model)
+				return $this->jsonFeedback(trans('validation.http.Error410'));
+			if(!$model->canEdit())
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
+		else
+			$model = new Order() ;
+
+		$customer = User::selector()->where('id' , $request->user_id)->first() ;
+		if(!$customer)
+			return $this->jsonFeedback(trans('forms.feed.user_not_found'));
+
+		$product = Product::selector('all')->where('id' , $request->product_id)->first() ;
+		if(!$product)
+			return $this->jsonFeedback(trans('forms.feed.thing_not_found' , ['thing' => trans('validation.attributes.product'),]));
+		$product->spreadMeta() ;
+
+		if($request->initial_charge < $product->min_charge)
+			return $this->jsonFeedback(trans('products.form.error_charge_less_than_min'));
+
+		if($request->initial_charge > $product->max_charge and $product->max_charge > 0)
+			return $this->jsonFeedback(trans('products.form.error_charge_more_than_max'));
+
+
+		//Other Data... ()
+		if(!$model->canProcess() or !$request->status or $request->status>3)
+			if($model->id)
+				unset($data['status']);
+			else
+				$data['status'] = 1 ;
+
+		$data['rate'] = $model->product->currency()->loadCurrentRates()->price_to_sell ;
+		$data['original_invoice'] = round($data['rate'] * $request->initial_charge);
+
+		//Save...
+		$saved = Order::store($data);
+
+		//Feedback...
+		return $this->jsonAjaxSaveFeedback($saved , [
+				'success_callback' => "rowUpdate('tblOrders','$request->id')",
+		]);
+	}
 
 	public function save(Requests\Manage\OrderSaveRequest $request)
 	{

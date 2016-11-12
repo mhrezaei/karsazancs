@@ -4,5 +4,8 @@
 		name="{{$name}}" value="{{$value or ''}}"
 		class="form-control {{$class or ''}}"
 		placeholder="{{$placeholder or ''}}"
+		onkeyup="{{$on_change or ''}}"
+		onblur="{{$on_blur or ''}}"
+		onfocus="{{$on_focus or ''}}"
 		{{$extra or ''}}
 >

@@ -16,6 +16,11 @@ trait TahaModelTrait
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function getIdAttribute($value)
+	{
+		return intval($value);
+	}
+
 	public function className()
 	{
 		$full_name = self::class ;

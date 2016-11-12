@@ -147,7 +147,7 @@ class Product extends Model
 	*/
 	public function irr($type = 'sell' , $date='NOW')
 	{
-		return Currency::irr($this->charge , $this->currency , $type , $date);
+		return Currency::irr($this->initial_charge , $this->currency , $type , $date);
 	}
 
 
@@ -193,7 +193,7 @@ class Product extends Model
 			return $return ;
 	}
 
-	public static function selector($criteria='all')
+	public static function selector($criteria='available')
 	{
 		$table = self::where('id' , '>' , 0) ;
 
