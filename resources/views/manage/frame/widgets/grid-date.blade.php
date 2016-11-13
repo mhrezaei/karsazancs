@@ -11,6 +11,7 @@ $class = " f".$size." text-$color $class" ;
 	<div class="">
 		<a id="{{ $id = "spnDate".rand(10000,99999) }}" href="javascript:void(0)"  class="{{$class}}" onclick="$('#{{$id}} text').toggle()">
 			<i class="fa fa-{{$icon or 'clock-o'}} mhl5"></i>
+			{{$text or '' }}
 			<text class="{{ $default=='fixed'?'noDisplay':'' }} {{$class or ''}}">
 				@pd(jDate::forge($date)->ago())
 			</text>

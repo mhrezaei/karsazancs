@@ -97,12 +97,25 @@ class User extends Authenticatable
 		return AppServiceProvider::pd($value);
 	}
 
+	public function getStatusIconAttribute()
+	{
+		if($this->trashed())
+			return 'times' ;
+		else
+			return 'check' ;
+
+		//@TODO: More Accurate Please!
+	}
+
+
 	public function getStatusColorAttribute()
 	{
 		if($this->trashed())
 			return 'danger' ;
 		else
 			return 'success' ;
+
+		//@TODO: More Accurate Please!
 	}
 
 	public function getStatusTextAttribute()
@@ -111,6 +124,8 @@ class User extends Authenticatable
 			return trans('people.status.blocked') ;
 		else
 			return trans('people.status.active') ;
+
+		//@TODO: More Accurate Please!
 
 	}
 
