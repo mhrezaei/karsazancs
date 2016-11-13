@@ -9,6 +9,7 @@ use App\Models\Setting;
 use App\Models\Ticket;
 use App\Models\User;
 use Carbon\Carbon;
+use Hashids\Hashids;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -18,11 +19,17 @@ class TestController extends Controller
 {
 	public function index()
 	{
-		$order = Order::find(1);
+		$hash = new Hashids('' , 5) ;
+		$h = new Hashids('',4);
 
-		echo view('templates.say' , ['array'=>Order::$meta_fields]);
+		$a['original'] = '1' ;
+		$a['encoded'] = $hash->encode($a['original']);
+		$a['decoded'] = $h->decode($a['encoded']);
 
-		dd(in_array('rate' ,Order::$meta_fields));
+		echo view('templates.say' , ['array'=>$a]);
+//		return view('templates.say' , ['array'=>$a['decoded']]);
+
+//		dd($a['decoded'][0]);
 
 	}
 

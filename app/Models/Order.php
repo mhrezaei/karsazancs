@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Providers\AppServiceProvider;
 use App\Traits\TahaModelTrait;
+use Hashids\Hashids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -56,9 +57,9 @@ class Order extends Model
 		if(!$this->id)
 			return trans('orders.new');
 		elseif($this->canEdit())
-			return trans('orders.edit');
+			return trans('orders.edit')."($this->hashid)";
 		else
-			return trans('orders.view');
+			return trans('orders.view')."($this->hashid)";
 	}
 
 	public function getStatusCodeAttribute()
@@ -162,6 +163,14 @@ class Order extends Model
 		return $hint ;
 
 	}
+
+	public function getHashidAttribute()
+	{
+		$hash = new Hashids('' , 5);
+
+		return $hash->encode($this->id);
+	}
+
 
 
 	/*

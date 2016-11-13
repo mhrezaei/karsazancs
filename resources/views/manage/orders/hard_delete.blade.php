@@ -17,7 +17,7 @@
 
 	@include('forms.input' , [
 		'label' => trans('orders.type.title'),
-		'value' => trans("orders.type.".$model->type).' ('.$model->product->title.')' ,
+		'value' => trans("orders.type.".$model->type).' ('.$model->hashid.')' ,
 		'disabled' => "1",
 	])
 	@include('forms.input' , [

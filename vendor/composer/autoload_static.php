@@ -35,6 +35,10 @@ class ComposerStaticInit58b63f34b0b65a080298d2c3968a3922
         array (
             'Webmozart\\Assert\\' => 17,
         ),
+        'V' => 
+        array (
+            'Vinkla\\Hashids\\' => 15,
+        ),
         'U' => 
         array (
             'Unisharp\\Laravelfilemanager\\' => 28,
@@ -84,9 +88,14 @@ class ComposerStaticInit58b63f34b0b65a080298d2c3968a3922
             'Intervention\\Image\\' => 19,
             'Illuminate\\' => 11,
         ),
+        'H' => 
+        array (
+            'Hashids\\' => 8,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
+            'GrahamCampbell\\Manager\\' => 23,
         ),
         'F' => 
         array (
@@ -129,6 +138,10 @@ class ComposerStaticInit58b63f34b0b65a080298d2c3968a3922
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
+        ),
+        'Vinkla\\Hashids\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vinkla/hashids/src',
         ),
         'Unisharp\\Laravelfilemanager\\' => 
         array (
@@ -242,9 +255,17 @@ class ComposerStaticInit58b63f34b0b65a080298d2c3968a3922
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate',
         ),
+        'Hashids\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hashids/hashids/lib/Hashids',
+        ),
         'GuzzleHttp\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'GrahamCampbell\\Manager\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/graham-campbell/manager/src',
         ),
         'Faker\\' => 
         array (
@@ -339,24 +360,64 @@ class ComposerStaticInit58b63f34b0b65a080298d2c3968a3922
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\Front\\FrontController' => __DIR__ . '/../..' . '/app/Http/Controllers/Front/FrontController.php',
+        'App\\Http\\Controllers\\Manage\\AdminsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Manage/AdminsController.php',
+        'App\\Http\\Controllers\\Manage\\CurrenciesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Manage/CurrenciesController.php',
+        'App\\Http\\Controllers\\Manage\\CustomersController' => __DIR__ . '/../..' . '/app/Http/Controllers/Manage/CustomersController.php',
         'App\\Http\\Controllers\\Manage\\ManageController' => __DIR__ . '/../..' . '/app/Http/Controllers/Manage/ManageController.php',
+        'App\\Http\\Controllers\\Manage\\OrdersController' => __DIR__ . '/../..' . '/app/Http/Controllers/Manage/OrdersController.php',
+        'App\\Http\\Controllers\\Manage\\PaymentsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Manage/PaymentsController.php',
+        'App\\Http\\Controllers\\Manage\\PostsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Manage/PostsController.php',
+        'App\\Http\\Controllers\\Manage\\ProductsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Manage/ProductsController.php',
+        'App\\Http\\Controllers\\Manage\\SettingsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Manage/SettingsController.php',
+        'App\\Http\\Controllers\\Manage\\TicketsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Manage/TicketsController.php',
         'App\\Http\\Controllers\\Manage\\UpstreamController' => __DIR__ . '/../..' . '/app/Http/Controllers/Manage/UpstreamController.php',
         'App\\Http\\Controllers\\TestController' => __DIR__ . '/../..' . '/app/Http/Controllers/TestController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
-        'App\\Http\\Middleware\\AdminMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/AdminMiddleware.php',
+        'App\\Http\\Middleware\\CanMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/CanMiddleware.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Http\\Requests\\Manage\\AccountSaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/AccountSaveRequest.php',
+        'App\\Http\\Requests\\Manage\\AdminChangePasswordRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/AdminChangePasswordRequest.php',
+        'App\\Http\\Requests\\Manage\\AdminSaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/AdminSaveRequest.php',
+        'App\\Http\\Requests\\Manage\\AdminSearchRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/AdminSearchRequest.php',
         'App\\Http\\Requests\\Manage\\BranchSaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/BranchSaveRequest.php',
         'App\\Http\\Requests\\Manage\\CategorySaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/CategorySaveRequest.php',
         'App\\Http\\Requests\\Manage\\CitySaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/CitySaveRequest.php',
+        'App\\Http\\Requests\\Manage\\CurrencyQueryRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/CurrencyQueryRequest.php',
+        'App\\Http\\Requests\\Manage\\CurrencySaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/CurrencySaveRequest.php',
+        'App\\Http\\Requests\\Manage\\CurrencySearchRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/CurrencySearchRequest.php',
+        'App\\Http\\Requests\\Manage\\CurrencyUpdateRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/CurrencyUpdateRequest.php',
+        'App\\Http\\Requests\\Manage\\CustomerChangePasswordRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/CustomerChangePasswordRequest.php',
+        'App\\Http\\Requests\\Manage\\CustomerSaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/CustomerSaveRequest.php',
+        'App\\Http\\Requests\\Manage\\CustomerSearchRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/CustomerSearchRequest.php',
+        'App\\Http\\Requests\\Manage\\DepartmentSaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/DepartmentSaveRequest.php',
         'App\\Http\\Requests\\Manage\\DownstreamSaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/DownstreamSaveRequest.php',
+        'App\\Http\\Requests\\Manage\\OrderCreateRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/OrderCreateRequest.php',
+        'App\\Http\\Requests\\Manage\\OrderNewRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/OrderNewRequest.php',
+        'App\\Http\\Requests\\Manage\\PostSaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/PostSaveRequest.php',
+        'App\\Http\\Requests\\Manage\\PostSearchRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/PostSearchRequest.php',
+        'App\\Http\\Requests\\Manage\\ProductSaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/ProductSaveRequest.php',
+        'App\\Http\\Requests\\Manage\\ProductSearchRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/ProductSearchRequest.php',
         'App\\Http\\Requests\\Manage\\ProvinceSaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/ProvinceSaveRequest.php',
+        'App\\Http\\Requests\\Manage\\SettingSaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/SettingSaveRequest.php',
+        'App\\Http\\Requests\\Manage\\TicketReplyRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/TicketReplyRequest.php',
+        'App\\Http\\Requests\\Manage\\TicketSaveRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Manage/TicketSaveRequest.php',
         'App\\Http\\Requests\\Request' => __DIR__ . '/../..' . '/app/Http/Requests/Request.php',
+        'App\\Models\\Account' => __DIR__ . '/../..' . '/app/Models/Account.php',
+        'App\\Models\\Card' => __DIR__ . '/../..' . '/app/Models/Card.php',
         'App\\Models\\Category' => __DIR__ . '/../..' . '/app/Models/Category.php',
+        'App\\Models\\Currency' => __DIR__ . '/../..' . '/app/Models/Currency.php',
+        'App\\Models\\Department' => __DIR__ . '/../..' . '/app/Models/Department.php',
+        'App\\Models\\Order' => __DIR__ . '/../..' . '/app/Models/Order.php',
+        'App\\Models\\Payment' => __DIR__ . '/../..' . '/app/Models/Payment.php',
         'App\\Models\\Post' => __DIR__ . '/../..' . '/app/Models/Post.php',
+        'App\\Models\\Product' => __DIR__ . '/../..' . '/app/Models/Product.php',
+        'App\\Models\\Rate' => __DIR__ . '/../..' . '/app/Models/Rate.php',
         'App\\Models\\Setting' => __DIR__ . '/../..' . '/app/Models/Setting.php',
         'App\\Models\\State' => __DIR__ . '/../..' . '/app/Models/State.php',
+        'App\\Models\\Talk' => __DIR__ . '/../..' . '/app/Models/Talk.php',
+        'App\\Models\\Ticket' => __DIR__ . '/../..' . '/app/Models/Ticket.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
@@ -911,6 +972,9 @@ class ComposerStaticInit58b63f34b0b65a080298d2c3968a3922
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',
         'File_Iterator_Facade' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Facade.php',
         'File_Iterator_Factory' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Factory.php',
+        'GrahamCampbell\\Manager\\AbstractManager' => __DIR__ . '/..' . '/graham-campbell/manager/src/AbstractManager.php',
+        'GrahamCampbell\\Manager\\ConnectorInterface' => __DIR__ . '/..' . '/graham-campbell/manager/src/ConnectorInterface.php',
+        'GrahamCampbell\\Manager\\ManagerInterface' => __DIR__ . '/..' . '/graham-campbell/manager/src/ManagerInterface.php',
         'GuzzleHttp\\Psr7\\AppendStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/AppendStream.php',
         'GuzzleHttp\\Psr7\\BufferStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/BufferStream.php',
         'GuzzleHttp\\Psr7\\CachingStream' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/CachingStream.php',
@@ -999,6 +1063,8 @@ class ComposerStaticInit58b63f34b0b65a080298d2c3968a3922
         'Hamcrest\\Type\\IsString' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Type/IsString.php',
         'Hamcrest\\Util' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Util.php',
         'Hamcrest\\Xml\\HasXPath' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Xml/HasXPath.php',
+        'Hashids\\HashGenerator' => __DIR__ . '/..' . '/hashids/hashids/lib/Hashids/HashGenerator.php',
+        'Hashids\\Hashids' => __DIR__ . '/..' . '/hashids/hashids/lib/Hashids/Hashids.php',
         'Illuminate\\Auth\\Access\\AuthorizationException' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Access/AuthorizationException.php',
         'Illuminate\\Auth\\Access\\Gate' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Access/Gate.php',
         'Illuminate\\Auth\\Access\\HandlesAuthorization' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Auth/Access/HandlesAuthorization.php',
@@ -3391,6 +3457,10 @@ class ComposerStaticInit58b63f34b0b65a080298d2c3968a3922
         'Unisharp\\Laravelfilemanager\\controllers\\ResizeController' => __DIR__ . '/..' . '/unisharp/laravel-filemanager/src/controllers/ResizeController.php',
         'Unisharp\\Laravelfilemanager\\controllers\\UploadController' => __DIR__ . '/..' . '/unisharp/laravel-filemanager/src/controllers/UploadController.php',
         'Unisharp\\Laravelfilemanager\\middleware\\MultiUser' => __DIR__ . '/..' . '/unisharp/laravel-filemanager/src/middleware/MultiUser.php',
+        'Vinkla\\Hashids\\Facades\\Hashids' => __DIR__ . '/..' . '/vinkla/hashids/src/Facades/Hashids.php',
+        'Vinkla\\Hashids\\HashidsFactory' => __DIR__ . '/..' . '/vinkla/hashids/src/HashidsFactory.php',
+        'Vinkla\\Hashids\\HashidsManager' => __DIR__ . '/..' . '/vinkla/hashids/src/HashidsManager.php',
+        'Vinkla\\Hashids\\HashidsServiceProvider' => __DIR__ . '/..' . '/vinkla/hashids/src/HashidsServiceProvider.php',
         'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
         'XdgBaseDir\\Xdg' => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src/Xdg.php',
         'phpDocumentor\\Reflection\\DocBlock' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlock.php',

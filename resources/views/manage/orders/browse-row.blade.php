@@ -11,13 +11,14 @@
 
 <td>
 	@include('manage.frame.widgets.grid-text' , [
-		'text' => trans("orders.type.".$model->type).' ('.$model->product->title.')',
+		'text' => trans("orders.type.".$model->type).' ('.$model->hashid.')',
 		'link' => "modal:manage/orders/-id-/edit",
 	])
 	@include('manage.frame.widgets.grid-tiny' , [
 		'icon' => 'credit-card',
 		'text' => $model->product->title.': '.number_format($model->product->initial_charge).' '.$model->product->currency_title,
 		'link' => "modal:manage/products/$model->product_id/edit/1",
+		'color' => "success",
 	])
 	@include('manage.frame.widgets.grid-tiny' , [
 		'icon' => 'user',
