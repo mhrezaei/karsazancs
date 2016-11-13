@@ -40,6 +40,11 @@ class Order extends Model
 		return $this->belongsTo('App\Models\Card');
 	}
 
+	public function payments()
+	{
+		return $this->hasMany('App\Models\Payment');
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors & Mutators

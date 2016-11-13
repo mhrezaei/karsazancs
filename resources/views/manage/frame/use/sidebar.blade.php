@@ -11,6 +11,13 @@
 	'permission' => 'orders.browse' ,
 ])
 
+@include('manage.frame.widgets.sidebar-link' , [
+	'icon' => 'cc-mastercard',
+	'caption' => trans('manage.modules.payments'),
+	'link' => 'payments' ,
+	'permission' => 'payments.browse' ,
+])
+
 @include('manage.frame.widgets.sidebar-link' , Taha::sidebarTicketsMenu())
 
 

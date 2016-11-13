@@ -9,6 +9,6 @@
 		["browse/$master/archive" , trans('orders.status.archive')],
 		["browse/$master/all" , trans('orders.status.all')],
 		["browse/$master/bin" , trans('orders.status.bin') , 'orders.bin'],
-		['search' , trans('forms.button.search')],
+//		['search' , trans('forms.button.search')],
 	] ,
 ])

@@ -30,11 +30,11 @@
 
 			@endif
 
-			@include('manage.frame.widgets.toolbar_search_inline' , [
-				'target' => url('manage/orders/search/') ,
-				'label' => trans('forms.button.search') ,
-				'value' => isset($keyword)? $keyword : '' ,
-			])
+			{{--@include('manage.frame.widgets.toolbar_search_inline' , [--}}
+				{{--'target' => url('manage/orders/search/') ,--}}
+				{{--'label' => trans('forms.button.search') ,--}}
+				{{--'value' => isset($keyword)? $keyword : '' ,--}}
+			{{--])--}}
 		</div>
 	</div>
 

@@ -73,6 +73,11 @@ class User extends Authenticatable
 		return $this->hasMany('App\Models\Login') ;
 	}
 
+	public function payments()
+	{
+		return $this->hasMany('App\Models\Payment') ;
+	}
+
 	public function lastLogin()
 	{
 		return $this->logins()->orderBy('created_at' , 'desc')->first() ;
