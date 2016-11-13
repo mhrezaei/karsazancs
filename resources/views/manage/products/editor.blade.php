@@ -1,17 +1,11 @@
 @include('templates.modal.start' , [
 	'partial' => true ,
-	'form_url' => url('manage/products/save/'),
-	'modal_title' => $model->id? trans('products.edit')  : trans('products.new'),
+	'form_url' => $model->canSave() ? url('manage/products/save/') : '' ,
+	'modal_title' => $model->admin_editor_title,
 	'no_validation' => 1 ,
 ])
-<div class='modal-body'>
 
-	@if(!$savable)
-		@include('forms.note' , [
-			'text' => trans('products.form.not_editable') ,
-			'shape' => 'warning' ,
-		])
-	@endif
+<div class='modal-body'>
 
 	@include('forms.hiddens' , ['fields' => [
 		['id' , $model->id ],
@@ -21,6 +15,7 @@
 		'name' => 'title',
 		'value' => $model ,
 		'class' => 'form-required form-default' ,
+		'disabled' => !$model->canSave()? true : false,
 	])
 
 	@include('forms.select' , [
@@ -31,7 +26,7 @@
 		'value_field' => 'slug' ,
 		'value' => $model ,
 		'search' => true ,
-		''
+		'disabled' => !$model->canSave()? true : false,
 	])
 
 
@@ -39,12 +34,14 @@
 		'name' => 'description',
 		'value' => $model ,
 		'class' => 'form-required' ,
+		'disabled' => !$model->canSave()? true : false,
 	])
 
 	@include('manage.frame.widgets.input-photo' , [
 		'name' => 'image' ,
 		'value' => $model->image ,
-		'class' => 'form-required' ,
+		'required' => "true",
+		'disabled' => !$model->canSave()? true : false,
 	])
 
 	@include('forms.sep')
@@ -52,19 +49,22 @@
 	@include('forms.input' , [
 		'name' => 'card_price',
 		'value' => $model ,
-		'class' => 'form-required' ,
+		'class' => 'form-required form-numberFormat' ,
 		'hint' => trans('products.form.card_price_hint') ,
+		'disabled' => !$model->canSave()? true : false,
 	])
 	@include('forms.input' , [
 		'name' => 'max_purchasable',
 		'value' => $model ,
 		'hint' => trans('products.form.max_purchasable_hint') ,
+		'disabled' => !$model->canSave()? true : false,
 	])
 
 	@include('forms.input' , [
 		'name' => 'expiry',
 		'value' => $model ,
 		'hint' => trans('products.form.expiry_hint') ,
+		'disabled' => !$model->canSave()? true : false,
 	])
 
 
@@ -73,6 +73,7 @@
 		'self_label' => trans('products.form.extensible_hint'),
 		'name' => 'is_extensible' ,
 		'value' => $model ,
+		'disabled' => !$model->canSave()? true : false,
 	])
 
 	@include('forms.sep' , [
@@ -83,17 +84,23 @@
 		'name' => 'initial_charge',
 		'value' => $model ,
 		'hint' => trans('products.form.charge_hint') ,
+		'disabled' => !$model->canSave()? true : false,
+		'class' => "form-numberFormat",
 	])
 
 	@include('forms.input' , [
 		'name' => 'min_charge',
 		'value' => $model ,
 		'hint' => trans('products.form.zero_for_no_limitation') ,
+		'disabled' => !$model->canSave()? true : false,
+		'class' => "form-numberFormat",
 	])
 	@include('forms.input' , [
 		'name' => 'max_charge',
 		'value' => $model ,
 		'hint' => trans('products.form.zero_for_no_limitation') ,
+		'disabled' => !$model->canSave()? true : false,
+		'class' => "form-numberFormat",
 	])
 
 	@include('forms.check-form' , [
@@ -101,6 +108,7 @@
 		'self_label' => trans('products.form.rechargeable_hint'),
 		'name' => 'is_rechargeable' ,
 		'value' => $model ,
+		'disabled' => !$model->canSave()? true : false,
 	])
 
 
@@ -111,40 +119,46 @@
 	@include('forms.input' , [
 		'name' => 'inventory',
 		'value' => $model ,
-		'class' => 'form-required' ,
+		'class' => 'form-required form-numberFormat' ,
+		'disabled' => !$model->canSave()? true : false,
 	])
 	@include('forms.input' , [
 		'name' => 'inventory_low_alarm',
 		'value' => $model ,
 		'hint' => trans('products.form.inventory_alarm_hint') ,
+		'disabled' => !$model->canSave()? true : false,
+		'class' => "form-numberFormat",
 	])
 	@include('forms.input' , [
 		'name' => 'inventory_low_action',
 		'value' => $model ,
 		'hint' => trans('products.form.inventory_action_hint') ,
+		'disabled' => !$model->canSave()? true : false,
+		'class' => "form-numberFormat",
 	])
-
-
 
 	@include('forms.group-start')
 
+	@if($model->canSave())
 		@include('forms.button' , [
-			'label' => trans('forms.button.save'),
-			'shape' => 'success',
-			'type' => 'submit' ,
-			'extra' => $savable ? '' : 'disabled' ,
+				'label' => $model->admin_editor_title,
+				'shape' => 'success',
+				'type' => 'submit' ,
+				'value' => 'save' ,
 		])
-		@include('forms.button' , [
-			'label' => trans('forms.button.cancel'),
-			'shape' => 'link',
-			'link' => '$(".modal").modal("hide")',
-		])
+	@endif
+
+	@include('forms.button' , [
+		'label' =>  $model->canSave() ? trans('forms.button.cancel') : trans('forms.button.ok') ,
+		'shape' => $model->canSave() ? 'link' : 'primary',
+		'link' => '$(".modal").modal("hide")',
+	])
 
 	@include('forms.group-end')
 
-
-
-	@include('forms.feed')
+	@if($model->canSave())
+		@include('forms.feed')
+	@endif
 
 </div>
 @include('templates.modal.end')

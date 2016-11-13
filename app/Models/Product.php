@@ -58,18 +58,16 @@ class Product extends Model
 		return $this->currency()->title ;
 	}
 
-	public function getMinChargePersianAttribute()
+	public function getAdminEditorTitleAttribute()
 	{
-		return AppServiceProvider::pd(number_format($this->min_charge)) ;
+		if(!$this->id)
+			return trans('products.new');
+		elseif($this->canEdit())
+			return trans('products.edit');
+		else
+			return trans('products.view');
 	}
-	public function getMaxChargePersianAttribute()
-	{
-		return AppServiceProvider::pd(number_format($this->max_charge)) ;
-	}
-	public function getInventoryPersianAttribute()
-	{
-		return AppServiceProvider::pd(number_format($this->inventory)) ;
-	}
+
 	public function getStatusAttribute()
 	{
 		if($this->inventory==0)
@@ -154,12 +152,18 @@ class Product extends Model
 	public function canSave()
 	{
 		if($this->id)
-			$permit = 'edit' ;
+			return $this->canEdit() ;
 		else
-			$permit = 'create' ;
+			return Auth::user()->can("products.create") ;
 
-		return Auth::user()->can("products.$permit") ;
+	}
 
+	public function canEdit()
+	{
+		if($this->locked or $this->trashed() or !Auth::user()->can('orders.edit'))
+			return false ;
+		else
+			return true ;
 	}
 
 	public function canPurchase($user = 'auto')

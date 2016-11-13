@@ -10,7 +10,7 @@
 	|
 	--}}
 	<div class="panel panel-toolbar row w100">
-		<div class="col-md-4"><p class="title">{{$page[1][1] or ''}}</p></div>
+		<div class="col-md-4"><p class="title">{{$page[0][1] or ''}} ({{$page[1][1] or ''}})</p></div>
 		<div class="col-md-8 tools">
 
 			@if(Auth::user()->can('products.create'))

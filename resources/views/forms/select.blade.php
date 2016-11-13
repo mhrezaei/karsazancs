@@ -1,4 +1,7 @@
 <?php
+if(!isset($extra))
+	$extra = '' ;
+
 if(isset($class) && str_contains($class, 'form-required')) {
 	$required = true;
 }
@@ -6,6 +9,10 @@ if(isset($class) && str_contains($class, 'form-required')) {
 if(isset($value) and is_object($value))
 	$value = $value->$name ;
 
+if(isset($disabled) and $disabled) {
+	$required = false ;
+	$extra .= ' disabled ' ;
+}
 ?>
 
 <div class="form-group">

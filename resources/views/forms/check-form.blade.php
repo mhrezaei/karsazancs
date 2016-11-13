@@ -1,5 +1,4 @@
-@include('forms.group-start' , [
-])
+@include('forms.group-start')
 
 @include('forms.check' , [
 	'label' => $self_label

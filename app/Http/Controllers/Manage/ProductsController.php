@@ -74,12 +74,12 @@ class ProductsController extends Controller
 	public function update($model_id)
 	{
 		$model = Product::withTrashed()->find($model_id);
-		$selector = true ;
+		$counter = true ;
 		if(!$model)
 			return view('errors.m410');
 
 		$model->spreadMeta() ;
-		return view('manage.products.browse-row' , compact('model' , 'selector'));
+		return view('manage.products.browse-row' , compact('model' , 'counter'));
 	}
 
 	public function modalActions($item_id , $view_file)
@@ -140,13 +140,14 @@ class ProductsController extends Controller
 	}
 
 
-	public function editor($model_id=0 , $savable=1)
+	public function editor($model_id=0 , $locked=0)
 	{
 		//Model...
 		if($model_id) {
 			$permit = 'products' ;
 			$model = Product::withTrashed()->find($model_id);
 			$model->spreadMeta();
+			$model->locked = $locked ;
 		}
 		else {
 			$permit = 'products.create' ;
@@ -158,11 +159,8 @@ class ProductsController extends Controller
 		if(!Auth::user()->can($permit))
 			return view('errors.403');
 
-		if(!$model->canSave())
-			$savable = false ;
-
 		//View...
-		return view( 'manage.products.editor', compact('model' , 'savable'));
+		return view( 'manage.products.editor', compact('model'));
 
 	}
 

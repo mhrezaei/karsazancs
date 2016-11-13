@@ -17,7 +17,7 @@
 	@include('manage.frame.widgets.grid-tiny' , [
 		'icon' => 'credit-card',
 		'text' => $model->product->title.': '.number_format($model->product->initial_charge).' '.$model->product->currency_title,
-		'link' => "modal:manage/products/$model->product_id/edit/0",
+		'link' => "modal:manage/products/$model->product_id/edit/1",
 	])
 	@include('manage.frame.widgets.grid-tiny' , [
 		'icon' => 'user',

@@ -58,6 +58,11 @@ div.mce-fullscreen {
   background-color: #333333;
 }
 
+.form-control[disabled] {
+  background-color: white;
+  color: #878787;
+}
+
 /*
 |--------------------------------------------------------------------------
 | General Things
