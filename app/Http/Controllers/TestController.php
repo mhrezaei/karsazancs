@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\models\Branch;
+use App\Models\Order;
 use App\Models\Post;
 use App\Models\Setting;
 use App\Models\Ticket;
@@ -17,10 +18,12 @@ class TestController extends Controller
 {
 	public function index()
 	{
-		$user = Auth::user() ;
+		$order = Order::find(1);
 
+		echo view('templates.say' , ['array'=>Order::$meta_fields]);
 
-		dd(get_class($user))  ;
+		dd(in_array('rate' ,Order::$meta_fields));
+
 	}
 
 }

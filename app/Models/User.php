@@ -41,6 +41,10 @@ class User extends Authenticatable
 		'published_at' => 'datetime' ,
 	];
 
+	public static $meta_fields = [ 'register_no' , 'register_date' , 'register_firm' , 'economy_code' , 'gazette_url' ,
+			'code_id' , 'name_father' , 'birth_date' , 'marital' , 'education' , 'job' , 'address' , 'postal_code' , 'telephone' ];
+
+
 
 	/*
 	|--------------------------------------------------------------------------

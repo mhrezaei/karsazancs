@@ -72,7 +72,7 @@ trait TahaModelTrait
 	public static function storeMeta($data)
 	{
 		//Bypass...
-		if(!self::hasColumn('meta'))
+		if(!self::hasColumn('meta') or !isset(self::$meta_fields))
 			return $data ;
 
 		//Current Data...
@@ -89,7 +89,7 @@ trait TahaModelTrait
 
 		//Process...
 		foreach($data as $field => $value) {
-			if(self::hasColumn($field))
+			if(self::hasColumn($field) or (!in_array($field,self::$meta_fields) and self::$meta_fields[0]!='dynamic'))
 				continue ;
 
 			$meta[$field] = $value ;

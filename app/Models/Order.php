@@ -17,7 +17,7 @@ class Order extends Model
 		'meta' => 'array' ,
 	];
 	public static $valid_types = ['new' , 'extend' , 'recharge' , 'refund' , 'block'] ;
-	protected static $meta_fields = ['initial_charge' , 'rate' ];
+	public static $meta_fields = ['initial_charge' , 'rate' ];
 
 	/*
 	|--------------------------------------------------------------------------

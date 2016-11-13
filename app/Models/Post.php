@@ -33,7 +33,9 @@ class Post extends Model
 		'published_at' => 'datetime' ,
 	];
 
+	public static $meta_fields = ['dynamic'];
 
+	//@TODO: Some unknown problem with publish_date
 	/*
 	|--------------------------------------------------------------------------
 	| Relations

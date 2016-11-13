@@ -20,6 +20,8 @@ class Currency extends Model
 	protected $rates_loaded = false ;
 	protected $current_rates = [0,0] ;
 
+	public static $meta_fields = [ ];
+
 	/*
 	|--------------------------------------------------------------------------
 	| Relations

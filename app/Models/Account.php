@@ -15,6 +15,9 @@ class Account extends Model
 			'meta' => 'array' ,
 	];
 
+	public static $meta_fields = ['branch_name' , 'branch_code' ];
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Relations

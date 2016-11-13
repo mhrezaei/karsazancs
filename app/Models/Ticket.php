@@ -16,6 +16,7 @@ class Ticket extends Model
 	public static $departments = ['online' , 'sale' , ''] ;
 	protected static $search_fields = ['subject'] ;
 	protected $guarded = ['id'] ;
+	public static $meta_fields = ['score' ];
 
 	protected $casts = [
 		'meta' => 'array' ,

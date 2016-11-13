@@ -11,6 +11,7 @@ class Talk extends Model
 {
 	use TahaModelTrait;
 	protected $guarded = ['id'] ;
+	public static $meta_fields = [ ];
 
 
 	/*
