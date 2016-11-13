@@ -131,20 +131,6 @@ class OrdersController extends Controller
 		$permit = 'orders' ;
 
 		switch($view_file) {
-			case 'query' :
-				break ;
-
-			case 'history' :
-				$page = $this->page ;
-				$page[1] = [null , $model->title , ' '] ;
-				$page[2] = [null , trans('orders.price_history')] ;
-				$model_data = $model->rates()->orderBy('effective_date' , 'desc')->paginate(50) ;
-				break ;
-
-			case 'update' :
-				$permit .= '.process' ;
-				break ;
-
 			case 'soft_delete' :
 				$permit .= '.delete' ;
 				break;
@@ -164,7 +150,7 @@ class OrdersController extends Controller
 		//View...
 		$view = "manage.orders.$view_file" ;
 		if(!View::exists($view)) return view('errors.m404');
-		return view($view , compact('model' , 'opt' , 'page' , 'model_data')) ;
+		return view($view , compact('model' , 'opt')) ;
 	}
 
 	public function create($product_id = 0 , $user_id = 0)

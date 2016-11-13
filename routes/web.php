@@ -136,12 +136,12 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 		Route::get('/' , 'OrdersController@browse') ;
 		Route::get('/browse/{master?}/{request_tab?}' , 'OrdersController@browse') ;
 		Route::get('/create/{product_id?}/{customer_id?}' , 'OrdersController@create') ;
-		Route::get('/search' , 'OrdersController@search');
+//		Route::get('/search' , 'OrdersController@search');
 		Route::get('/{product_id}/edit' , 'OrdersController@editor');
 		Route::get('/{user_id}/{modal_action}' , 'OrdersController@modalActions');
 
 		Route::group(['prefix'=>'save'] , function() {
-			Route::post('/' , 'OrdersController@save');
+//			Route::post('/' , 'OrdersController@save');
 			Route::post('/create' , 'OrdersController@createAction');
 			Route::post('/new' , 'OrdersController@saveNew');
 			Route::post('/soft_delete' , 'OrdersController@soft_delete');

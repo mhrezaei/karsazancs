@@ -47,7 +47,7 @@
 	--}}
 
 	@include('manage.frame.widgets.grid' , [
-		'table_id' => 'tblProducts' ,
+		'table_id' => 'tblOrders' ,
 		'row_view' => 'manage.orders.browse-row' ,
 		'selector' => false ,
 		'counter' => true ,
