@@ -169,8 +169,6 @@ class OrdersController extends Controller
 
 	public function create($product_id = 0 , $user_id = 0)
 	{
-		$product_id = 1 ; $user_id = 6 ; //@TODO: Remove this line!
-
 		//Permission...
 		if(!Auth::user()->can('orders.create'))
 			return view('errors.m403');

@@ -25,6 +25,7 @@ return [
 				'processing' => 'در دست اقدام' ,
 				'under_payment' => 'منتظر پرداخت',
 				'paid' => 'پرداخت‌شده',
+				'partly_paid' => "منتظر تکمیل پرداخت",
 				'unpaid' => 'منتظر پرداخت' ,
 				'partially_paid' => 'پرداخت ناقص',
 				'dispatched' => 'ارسال‌شده',

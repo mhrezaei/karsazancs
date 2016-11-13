@@ -29,26 +29,6 @@
 	])
 </td>
 
-{{--
-|--------------------------------------------------------------------------
-| Product Name
-|--------------------------------------------------------------------------
-|
---}}
-@if(0)
-<td>
-	@include('manage.frame.widgets.grid-text' , [
-		'text' => $model->product->title ,
-		'link' => "modal:manage/products/$model->product_id/edit/0",
-	])
-	@include("manage.frame.widgets.grid-tiny" , [
-		'text' => trans('validation.attributes.card_price').': '.number_format($model->product->card_price).' '.trans('currencies.IRR'),
-	])
-	@include("manage.frame.widgets.grid-tiny" , [
-		'text' => trans('validation.attributes.charge').': '.number_format($model->charge).' '.$model->product->currency_title.' = '.number_format($model->irr()).' '.trans('currencies.IRR'),
-	])
-</td>
-@endif
 
 {{--
 |--------------------------------------------------------------------------
@@ -58,7 +38,21 @@
 --}}
 
 <td>
-	...
+	@include("manage.frame.widgets.grid-text" , [
+		'text' => trans('currencies.rials' , ['amount' => number_format($model->amount_invoiced),]),
+	])
+	@include("manage.frame.widgets.grid-tiny" , [
+		'text' => trans('orders.status.paid'),
+		'color' => "success",
+		'icon' => "check",
+		'condition' => $model->amount_invoiced == $model->amount_paid,
+	])
+	@include("manage.frame.widgets.grid-tiny" , [
+		'text' => $model->amount_paid>0? trans('orders.status.partly_paid') : trans('orders.status.unpaid'),
+		'color' => "danger",
+		'icon' => "exclamation-triangle",
+		'condition' => $model->amount_invoiced != $model->amount_paid,
+	])
 </td>
 
 {{--

@@ -199,7 +199,7 @@ class Order extends Model
 		if($this->status > 3)
 			return false ;
 
-		return 12 ;
+		return false ;
 		//@TODO: Complete this when Cards are ready.
 		return $this->product->canPurchase($this->user) ;
 	}
