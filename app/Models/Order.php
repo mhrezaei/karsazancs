@@ -57,9 +57,9 @@ class Order extends Model
 		if(!$this->id)
 			return trans('orders.new');
 		elseif($this->canEdit())
-			return trans('orders.edit')."($this->hashid)";
+			return trans('orders.edit') ;
 		else
-			return trans('orders.view')."($this->hashid)";
+			return trans('orders.view') ;
 	}
 
 	public function getStatusCodeAttribute()
@@ -83,11 +83,11 @@ class Order extends Model
 			case 'unprocessed' :
 				return 'danger' ;
 			case 'processing' :
-				return 'warning' ;
+				return 'orange' ;
 			case 'under_payment' :
 				return 'warning' ;
 			case 'dispatched' :
-				return 'warning' ;
+				return 'violet' ;
 			case 'archive' :
 				return 'success' ;
 		}
@@ -163,15 +163,6 @@ class Order extends Model
 		return $hint ;
 
 	}
-
-	public function getHashidAttribute()
-	{
-		$hash = new Hashids('' , 5);
-
-		return $hash->encode($this->id);
-	}
-
-
 
 	/*
 	|--------------------------------------------------------------------------
@@ -289,6 +280,18 @@ class Order extends Model
 				return $table->whereNull('id');
 		}
 
+	}
+
+
+	/*
+	|--------------------------------------------------------------------------
+	| Helpers
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function generateSlug()
+	{
+		return substr(time(),4) . rand(10,99) ;
 	}
 
 }

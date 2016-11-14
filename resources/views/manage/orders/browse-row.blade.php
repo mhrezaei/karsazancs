@@ -11,19 +11,22 @@
 
 <td>
 	@include('manage.frame.widgets.grid-text' , [
-		'text' => trans("orders.type.".$model->type).' ('.$model->hashid.')',
+		'text' => $model->slug.' ('.trans("orders.type.".$model->type).')',
 		'link' => "modal:manage/orders/-id-/edit",
-	])
-	@include('manage.frame.widgets.grid-tiny' , [
-		'icon' => 'credit-card',
-		'text' => $model->product->title.': '.number_format($model->product->initial_charge).' '.$model->product->currency_title,
-		'link' => "modal:manage/products/$model->product_id/edit/1",
-		'color' => "success",
 	])
 	@include('manage.frame.widgets.grid-tiny' , [
 		'icon' => 'user',
 		'text' => $model->user->full_name,
 		'link' => "modal:manage/customers/$model->user_id/view",
+		'color' => "violet",
+		'size' => "10",
+	])
+	@include('manage.frame.widgets.grid-tiny' , [
+		'icon' => 'credit-card',
+		'text' => $model->product->title.': '.number_format($model->product->initial_charge).' '.$model->product->currency_title,
+		'link' => "modal:manage/products/$model->product_id/edit/1",
+		'color' => "violet",
+		'size' => "9",
 	])
 	@include('manage.frame.widgets.grid-date' , [
 		'date' => $model->created_at,

@@ -153,7 +153,7 @@ class OrdersController extends Controller
 		return view($view , compact('model' , 'opt')) ;
 	}
 
-	public function create($product_id = 0 , $user_id = 0)
+	public function create($product_id = 1 , $user_id = 6)
 	{
 		//Permission...
 		if(!Auth::user()->can('orders.create'))
@@ -271,7 +271,8 @@ class OrdersController extends Controller
 		else {
 			$model = new Order();
 			$model->product_id = $request->product_id ;
-			$model->type = 'new' ;
+			$data['type'] = 'new' ;
+			$data['slug'] = $model->generateSlug() ;
 		}
 
 		$customer = User::selector()->where('id' , $request->user_id)->first() ;

@@ -290,5 +290,6 @@ function orderEditor()
 	$invoice = forms_digit_fa(addCommas(Math.round($rate * $amount))) ;
 
 	$('input[name=original_invoice]').val( $invoice ) ;
+	$('input[name=amount_invoiced]').val( $invoice ) ;
 	$('input[name=invoice]').val( $invoice ) ;
 }

@@ -1,8 +1,10 @@
-<div>
+@if(!isset($condition) or $condition)
 	<div>
-		<hr class="separator {{$class or ''}}">
-		@if(isset($label))
-			<div class="text-grey" style="margin-bottom: 20px">{{$label}}...</div>
-		@endif
+		<div>
+			<hr class="separator {{$class or ''}}">
+			@if(isset($label))
+				<div class="text-grey" style="margin-bottom: 20px">{{$label}}...</div>
+			@endif
+		</div>
 	</div>
-</div>
+@endif

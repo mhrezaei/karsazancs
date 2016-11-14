@@ -1,4 +1,5 @@
-<input
+@if(!isset($condition) or $condition)
+	<input
 		type="{{$type or 'text'}}"
 		id="{{$id or ''}}"
 		name="{{$name}}" value="{{$value or ''}}"
@@ -8,4 +9,5 @@
 		onblur="{{$on_blur or ''}}"
 		onfocus="{{$on_focus or ''}}"
 		{{$extra or ''}}
->
+	>
+@endif

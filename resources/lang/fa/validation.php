@@ -372,6 +372,7 @@ return [
 			'amount_invoiced' => "مبلغ صورتحساب",
 			'expiry' => 'انقضاء',
 			'customer_id' => "مشتری",
+			'tracking_no' => "کد رهگیری",
 		],
 
 		"http" => [

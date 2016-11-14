@@ -4,6 +4,7 @@
 	'modal_title' => $model->admin_editor_title,
 	'no_validation' => 1 ,
 ])
+
 <div class='modal-body'>
 	@include("forms.hiddens" , [ 'fields' => [
 		['id' , $model->id] ,
@@ -11,6 +12,13 @@
 		['product_id' , $model->product_id],
 		['rate' , $model->rate],
 	]])
+	
+	@include("forms.input" , [
+		'name' => "tracking_no",
+		'value' => $model->slug ,
+		'disabled' => true,
+		'condition' => $model->id,
+	])
 
 	@include('forms.input' , [
 		'name' => 'customer_id',
@@ -18,15 +26,14 @@
 		'extra' => 'disabled' ,
 	])
 
-	@if($total_owned = $model->checkPurchaseLimit())
-		@include("forms.note" , [
-			'shape' => "danger",
-			'text' => trans('orders.form.purchase_limit_alarm' , [
-				'total' => $total_owned,
-				'limit' => $model->product->max_purchasable,
-			]),
-		])
-	@endif
+	@include("forms.note" , [
+		'condition' => $total_owned = $model->checkPurchaseLimit(),
+		'shape' => "danger",
+		'text' => trans('orders.form.purchase_limit_alarm' , [
+			'total' => $total_owned,
+			'limit' => $model->product->max_purchasable,
+		]),
+	])
 
 	@include('forms.input' , [
 		'name' => 'product_id',
@@ -36,12 +43,11 @@
 		'hint_style' => "color:black;font-weight:200",
 	])
 
-	@if($model->canEdit() and $model->product->inventory < $model->product->inventory_low_action)
-		@include("forms.note" , [
-			'shape' => "danger",
-			'text' => trans('orders.form.inventory_alarm'),
-		])
-	@endif
+	@include("forms.note" , [
+		'condition' => $model->canEdit() and $model->product->inventory < $model->product->inventory_low_action,
+		'shape' => "danger",
+		'text' => trans('orders.form.inventory_alarm'),
+	])
 
 	@include("forms.input" , [
 		'name' => "card_price",
@@ -53,20 +59,19 @@
 	{{------------------------------------------------------------------------------------------}}
 	@include('forms.sep')
 
-	@if($model->canProcess())
-		@include('forms.select' , [
-			'name' => 'status' ,
-			'class' => 'form-required',
-			'options' => [
-				['1' , trans('orders.status.unprocessed')],
-				['2' , trans('orders.status.processing')],
-				['3' , trans('orders.status.under_payment')],
-			] ,
-			'caption_field' => '1' ,
-			'value_field' => "0",
-			'value' => $model,
-		])
-	@endif
+	@include('forms.select' , [
+		'name' => 'status' ,
+		'class' => 'form-required',
+		'options' => [
+			['1' , trans('orders.status.unprocessed')],
+			['2' , trans('orders.status.processing')],
+			['3' , trans('orders.status.under_payment')],
+		] ,
+		'caption_field' => '1' ,
+		'value_field' => "0",
+		'value' => $model,
+		'condition' => $model->canProcess(),
+	])
 
 	@include("forms.input" , [
 		'name' => "initial_charge",
@@ -100,14 +105,13 @@
 
 	@include('forms.group-start')
 
-	@if($model->canSave())
-		@include('forms.button' , [
-				'label' => $model->admin_editor_title,
-				'shape' => 'success',
-				'type' => 'submit' ,
-				'value' => 'save' ,
-		])
-	@endif
+	@include('forms.button' , [
+		'condition' => $model->canSave(),
+		'label' => $model->admin_editor_title,
+		'shape' => 'success',
+		'type' => 'submit' ,
+		'value' => 'save' ,
+	])
 
 	@include('forms.button' , [
 		'label' =>  $model->canSave() ? trans('forms.button.cancel') : trans('forms.button.ok') ,
@@ -117,9 +121,9 @@
 
 	@include('forms.group-end')
 
-	@if($model->canSave())
-		@include('forms.feed')
-	@endif
+	@include('forms.feed' , [
+		'condition' => $model->canSave(),
+	])
 
 </div>
 @include('templates.modal.end')
