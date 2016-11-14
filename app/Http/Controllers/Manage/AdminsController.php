@@ -62,6 +62,17 @@ class AdminsController extends Controller
 
 	}
 
+	public function update($model_id)
+	{
+		$model = User::withTrashed()->find($model_id);
+		$selector = true ;
+		if(!$model)
+			return view('errors.m410');
+		else
+			return view('manage.admins.browse-row' , compact('model' , 'selector'));
+	}
+
+
 	public function modalActions($user_id , $view_file)
 	{
 
@@ -151,7 +162,7 @@ class AdminsController extends Controller
 		$saved = User::store($data);
 
 		return $this->jsonAjaxSaveFeedback($saved , [
-			'success_refresh' => true ,
+				'success_callback' => "rowUpdate('tblAdmins','$request->id')",
 		]);
 
 	}
@@ -193,7 +204,7 @@ class AdminsController extends Controller
 		$done = $model->delete();
 
 		return $this->jsonAjaxSaveFeedback($done , [
-			'success_refresh' => true ,
+				'success_callback' => "rowHide('tblAdmins','$request->id')",
 		]);
 
 	}
@@ -202,7 +213,7 @@ class AdminsController extends Controller
 	{
 		$done = User::withTrashed()->where('id', $request->id)->restore();
 		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
+				'success_callback' => "rowHide('tblAdmins','$request->id')",
 		]);
 
 
@@ -224,7 +235,7 @@ class AdminsController extends Controller
 		$done = $model->forceDelete() ;
 
 		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
+				'success_callback' => "rowHide('tblAdmins','$request->id')",
 		]);
 
 	}

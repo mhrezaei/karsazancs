@@ -6,6 +6,7 @@ use App\Providers\AppServiceProvider;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\jDate;
 
 class Ticket extends Model
@@ -15,6 +16,7 @@ class Ticket extends Model
 	public static $departments = ['online' , 'sale' , ''] ;
 	protected static $search_fields = ['subject'] ;
 	protected $guarded = ['id'] ;
+	public static $meta_fields = ['score' ];
 
 	protected $casts = [
 		'meta' => 'array' ,
@@ -133,9 +135,21 @@ class Ticket extends Model
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function getDepartmentEnAttribute($value)
+	{
+		return encrypt($this->department);
+	}
+
+	public function getTextAttribute($value)
+	{
+		$talk = Talk::firstOrNew(['ticket_id' => $this->id]) ;
+		return $talk->text ;
+	}
+
+
 	public function getTextLimitedAttribute()
 	{
-		return str_limit($this->text , 100);
+		return str_limit($this->text , 60);
 	}
 
 	public function getArchivedAttribute()
@@ -166,21 +180,31 @@ class Ticket extends Model
 		return $this->feedback_codes[$this->feedback][1];
 	}
 
-	public function getFirstRepliedByAttribute($value)
+	public function getFirstReplyAttribute($value)
 	{
-		$user = User::findAdmin($this->meta('first_replied_by'));
-		if(!$user)
-			return new User();
-		else
-			return $user ;
-	}
-
-	public function getFirstRepliedAtFormattedAttribute()
-	{
-		return AppServiceProvider::pd(jDate::forge($this->meta('first_replied_at'))->format('j F Y [H:m]')) ;
+		return $this->talks()->where('is_admin' , '1')->first() ;
 	}
 
 
+	public function canEdit()
+	{
+		return Auth::user()->can('tickets-'.$this->department.'.edit') ;
+	}
+
+	public function canReply()
+	{
+		return !$this->trashed() and Auth::user()->can('tickets-'.$this->department.'.process');
+	}
+
+	public function canDelete()
+	{
+		return !$this->trashed() and Auth::user()->can('tickets-'.$this->department.'.delete');
+	}
+
+	public function canBin()
+	{
+		return $this->trashed() and Auth::user()->can('tickets-'.$this->department.'.bin');
+	}
 
 	/*
 	|--------------------------------------------------------------------------

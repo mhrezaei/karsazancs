@@ -22,20 +22,23 @@ else {
 }
 ?>
 
-@include('forms.input' , [
-    'name' => $name,
-    'label' => isset($label)? $label : trans("validation.attributes.$name"),
-    'value' => $j_value,
-    'id' => $id,
-    'type' => isset($type)? $type : '',
-    'class' => $class,
-    'placeholder' =>  isset($placeholder)? $placeholder : '',
-    'hint' => isset($hint)? $hint : '',
-    'extra' => isset($extra)? $extra : '',
-])
-@include('forms.hidden' , [
-	'name' => $name ,
-	'id' => $id."_extra" ,
-	'value' => $value ,
-	'class' => '' ,
-])
+@if(!isset($condition) or $condition)
+
+	@include('forms.input' , [
+		'name' => $name,
+		'label' => isset($label)? $label : trans("validation.attributes.$name"),
+		'value' => $j_value,
+		'id' => $id,
+		'type' => isset($type)? $type : '',
+		'class' => $class,
+		'placeholder' =>  isset($placeholder)? $placeholder : '',
+		'hint' => isset($hint)? $hint : '',
+		'extra' => isset($extra)? $extra : '',
+	])
+	@include('forms.hidden' , [
+		'name' => $name ,
+		'id' => $id."_extra" ,
+		'value' => $value ,
+		'class' => '' ,
+	])
+@endif

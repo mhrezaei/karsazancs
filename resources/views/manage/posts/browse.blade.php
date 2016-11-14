@@ -45,7 +45,9 @@
 	|
 	--}}
 
-	@include('manage.frame.widgets.grid-start' , [
+	@include('manage.frame.widgets.grid' , [
+		'table_id' => 'tblPosts' ,
+		'row_view' => 'manage.posts.browse-row' ,
 		'selector' => true ,
 		'headings' => [
 			trans('validation.attributes.title') ,
@@ -54,19 +56,4 @@
 			trans('forms.button.action'),
 		],
 	])
-
-	@foreach($model_data as $model)
-		<tr id="tr-{{$model->id}}" class="grid" ondblclick="gridSelector('tr','{{$model->id}}')">
-			@include('manage.posts.browse-row' , ['model'=>$model , 'module'=>$branch->slug])
-		</tr>
-	@endforeach
-
-	@include('manage.frame.widgets.browse-null')
-
-	@include('manage.frame.widgets.grid-end')
-
-	<div class="paginate">
-		{!! $model_data->render() !!}
-	</div>
-
 @endsection

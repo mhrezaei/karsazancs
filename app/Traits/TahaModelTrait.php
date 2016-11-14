@@ -16,6 +16,11 @@ trait TahaModelTrait
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function getIdAttribute($value)
+	{
+		return intval($value);
+	}
+
 	public function className()
 	{
 		$full_name = self::class ;
@@ -67,10 +72,12 @@ trait TahaModelTrait
 	public static function storeMeta($data)
 	{
 		//Bypass...
-		if(!self::hasColumn('meta'))
+		if(!self::hasColumn('meta') or !isset(self::$meta_fields))
 			return $data ;
 
 		//Current Data...
+		if(!isset($data['id']))
+			$data['id'] = 0 ;
 		$model = self::find($data['id']) ;
 		if($model)
 			if(is_array($model->meta))
@@ -82,7 +89,7 @@ trait TahaModelTrait
 
 		//Process...
 		foreach($data as $field => $value) {
-			if(self::hasColumn($field))
+			if(self::hasColumn($field) or (!in_array($field,self::$meta_fields) and self::$meta_fields[0]!='dynamic'))
 				continue ;
 
 			$meta[$field] = $value ;

@@ -49,6 +49,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	| Posts
 	*/
 	Route::group(['prefix'=>'posts'] , function() {
+		Route::get('/update/{item_id}' , 'PostsController@update');
 		Route::get('/{branch_slug}' , 'PostsController@browse') ;
 		Route::get('{branch_slug}/edit/{post_id}' , 'PostsController@editor');
 		Route::get('{branch_slug}/searched' , 'PostsController@searchResult');
@@ -65,15 +66,19 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	| Tickets
 	*/
 	Route::group(['prefix'=>'tickets'] , function() {
-		Route::get('/{department_slug}' , 'TicketsController@browse') ;
+		Route::get('/update/{item_id}' , 'TicketsController@update');
 		Route::get('{department_slug}/create/{user_id?}' , 'TicketsController@create');
-		Route::get('{department_slug}/edit/{ticket_id}' , 'TicketsController@editor');
-		Route::get('{department_slug}/searched' , 'TicketsController@searchResult');
-		Route::get('{department_slug}/search' , 'TicketsController@searchPanel');
+		Route::get('/edit/{ticket_id}/{action?}' , 'TicketsController@modalActions');
+		Route::get('/{department_slug}' , 'TicketsController@browse') ;
+//		Route::get('{department_slug}/searched' , 'TicketsController@searchResult');
+//		Route::get('{department_slug}/search' , 'TicketsController@searchPanel');
 		Route::get('/{department_slug}/{request_tab}' , 'TicketsController@browse') ;
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'TicketsController@save');
+			Route::post('/reply' , 'TicketsController@saveReply');
+			Route::post('/soft_delete' , 'TicketsController@soft_delete');
+			Route::post('/undelete' , 'TicketsController@undelete');
 			Route::post('/hard_delete' , 'TicketsController@hard_delete');
 		});
 	});
@@ -83,6 +88,8 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	*/
 
 	Route::group(['prefix'=>'customers', 'middleware' => 'can:customers'] , function() {
+		Route::get('/update/{item_id}' , 'CustomersController@update');
+		Route::get('/updateAccount/{item_id}' , 'CustomersController@updateAccount');
 		Route::get('/' , 'CustomersController@browse') ;
 		Route::get('/browse/{request_tab?}' , 'CustomersController@browse') ;
 		Route::get('/create/' , 'CustomersController@editor') ;
@@ -101,9 +108,75 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	});
 
 	/*
+	| Products
+	*/
+	Route::group(['prefix'=>'products', 'middleware' => 'can:products'] , function() {
+		Route::get('/update/{item_id}' , 'ProductsController@update');
+		Route::get('/' , 'ProductsController@browse') ;
+		Route::get('/browse/{request_tab?}' , 'ProductsController@browse') ;
+		Route::get('/create/' , 'ProductsController@editor') ;
+		Route::get('/search' , 'ProductsController@search');
+		Route::get('/{user_id}/edit/{savable?}' , 'ProductsController@editor');
+		Route::get('/{user_id}/{modal_action}' , 'ProductsController@modalActions');
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/' , 'ProductsController@save');
+			Route::post('/soft_delete' , 'ProductsController@soft_delete');
+			Route::post('/undelete' , 'ProductsController@undelete');
+			Route::post('/hard_delete' , 'ProductsController@hard_delete');
+		});
+	});
+
+
+	/*
+	| Orders
+	*/
+	Route::group(['prefix'=>'orders', 'middleware' => 'can:orders'] , function() {
+		Route::get('/update/{item_id}' , 'OrdersController@update');
+		Route::get('/' , 'OrdersController@browse') ;
+		Route::get('/browse/{master?}/{request_tab?}' , 'OrdersController@browse') ;
+		Route::get('/create/{product_id?}/{customer_id?}' , 'OrdersController@create') ;
+//		Route::get('/search' , 'OrdersController@search');
+		Route::get('/{product_id}/edit' , 'OrdersController@editor');
+		Route::get('/{user_id}/{modal_action}' , 'OrdersController@modalActions');
+
+		Route::group(['prefix'=>'save'] , function() {
+//			Route::post('/' , 'OrdersController@save');
+			Route::post('/create' , 'OrdersController@createAction');
+			Route::post('/new' , 'OrdersController@saveNew');
+			Route::post('/soft_delete' , 'OrdersController@soft_delete');
+			Route::post('/undelete' , 'OrdersController@undelete');
+			Route::post('/hard_delete' , 'OrdersController@hard_delete');
+		});
+	});
+
+	/*
+	| Payments
+	*/
+	Route::group(['prefix'=>'payments', 'middleware' => 'can:payments'] , function() {
+		Route::get('/update/{item_id}' , 'PaymentsController@update');
+		Route::get('/' , 'PaymentsController@browse') ;
+		Route::get('/browse/{master?}/{request_tab?}' , 'PaymentsController@browse') ;
+		Route::get('/create/{product_id?}/{customer_id?}' , 'PaymentsController@create') ;
+		Route::get('/search' , 'PaymentsController@search');
+		Route::get('/{product_id}/edit' , 'PaymentsController@editor');
+		Route::get('/{user_id}/{modal_action}' , 'PaymentsController@modalActions');
+
+		Route::group(['prefix'=>'save'] , function() {
+			Route::post('/' , 'PaymentsController@save');
+			Route::post('/create' , 'PaymentsController@createAction');
+			Route::post('/new' , 'PaymentsController@saveNew');
+			Route::post('/soft_delete' , 'PaymentsController@soft_delete');
+			Route::post('/undelete' , 'PaymentsController@undelete');
+			Route::post('/hard_delete' , 'PaymentsController@hard_delete');
+		});
+	});
+
+	/*
 	| Currencies
 	*/
 	Route::group(['prefix'=>'currencies', 'middleware' => 'can:currencies'] , function() {
+		Route::get('/update/{item_id}' , 'CurrenciesController@update');
 		Route::get('/' , 'CurrenciesController@browse') ;
 		Route::get('/browse/{request_tab?}' , 'CurrenciesController@browse') ;
 		Route::get('/create/' , 'CurrenciesController@editor') ;
@@ -113,7 +186,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'CurrenciesController@save');
-			Route::post('/update' , 'CurrenciesController@update');
+			Route::post('/update' , 'CurrenciesController@updateRate');
 			Route::post('/query' , 'CurrenciesController@query');
 			Route::post('/soft_delete' , 'CurrenciesController@soft_delete');
 			Route::post('/undelete' , 'CurrenciesController@undelete');
@@ -126,6 +199,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 	*/
 
 	Route::group(['prefix'=>'admins', 'middleware' => 'can:super'] , function() {
+		Route::get('/update/{item_id}' , 'AdminsController@update');
 		Route::get('/' , 'AdminsController@browse') ;
 		Route::get('/browse/{request_tab?}' , 'AdminsController@browse') ;
 		Route::get('/create/' , 'AdminsController@editor') ;

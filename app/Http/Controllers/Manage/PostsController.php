@@ -181,6 +181,17 @@ class PostsController extends Controller
 
 	}
 
+	public function update($model_id)
+	{
+		$model = Post::withTrashed()->find($model_id);
+		$selector = true ;
+		if(!$model)
+			return view('errors.m410');
+		else
+			return view('manage.posts.browse-row' , compact('model' , 'selector' , 'module'));
+	}
+
+
 	public function modalActions($post_id, $view_file)
 	{
 		if($post_id==0)

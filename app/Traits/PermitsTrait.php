@@ -9,10 +9,11 @@ trait PermitsTrait
 	protected static $available_modules = [
 		'customers' => ['create' , 'view' , 'activation' , 'send' , 'edit' , 'report' , 'delete' , 'bin'] ,
 		'products' => ['create' , 'edit' , 'delete' , 'bin'],
-		'orders' => ['browse' , 'process' , 'edit' , 'report'  ,  'delete' , 'bin' ] ,
+		'orders' => ['create'  , 'browse' , 'process' , 'edit' , 'report'  ,  'delete' , 'bin' ] ,
 		'currencies' => ['create' , 'edit' , 'process' , 'delete' , 'bin'],
 		'tickets' => ['browse' , 'process' , 'edit' , 'report' , 'delete' , 'bin'] ,
 		'posts' => ['create','edit','publish','report','delete','bin'] ,
+		'payments' => [ 'browse' , 'process' , 'create' , 'edit' , 'report' , 'delete' , 'bin'],
 	];
 
 	protected static $available_permits = [

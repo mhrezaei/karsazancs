@@ -41,6 +41,10 @@ class User extends Authenticatable
 		'published_at' => 'datetime' ,
 	];
 
+	public static $meta_fields = [ 'register_no' , 'register_date' , 'register_firm' , 'economy_code' , 'gazette_url' ,
+			'code_id' , 'name_father' , 'birth_date' , 'marital' , 'education' , 'job' , 'address' , 'postal_code' , 'telephone' ];
+
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -67,6 +71,11 @@ class User extends Authenticatable
 	public function logins()
 	{
 		return $this->hasMany('App\Models\Login') ;
+	}
+
+	public function payments()
+	{
+		return $this->hasMany('App\Models\Payment') ;
 	}
 
 	public function lastLogin()
@@ -97,12 +106,25 @@ class User extends Authenticatable
 		return AppServiceProvider::pd($value);
 	}
 
+	public function getStatusIconAttribute()
+	{
+		if($this->trashed())
+			return 'times' ;
+		else
+			return 'check' ;
+
+		//@TODO: More Accurate Please!
+	}
+
+
 	public function getStatusColorAttribute()
 	{
 		if($this->trashed())
 			return 'danger' ;
 		else
 			return 'success' ;
+
+		//@TODO: More Accurate Please!
 	}
 
 	public function getStatusTextAttribute()
@@ -111,6 +133,8 @@ class User extends Authenticatable
 			return trans('people.status.blocked') ;
 		else
 			return trans('people.status.active') ;
+
+		//@TODO: More Accurate Please!
 
 	}
 
@@ -172,6 +196,20 @@ class User extends Authenticatable
 			return true ;
 		else
 			return false ;
+	}
+
+	public function isCustomer()
+	{
+		return !$this->isAdmin() ;
+	}
+
+	public function isActiveCustomer()
+	{
+		if($this->status == 8 or $this->status == 9)
+			return true ;
+		else
+			return false ;
+
 	}
 
 	public function isSuperAdmin()
@@ -392,7 +430,7 @@ class User extends Authenticatable
 	{
 		$model = self::where('id' , $user_id)->where('status' , '>' , '90') ;
 		if($trashed)
-			$model = $model->onlyTrashed()->whereNull('destroyed_by') ;
+			$model = $model->withTrashed()->whereNull('destroyed_by') ;
 
 		return $model->first() ;
 
@@ -401,7 +439,7 @@ class User extends Authenticatable
 	{
 		$model = self::where('id' , $user_id)->where('status' , '<' , '90') ;
 		if($trashed)
-			$model = $model->onlyTrashed()->whereNull('destroyed_by') ;
+			$model = $model->withTrashed()->whereNull('destroyed_by') ;
 
 		return $model->first() ;
 	}
@@ -414,7 +452,7 @@ class User extends Authenticatable
 		else
 			return $return ;
 	}
-	public static function selector($role = 'users' , $criteria='active')
+	public static function selector($role = 'customers' , $criteria='actives')
 	{
 
 		$table = self::where('id' , '>' , 0) ;

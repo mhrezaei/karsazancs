@@ -1,4 +1,6 @@
-<select
+@if(!isset($condition) or $condition)
+
+	<select
 		id="{{$id or ''}}"
 		name="{{$name}}" value="{{$value or ''}}"
 		class="form-control selectpicker {{$class or ''}}"
@@ -8,26 +10,26 @@
 		data-live-search-placeholder= "{{$search_placeholder or trans('forms.button.search')}}..."
 		onchange="{{$on_change or ''}}"
 		{{$extra or ''}}
->
-	@if(isset($blank_value) and $blank_value!='NO')
-		<option value="{{$blank_value}}"
-				@if(!isset($value) or $value==$blank_value)
-					selected
-				@endif
-		>{{ $blank_label or '' }}</option>
-	@endif
-	@foreach($options as $option)
-		<option value="{{$option[isset($value_field)? $value_field : 'id']}}"
-				@if(isset($value) and $value==$option[isset($value_field)? $value_field : 'id'])
-					selected
-				@endif
-		>{{$option[isset($caption_field)? $caption_field : 'title']}}</option>
-	@endforeach
-</select>
+	>
+		@if(isset($blank_value) and $blank_value!='NO')
+			<option value="{{$blank_value}}"
+					@if(!isset($value) or $value==$blank_value)
+						selected
+					@endif
+			>{{ $blank_label or '' }}</option>
+		@endif
+		@foreach($options as $option)
+			<option value="{{$option[isset($value_field)? $value_field : 'id']}}"
+					@if(isset($value) and $value==$option[isset($value_field)? $value_field : 'id'])
+						selected
+					@endif
+			>{{$option[isset($caption_field)? $caption_field : 'title']}}</option>
+		@endforeach
+	</select>
 
-@include("forms.js" , [
-	'commands' => [
-		isset($on_change) ? [$on_change] : [],
-	]
-])
-
+	@include("forms.js" , [
+		'commands' => [
+			isset($on_change) ? [$on_change] : [],
+		]
+	])
+@endif

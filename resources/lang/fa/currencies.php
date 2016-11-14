@@ -11,6 +11,8 @@ return [
 	'price_history' => 'تاریخچه‌ی قیمت' ,
 	'price_effective_date' => 'تاریخ و زمان اعمال قیمت جدید' ,
 	'price_details' => 'بهای خرید و فروش' ,
+	'IRR' => 'ریال' ,
+	'rials' => ":amount ریال",
 
 
 	"status" => [

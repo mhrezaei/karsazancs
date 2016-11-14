@@ -172,7 +172,7 @@ return [
           Collective\Html\HtmlServiceProvider::class,
           Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
           Intervention\Image\ImageServiceProvider::class,
-
+          Vinkla\Hashids\HashidsServiceProvider::class ,
           //
 
          /*
@@ -238,6 +238,7 @@ return [
           'jDate' => Morilog\Jalali\Facades\jDate::class,
           'Image' => Intervention\Image\Facades\Image::class,
           'Taha' => \App\Providers\TahaServiceProvider::class ,
+          'Hashids' => Vinkla\Hashids\Facades\Hashids::class ,
      ],
 
 ];

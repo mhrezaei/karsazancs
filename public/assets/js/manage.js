@@ -2,6 +2,46 @@
  * Created by jafar on 7/6/2016 AD.
  */
 
+function rowHide($table_id , $model_id)
+{
+	if($table_id == 'auto')
+		var $table_selector = ' .tableGrid'  ;
+	else
+		var $table_selector = '#'+$table_id ;
+
+	var $row_selector = $table_selector + ' #tr-' + $model_id ;
+	$($row_selector).slideUp() ;
+
+}
+
+function rowUpdate($table_id , $model_id)
+{
+	if($table_id == 'auto')
+		var $table_selector = ' .tableGrid'  ;
+	else
+		var $table_selector = '#'+$table_id ;
+
+	if($model_id=='0') {
+		if($($table_selector).length) {
+			forms_delaiedPageRefresh(1);
+		}
+	}
+	else {
+		var $row_selector = $table_selector + ' #tr-' + $model_id ;
+		var $url = $($row_selector+' .refresh ').html() ;
+		var $counter = $($row_selector + ' .-rowCounter ').html() ;
+		$($row_selector).addClass('loading') ;
+		$.ajax({
+			url: $url,
+			cache: false ,
+		})
+		.done(function (html) {
+			$($row_selector).html(html);
+			$($row_selector).removeClass('loading') ;
+			$($row_selector + ' .-rowCounter ').html($counter) ;
+		});
+	}
+}
 function masterModal($url,$size)
 {
 	//Preparetions...
@@ -239,4 +279,17 @@ function customerEditor()
 			$('input[name=name_firm]').focus() ;
 	}
 
+}
+
+function orderEditor()
+{
+	$rate = parseFloat($('input[name=rate]').val()) ;
+	$amount = parseFloat(  forms_digit_en($('input[name=initial_charge]').val().replaceAll(',','') ) )
+	if(!$amount)
+		$amount = 0 ;
+	$invoice = forms_digit_fa(addCommas(Math.round($rate * $amount))) ;
+
+	$('input[name=original_invoice]').val( $invoice ) ;
+	$('input[name=amount_invoiced]').val( $invoice ) ;
+	$('input[name=invoice]').val( $invoice ) ;
 }

@@ -13,6 +13,7 @@ class Rate extends Model
 	protected $casts = [
 		'meta' => 'array' ,
 	];
+	public static $meta_fields = [];
 
 	/*
 	|--------------------------------------------------------------------------

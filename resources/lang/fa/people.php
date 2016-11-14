@@ -41,13 +41,14 @@ return [
 				'last_transaction' => 'آخرین تراکنش' ,
 				'account_charge' => 'شارژ حساب' ,
 				'activity' => 'فعالیت' ,
-				'register_date' => 'ثبت نام در سایت' ,
-				'publish_date' => 'فعال‌سازی حساب' ,
+				'register_date' => 'ثبت نام' ,
+				'publish_date' => 'فعال‌سازی' ,
 
 				'bank_accounts' => 'حساب‌های بانکی' ,
 				'bank_account' => 'حساب بانکی' ,
 		],
 		"form" => [
+				"deleted_person" => '[؟]' ,
 				"notify-with-email" => 'به کاربر از طریق ایمیل اطلاع‌رسانی شود.' ,
 				"notify-with-sms" => 'به کاربر از طریق پیامک اطلاع‌رسانی شود.' ,
 				"notify" => 'به کاربر از طریق پیامک و ایمیل اطلاع‌رسانی شود.' ,

@@ -67,12 +67,33 @@
 			'label' => trans('forms.button.save'),
 			'shape' => 'success',
 			'type' => 'submit' ,
+			'value' => 'save' ,
 		])
-		@include('forms.button' , [
-			'label' => trans('forms.button.cancel'),
-			'shape' => 'link',
-			'link' => '$(".modal").modal("hide")',
-		])
+
+		@if($model->id)
+			@if($model->archived)
+				@include('forms.button' , [
+					'label' => trans('tickets.reopen_ticket'),
+					'shape' => 'warning',
+					'type' => 'submit' ,
+					'value' => 'reopen' ,
+				])
+			@else
+				@include('forms.button' , [
+					'label' => trans('tickets.archive_ticket'),
+					'shape' => 'danger',
+					'type' => 'submit' ,
+					'value' => 'archive' ,
+				])
+			@endif
+		@endif
+
+
+	@include('forms.button' , [
+		'label' => trans('forms.button.cancel'),
+		'shape' => 'link',
+		'link' => '$(".modal").modal("hide")',
+	])
 
 	@include('forms.group-end')
 

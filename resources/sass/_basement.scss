@@ -58,6 +58,11 @@ div.mce-fullscreen {
   background-color: #333333;
 }
 
+.form-control[disabled] {
+  background-color: white;
+  color: #878787;
+}
+
 /*
 |--------------------------------------------------------------------------
 | General Things
@@ -103,6 +108,9 @@ div.mce-fullscreen {
 @for $i from 5 to 19 {
   .f#{$i} {
     font-size: 1px * $i;
+    @if($i<10) {
+      font-weight: 100;
+    }
   }
 }
 
@@ -124,6 +132,12 @@ div.mce-fullscreen {
 
   .mh#{$i*5} {
     margin-left: 5px * $i;
+    margin-right: 5px * $i;
+  }
+  .mhl#{$i*5} {
+    margin-left: 5px * $i;
+  }
+  .mhr#{$i*5} {
     margin-right: 5px * $i;
   }
   .mv#{$i*5} {
@@ -162,9 +176,28 @@ div.mce-fullscreen {
   color: gray;
 }
 
+.text-black {
+  color: black;
+}
+
 .text-white {
   color: #ffffff;
 }
+
+.text-violet {
+  color: #4F5B93 ;
+}
+.text-orange {
+  color: #F18432 ;
+}
+
+.text-pink {
+  color: #A400AC ;
+}
+.text-orangered {
+  color: #A400AC ;
+}
+
 
 .panel-violet {
   border-color: #4F5B93;
@@ -255,4 +288,10 @@ div.mce-fullscreen {
 
 .loading {
   opacity: 0.2;
+  cursor: wait;
+}
+
+.refresh {
+  display: none;
+  visibility: hidden;
 }

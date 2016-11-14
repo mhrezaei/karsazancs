@@ -63,7 +63,7 @@ class CurrenciesController extends Controller
 				$permit = 'bin';
 				break;
 			default:
-				$permit = 'any' ;
+				$permit = '*' ;
 		}
 		if(!Auth::user()->can("currencies.$permit"))
 			return view('errors.403');
@@ -75,6 +75,16 @@ class CurrenciesController extends Controller
 		//View...
 		return view("manage.currencies.browse" , compact('page','model_data' , 'db'));
 
+	}
+
+	public function update($model_id)
+	{
+		$model = Currency::withTrashed()->find($model_id);
+		$selector = true ;
+		if(!$model)
+			return view('errors.m410');
+		else
+			return view('manage.currencies.browse-row' , compact('model' , 'selector'));
 	}
 
 	public function modalActions($item_id , $view_file)
@@ -95,7 +105,7 @@ class CurrenciesController extends Controller
 		}
 
 		//Permission...
-		$permit = 'customers' ;
+		$permit = 'currencies' ;
 
 		switch($view_file) {
 			case 'query' :
@@ -175,7 +185,7 @@ class CurrenciesController extends Controller
 		$saved = Currency::store($data , ['currency_title' , 'currency_slug']);
 
 		return $this->jsonAjaxSaveFeedback($saved , [
-				'success_refresh' => true ,
+				'success_callback' => "rowUpdate('tblCurrencies','$request->id')",
 		]);
 
 	}
@@ -189,7 +199,7 @@ class CurrenciesController extends Controller
 		//Delete...
 		$done = Currency::destroy($request->id);
 		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
+				'success_callback' => "rowHide('tblCurrencies','$request->id')",
 		]);
 
 	}
@@ -201,7 +211,7 @@ class CurrenciesController extends Controller
 
 		$done = Currency::onlyTrashed()->where('id', $request->id)->restore();
 		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
+				'success_callback' => "rowHide('tblCurrencies','$request->id')",
 		]);
 
 
@@ -216,7 +226,7 @@ class CurrenciesController extends Controller
 		$done = Currency::onlyTrashed()->where('id',$request->id)->forceDelete() ;
 
 		return $this->jsonAjaxSaveFeedback($done , [
-				'success_refresh' => true ,
+				'success_callback' => "rowHide('tblCurrencies','$request->id')",
 		]);
 
 	}
@@ -248,7 +258,7 @@ class CurrenciesController extends Controller
 
 	}
 
-	public function update(Requests\Manage\CurrencyUpdateRequest $request)
+	public function updateRate(Requests\Manage\CurrencyUpdateRequest $request)
 	{
 		$data = $request->toArray() ;
 		$data['id'] = 0 ;
@@ -261,7 +271,7 @@ class CurrenciesController extends Controller
 
 		$ok = Rate::store($data , [ 'date' , 'time']);
 		return $this->jsonAjaxSaveFeedback($ok , [
-				'success_refresh' => true ,
+				'success_callback' => "rowUpdate('tblCurrencies','".$data['currency_id']."');rowUpdate('tblHistory','0');",
 		]);
 	}
 

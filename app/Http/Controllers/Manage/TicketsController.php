@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Manage;
 use App\models\department;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Talk;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Traits\TahaControllerTrait;
@@ -112,33 +113,65 @@ class TicketsController extends Controller
 
 	}
 
-	public function modalActions($post_id, $view_file)
+	public function update($model_id)
 	{
-		if($post_id==0)
+		$model = Ticket::withTrashed()->find($model_id);
+		$selector = true ;
+		if(!$model)
+			return view('errors.m410');
+		else
+			return view('manage.tickets.browse-row' , compact('model' , 'selector'));
+	}
+
+	public function modalActions($item_id , $view_file='editor')
+	{
+		//Bypass...
+		if($item_id==0)
 			return $this->modalBulkAction($view_file);
 
-		$model = Post::withTrashed()->find($post_id);
-		$view = "manage.posts.$view_file";
 		$opt = [] ;
 
-		//Particular Actions..
-		switch($view_file) {
-			case 'permits' :
-				break;
-			case 'delete' :
-				return $this->soft_delete($post_id);
-			case 'undelete' :
-				return $this->undelete($post_id) ;
-			case 'unpublish' :
-				return $this->unpublish($post_id) ;
+		//Model...
+		if(str_contains($item_id , 'n')) {
+			$item_id = intval($item_id) ;
+		}
+		else {
+			$model = Ticket::withTrashed()->find($item_id);
+			if(!$model)
+				return view('errors.m410');
 		}
 
-		if(!$model) return view('errors.m410');
-		if(!View::exists($view)) return view('templates.say' , ['array'=>$view]); //@TODO: REMOVE THIS LINE
+		//Permission...
+		$permit = "tickets-".$model->department ;
+
+		switch($view_file) {
+			case 'editor' :
+				$permit .= '.edit' ;
+				break;
+
+			case 'reply':
+				break;
+
+			case 'soft_delete' :
+				$permit .= '.delete' ;
+				break;
+
+			case 'undelete' :
+			case 'hard_delete' :
+				$permit .= '.bin' ;
+				break;
+
+			default:
+				dd("$view_file: $item_id");
+		}
+
+		if(!Auth::user()->can($permit))
+			return view('errors.m403');
+
+		//View...
+		$view = "manage.tickets.$view_file" ;
 		if(!View::exists($view)) return view('errors.m404');
-
 		return view($view , compact('model' , 'opt')) ;
-
 	}
 
 
@@ -168,9 +201,13 @@ class TicketsController extends Controller
 				return $this->jsonFeedback(trans('validation.http.Error410'));
 		}
 
-		$model->department = $department_slug ;
-		if(!$model->department())
-			return view('errors.410');
+		if($department_slug) {
+			$model->department = $department_slug;
+			if(!$model->department())
+				$model->department = null;
+		}
+		else
+			$model->department = null ;
 
 		//Permission...
 		if(!Auth::user()->can("tickets-$department_slug.create"))
@@ -181,21 +218,7 @@ class TicketsController extends Controller
 
 	}
 
-	public function editor($department_slug , $ticket_id)
-	{
-		//Model...
-		$model = Ticket::withTrashed()->find($ticket_id) ;
-		if(!$model)
-			return view('errors.410');
 
-		//Permission...
-		if(!Auth::user()->can("tickets-$model->department.edit"))
-			return view('errors.m403');
-
-		//View...
-		return view('manage.tickets.editor' , compact('model'));
-
-	}
 	/*
 	|--------------------------------------------------------------------------
 	| Save Methods
@@ -203,58 +226,92 @@ class TicketsController extends Controller
 	|
 	*/
 
-	private function unpublish($post_id)
-	{
-		//Preparations...
-		$model = Post::find($post_id) ;
-		if(!$model) return $this->jsonFeedback() ;
-
-		if(!Auth::user()->can('posts-'.$model->department.".publish"))
-			return $this->jsonFeedback(trans('validation.http.Eror403')) ;
-
-		//Action...
-		if($model->unpublish())
-			echo ' <div class="alert alert-success">'. trans('forms.feed.done') .'</div> ';
-		else
-			echo ' <div class="alert alert-danger">'. trans('forms.feed.error') .'</div> ';
-
-	}
-
-
-	/**
-	 * @param $post_id
-	 */
-	public function soft_delete($post_id)
+	public function soft_delete(Request $request)
 	{
 
 		//Preparations...
-		$model = Post::find($post_id) ;
+		$model = Ticket::find($request->id) ;
 		if(!$model)
 			$this->feedback() ;
 
 		if(!$model->canDelete())
-			$this->feedback(false , trans('validation.http.Eror403'));
+			$this->feedback(false , trans('validation.http.Error403'));
 
 		//Action...
 		$is_ok = $model->delete() ;
-		$this->feedback($is_ok);
 
+		//Feedback...
+		return $this->jsonAjaxSaveFeedback($is_ok , [
+				'success_callback' => "rowHide('tblTickets','$request->id')",
+		]);
+	}
 
+	public function undelete(Request $request)
+	{
+		//Preparations...
+		$model = Ticket::onlyTrashed()->find($request->id) ;
+		if(!$model)
+			$this->feedback() ;
+
+		if(!$model->canBin())
+			$this->feedback(false , trans('validation.http.Error403'));
+
+		//Action...
+		$is_ok = $model->restore() ;
+
+		//Feedback...
+		return $this->jsonAjaxSaveFeedback($is_ok , [
+				'success_callback' => "rowHide('tblTickets','$request->id')",
+		]);
 	}
 
 
 	public function hard_delete(Request $request)
 	{
-		$model = Post::withTrashed()->find($request->id) ;
-		if(!Auth::user()->isDeveloper() ) return $this->jsonFeedback(trans('validation.http.Eror403')) ;
+		//Preparations...
+		$model = Ticket::onlyTrashed()->find($request->id) ;
+		if(!$model)
+			$this->feedback() ;
 
-		if(!$model->trashed()) return $this->jsonFeedback(trans('validation.http.Eror403'));
+		if(!$model->canBin())
+			$this->feedback(false , trans('validation.http.Error403'));
 
-
+		//Action...
 		$done = $model->forceDelete();
 
+		//Feedback...
 		return $this->jsonAjaxSaveFeedback($done , [
-//				'success_refresh' => true ,
+				'success_callback' => "rowHide('tblTickets','$request->id')",
+		]);
+
+	}
+
+	public function saveReply(Requests\Manage\TicketReplyRequest $request)
+	{
+		//Model...
+		$ticket = Ticket::find($request->id) ;
+		if(!$ticket)
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+
+		//Save...
+		$ticket->update([
+			'department' => $request->department ,
+			'title' => $request->title ,
+			'priority' => $request->priority ,
+		]);
+
+		if($request->text) {
+			$is_saved = Talk::store([
+				'ticket_id' => $ticket->id ,
+				'text' => $request->text ,
+				'created_by' => Auth::user()->id ,
+				'is_admin' => 1 ,
+			]) ;
+		}
+
+		//Feedback...
+		return $this->jsonAjaxSaveFeedback($is_saved , [
+				'success_callback' => "rowUpdate('tblTickets','$request->id')",
 		]);
 
 	}
@@ -266,6 +323,7 @@ class TicketsController extends Controller
 	public function save(Requests\Manage\TicketSaveRequest $request)
 	{
 		$data = $request->toArray() ;
+
 		//Validation...
 		if($request->user_id)
 			$user = User::findCustomer($request->user_id) ;
@@ -275,27 +333,35 @@ class TicketsController extends Controller
 			return $this->jsonFeedback(trans('forms.feed.user_not_found'));
 		$data['user_id'] = $user->id ;
 
+		//Close and reopen...
+		if($request->_submit == 'archive') {
+			$data['archived_at'] = Carbon::now()->toDateTimeString() ;
+			$data['archived_by'] = Auth::user()->id ;
+			$page_refresh = true ;
+		}
+		elseif($request->_submit == 'reopen') {
+			$data['archived_at'] = null ;
+			$data['archived_by'] = null ;
+			$page_refresh = true ;
+		}
+		else
+			$page_refresh = false ;
+
 		//Save...
-		$is_saved = Ticket::store($data , ['code_melli']) ;
+		$is_saved = Ticket::store($data , ['code_melli' , 'text']) ;
+		if($is_saved) {
+			$talk = Talk::firstOrNew(['ticket_id' => $is_saved]);
+			$talk->text = $request->text ;
+			$talk->created_by = $user->id ;
+			$talk->updated_by = Auth::user()->id ;
+			$talk->save();
+		}
 
 		return $this->jsonAjaxSaveFeedback($is_saved , [
-			'success_refresh' => 1 ,
+			'success_callback' => "rowUpdate('tblTickets','$request->id')",
+			'success_refresh' => $page_refresh? 1 : 0 ,
 		]);
 
-
-	}
-
-	public function undelete($post_id)
-	{
-		$model = Post::withTrashed()->find($post_id) ;
-		if(!$model) return $this->jsonFeedback() ;
-
-		if(!$model->canDelete())
-			$this->feedback(false , trans('validation.http.Eror403'));
-
-		//Action...
-		$ok = $model->restore() ;
-		$this->feedback($ok);
 
 	}
 

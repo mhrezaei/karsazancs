@@ -20,6 +20,8 @@ class Currency extends Model
 	protected $rates_loaded = false ;
 	protected $current_rates = [0,0] ;
 
+	public static $meta_fields = [ ];
+
 	/*
 	|--------------------------------------------------------------------------
 	| Relations
@@ -48,8 +50,8 @@ class Currency extends Model
 	{
 		if($request_date == 'NOW')
 			$request_date = Carbon::now()->toDateTimeString() ;
-		else
-			$request_date = Carbon::createFromFormat('Y/m/d H:i' , $request_date)->toDateTimeString() ;
+//		else
+//			$request_date = Carbon::createFromFormat('Y/m/d H:i' , $request_date)->toDateTimeString() ;
 
 		$rate = $this->rates()->where('effective_date' , '<=' , $request_date)->orderBy('effective_date' , 'desc')->orderBy('created_at' , 'desc')->first();
 		if(!$rate)
@@ -118,7 +120,7 @@ class Currency extends Model
 			return $return ;
 	}
 
-	public static function selector($criteria='active')
+	public static function selector($criteria='actives')
 	{
 
 		$table = self::where('id' , '>' , 0) ;
@@ -141,6 +143,27 @@ class Currency extends Model
 					return $table->whereNull('id');
 			}
 
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Helpers
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public static function irr($amount, $currency , $type = 'sell', $date = 'NOW')
+	{
+		// Rate Discovery...
+		if(!is_object($currency)) {
+			$currency = Currency::findBySlug($currency) ;
+			if(!$currency)
+				return 0 ;
+		}
+		$rates = $currency->loadRates($date) ;
+		$rate = $rates->toArray()["price_to_$type"] ;
+
+		//Return...
+		return round($amount * $rate) ;
 	}
 
 
