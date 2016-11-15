@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Models\Account;
 use App\models\Branch;
 use App\Models\Domain;
 use App\Models\Post_cat;
@@ -31,14 +32,17 @@ class SettingsController extends Controller
 		$page[1] = [$request_tab , trans("manage.settings.downstream_settings.category.$request_tab")];
 		$db = new Setting() ;
 
-		//Model...
-		$model_data = Setting::where('category' , $request_tab)->where('developers_only' , '0')->orderBy('title')->get() ;
+		//Show...
+		switch($request_tab) {
+			case 'accounts' :
+				$model_data = Account::where('user_id' , '0')->paginate(50) ;
+				return view("manage.customers.accounts" , compact('page', 'model_data' , 'request_tab' , 'db')) ;
 
-//		if(!$model_data->count())
-//			return view('errors.404');
+			default :
+				$model_data = Setting::where('category' , $request_tab)->where('developers_only' , '0')->orderBy('title')->get() ;
+				return view("manage.settings.settings", compact('page', 'model_data' , 'request_tab' , 'db'));
 
-		//View...
-		return view("manage.settings.settings", compact('page', 'model_data' , 'request_tab' , 'db'));
+		}
 
 	}
 

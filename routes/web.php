@@ -157,7 +157,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 		Route::get('/update/{item_id}' , 'PaymentsController@update');
 		Route::get('/' , 'PaymentsController@browse') ;
 		Route::get('/browse/{master?}/{request_tab?}' , 'PaymentsController@browse') ;
-		Route::get('/create/{product_id?}/{customer_id?}' , 'PaymentsController@create') ;
+		Route::get('/create/{order_id?}' , 'PaymentsController@create') ;
 		Route::get('/search' , 'PaymentsController@search');
 		Route::get('/{product_id}/edit' , 'PaymentsController@editor');
 		Route::get('/{user_id}/{modal_action}' , 'PaymentsController@modalActions');

@@ -19,12 +19,19 @@
 		['user_id' , $model->user_id]
 	]])
 
-	@include('forms.input' , [
-		'name' => '',
-		'label' => trans('validation.attributes.name_first'),
-		'value' => $model->id? $model->user->full_name : $model->user_name ,
-		'extra' => 'disabled' ,
-	])
+	@if($model->user_id)
+		@include('forms.input' , [
+			'name' => 'customer_id',
+			'value' => $model->id? $model->user->full_name : $model->user_name ,
+			'disabled' => true ,
+		])
+	@else
+		@include("forms.input" , [
+			'name' => "belongs_to",
+			'value' => trans('global.firm_name'),
+			'disabled' => true,
+		])
+	@endif
 
 	@include('forms.select' , [
 		'name' => 'bank_name' ,

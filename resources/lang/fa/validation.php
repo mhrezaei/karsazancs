@@ -371,10 +371,16 @@ return [
 			'original_invoice' => "صورتحساب اصلی",
 			'amount_invoiced' => "مبلغ صورتحساب",
 			'amount' => "مبلغ",
+			'amount_declared' => "مبلغ پرداختی",
+			'amount_confirmed' => "مبلغ تأییدشده",
+			'amount_payable' => "مبلغ قابل پرداخت",
 			'expiry' => 'انقضاء',
 			'customer_id' => "مشتری",
 			'tracking_no' => "کد رهگیری",
 			'subject' => "موضوع",
+			'belongs_to' => "مربوط به",
+			'payment_method' => "روش پرداخت",
+			'order_no' => "شماره سفارش",
 		],
 
 		"http" => [

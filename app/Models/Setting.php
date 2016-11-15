@@ -11,6 +11,7 @@ class Setting extends Model
 {
 	public static $available_data_types = ['text' , 'textarea' , 'boolean' , 'date' , 'photo' , 'array'] ;
 	public static $available_categories = ['socials' , 'contact' , 'template' , 'database'] ;
+	public static $full_categories = ['socials' , 'contact' , 'template' , 'database' , 'accounts'] ;
 	public static $default_when_not_found = '-' ;
 	public static $unset_signals = ['unset' , 'default' , '=' , ''] ;
 	public static $reserved_slugs = 'none,setting' ;
@@ -86,7 +87,7 @@ class Setting extends Model
 	public function categories()
 	{
 		$return = [] ;
-		foreach(self::$available_categories as $category)  {
+		foreach(self::$full_categories as $category)  {
 			$trans = "manage.settings.downstream_settings.category.$category" ;
 			if(Lang::has($trans))
 				$caption = trans($trans);

@@ -97,7 +97,7 @@ class CustomersController extends Controller
 
 	public function modalActions($user_id , $view_file)
 	{
-		if($user_id==0)
+		if($user_id===0)
 			return $this->modalBulkAction($view_file);
 
 		$opt = [] ;
@@ -105,6 +105,9 @@ class CustomersController extends Controller
 		//Model...
 		if(str_contains($user_id , 'n')) {
 			$user_id = intval($user_id) ;
+		}
+		elseif($user_id == 'site') {
+			;
 		}
 		else {
 			$model = User::findCustomer($user_id, in_array($view_file, ['undelete', 'hard_delete']) ? true : false);
@@ -133,10 +136,16 @@ class CustomersController extends Controller
 			case 'new_account' :
 				$permit .= 'edit' ;
 				$view_file = 'accounts-editor' ;
-				$user = $model ;
-				$model = new User() ;
-				$model->user_id = $user->id ;
-				$model->user_name = $user->full_name ;
+				if(isset($model)) {
+					$user = $model;
+					$model = new Account() ;
+					$model->user_id = $user->id ;
+					$model->user_name = $user->full_name ;
+				}
+				else {
+					$model = new Account() ;
+					$model->user_id = 0 ;
+				}
 				break ;
 
 			case 'edit_account' :
@@ -315,9 +324,11 @@ class CustomersController extends Controller
 
 	public function account(Requests\Manage\AccountSaveRequest $request)
 	{
-		$user = User::findCustomer($request->user_id) ;
-		if(!$user)
-			return $this->jsonFeedback(trans('validation.http.Error403'));
+		if($request->user_id>0) {
+			$user = User::findCustomer($request->user_id) ;
+			if(!$user)
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+		}
 
 		if($request->_submit == 'save') {
 			$ok = Account::store($request) ;
