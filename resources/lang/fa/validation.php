@@ -370,9 +370,11 @@ return [
 			'invoice' => 'صورتحساب',
 			'original_invoice' => "صورتحساب اصلی",
 			'amount_invoiced' => "مبلغ صورتحساب",
+			'amount' => "مبلغ",
 			'expiry' => 'انقضاء',
 			'customer_id' => "مشتری",
 			'tracking_no' => "کد رهگیری",
+			'subject' => "موضوع",
 		],
 
 		"http" => [

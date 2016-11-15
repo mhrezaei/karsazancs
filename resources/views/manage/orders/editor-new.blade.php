@@ -79,7 +79,7 @@
 		'hint' => $model->canEdit()? $model->charge_admin_hint : '',
 		'class' => 'form-numberFormat form-required form-default' ,
 		'on_change' => "orderEditor()",
-		'on_focus' => "orderEditor()",
+		'on_focus' => $model->id? '' : "orderEditor()",
 		'disabled' => !$model->canSave()? true : false,
 	])
 

@@ -44,6 +44,63 @@ class Payment extends Model
 		return trans("payments.methods.$this->method") ;
 	}
 
+	public function getAdminEditorTitleAttribute()
+	{
+		if(!$this->id)
+			return trans('payments.new');
+		elseif($this->canEdit())
+			return trans('payments.edit') ;
+		else
+			return trans('payments.view') ;
+	}
+
+	public function getStatusCodeAttribute()
+	{
+		if($this->amount_declared == $this->amount_confirmed)
+			return 'confirmed' ;
+		elseif(!$this->amount_confirmed and !$this->checked_at)
+			return 'pending' ;
+		elseif(!$this->amount_confirmed and $this->checked_at)
+			return 'rejected' ;
+		elseif($this->amount_declared > $this->amount_confirmed)
+			return 'underpaid' ;
+		elseif($this->amount_declared < $this->amount_confirmed)
+			return 'overpaid' ;
+
+	}
+	public function getStatusColorAttribute()
+	{
+		switch($this->status_code) {
+			case 'rejected' :
+				return 'danger' ;
+			case 'pending' :
+				return 'orange' ;
+			case 'underpaid' :
+				return 'warning' ;
+			case 'overpaid' :
+				return 'violet' ;
+			case 'confirmed' :
+				return 'success' ;
+		}
+	}
+
+	public function getStatusIconAttribute()
+	{
+		switch($this->status_code) {
+			case 'rejected' :
+				return 'times' ;
+			case 'pending' :
+				return 'diamond' ;
+			case 'underpaid' :
+				return 'adjust' ;
+			case 'overpaid' :
+				return 'expand' ;
+			case 'confirmed' :
+				return 'check' ;
+		}
+	}
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Selectors
@@ -85,9 +142,15 @@ class Payment extends Model
 			case 'confirmed' :
 				return $table->whereRaw("`amount_declared` = `amount_confirmed`") ;
 			case 'pending' :
-				return $table->where('amount_confirmed' , '0') ;
-			case 'partially_confirmed' :
+				return $table->whereNull('checked_at')->where('amount_confirmed' , '0') ;
+			case 'partial' :
 				return $table->whereRaw("`amount_declared` > `amount_confirmed`") ;
+			case 'underpaid' :
+				return $table->whereRaw("`amount_declared` > `amount_confirmed`") ;
+			case 'overpaid' :
+				return $table->whereRaw("`amount_declared` < `amount_confirmed`") ;
+			case 'rejected' :
+				return $table->whereNotNull('checked_at')->where('amount_confirmed' , '0') ;
 //			case 'search' :
 //				return $table->whereRaw(self::searchRawQuery($keyword, self::$search_fields));
 			default:

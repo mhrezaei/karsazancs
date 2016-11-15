@@ -46,10 +46,18 @@ class PaymentsController extends Controller
 	}
 
 
-	public function browse($master = 'all'  , $request_tab = 'open')
+	public function browse($master = 'all'  , $request_tab = null)
 	{
 		$page = $this->page ;
-		$user_id = $product_id = 0 ;
+		$user_id = $order_id = 0 ;
+
+		//request_tab...
+		if(!$request_tab) {
+			if($master=='all')
+				$request_tab ='pending' ;
+			else
+				$request_tab = 'all' ;
+		}
 
 		//Master...
 		if(str_contains($master,'customer')) {
@@ -65,7 +73,7 @@ class PaymentsController extends Controller
 			if(!$order)
 				return view('errors.410');
 			$master_name = $order->title ;
-			$product_id = $order->id ;
+			$order_id = $order->id ;
 			$page[1] = ["browse/$master/$request_tab" , $master_name , "payments/browse/$master"] ;
 		}
 		elseif($master=='all') {
@@ -91,11 +99,11 @@ class PaymentsController extends Controller
 			return view('errors.403');
 
 		//Model...
-		$model_data = Payment::selector($request_tab , $user_id , $product_id)->orderby('created_at' , 'desc')->paginate(50);
+		$model_data = Payment::selector($request_tab , $user_id , $order_id)->orderby('created_at' , 'desc')->paginate(50);
 		$db = new Payment() ;
 
 		//View...
-		return view("manage.payments.browse" , compact('page','model_data' , 'db' , 'master' , 'user_id' , 'product_id'));
+		return view("manage.payments.browse" , compact('page','model_data' , 'db' , 'master' , 'user_id' , 'order_id'));
 
 	}
 

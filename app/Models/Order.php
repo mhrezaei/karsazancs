@@ -107,14 +107,6 @@ class Order extends Model
 			case 'archive' :
 				return 'check' ;
 		}
-		switch($this->status) {
-			case 'available' :
-				return 'check' ;
-			case 'alarm' :
-				return 'exclamation-circle' ;
-			case 'not_available' :
-				return 'exclamation-triangle' ;
-		}
 	}
 
 	public function getInventoryAdminHintAttribute()
