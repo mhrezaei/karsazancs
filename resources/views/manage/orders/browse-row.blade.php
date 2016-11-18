@@ -84,6 +84,7 @@
 
 @include('manage.frame.widgets.grid-actionCol' , [ 'actions' => [
 			['pencil' , trans('manage.permits.edit') , "modal:manage/orders/-id-/edit" , "currencies.edit"],
+			['plus-square' , trans('payments.new') , "modal:manage/payments/create/-id-" , "payments.create" , $model->amount_payable > 0],
 //			['money' , trans('currencies.update_price') , 'modal:manage/currencies/-id-/update' , 'currencies.process'],
 //			['eye' , trans('currencies.query') , 'modal:manage/currencies/-id-/query' ],
 //			['history' , trans('currencies.price_history') , "urlN:manage/currencies/-id-/history" , 'currencies.process'],

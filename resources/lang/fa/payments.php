@@ -7,7 +7,7 @@ return [
 	'all' => 'همه مشتریان' ,
 
 	'form' => [
-		'' => "",
+		'insufficient_credit' => "اعتبار حساب برای انجام این تراکنش کافی نیست.",
 	],
 
 	'status' => [
@@ -28,5 +28,10 @@ return [
 		'cheque' => "چک",
 		'gateway' => "درگاه پرداخت",
 		'pos' => "دستگاه کارت‌خوان",
+		'site_credit' => "اعتبار",
 	],
 ];
+
+// id , order_id , amount_payable , payment_method , status , amount_declared , payment_date , payment_time ,
+// account_no , bank_name , card_no , own_account_id , customer_account_id , depositor , receiver , sender , tracking_no ,
+// cheque_date , cheque_no , description

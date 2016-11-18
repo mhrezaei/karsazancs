@@ -12,9 +12,12 @@ class Payment extends Model
 	use TahaModelTrait, SoftDeletes;
 
 	protected $guarded = ['id'];
-	protected static $meta_fields = ['payment_time' , 'account_no' , 'card_no' , 'beneficiary' , 'bank_name' , 'branch_name' , 'branch_code' , 'own_account_id' , 'cheque_number' , 'receipt_no'] ;
-	protected static $methods = ['cash' , 'shetab' , 'transfer' , 'deposit' , 'cheque' , 'gateway' , 'pos'];
-	protected static $available_methods = ['cash' , 'shetab' , 'transfer' , 'deposit' , 'cheque' , 'gateway' , 'pos'];
+	protected static $meta_fields = ['payment_date' , 'receiver' , 'sender' , 'description' , 'tracking_no' , 'cheque_no' ,
+			'cheque_date' , 'own_account_id' , 'customer_account_id' , 'card_no' , 'account_no' , 'bank_name' , 'depositor' ] ;
+	protected static $methods_selectable_for_admins = ['site_credit' , 'cash' , 'shetab' , 'transfer' , 'deposit' , 'cheque' , 'pos'];
+	protected static $available_methods = ['site_credit' , 'cash' , 'shetab' , 'transfer' , 'deposit' , 'cheque' , 'gateway' , 'pos'];
+	protected static $default_method_for_income = 'pos' ;
+	protected static $default_method_for_outcome = 'site_credit' ;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -100,6 +103,39 @@ class Payment extends Model
 		}
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Stators
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function canEdit()
+	{
+		if($this->trashed() or !Auth::user()->can('payments.edit'))
+			return false ;
+		else
+			return true ;
+	}
+
+	public function canProcess()
+	{
+		if($this->trashed() or !Auth::user()->can('payments.process'))
+			return false ;
+		else
+			return true ;
+	}
+
+	public function canSave()
+	{
+		if($this->view_only)
+			return false ;
+		elseif(!$this->id or $this->canEdit())
+			return true ;
+		else
+			return false ;
+	}
+
+
 
 	/*
 	|--------------------------------------------------------------------------
@@ -170,11 +206,29 @@ class Payment extends Model
 	public function methodCombo()
 	{
 		$result = [] ;
-		foreach(self::$available_methods as $method) {
-			$result[$method] = trans("payments.methods.$method") ;
+		foreach(self::$methods_selectable_for_admins as $key => $method) {
+			$result[$key] = [$method , trans("payments.methods.$method")] ;
 		}
 
 		return $result ;
+	}
+
+
+	public function accountsCombo($user_id = 0)
+	{
+		return Account::where('user_id' , $user_id)->orderBy('bank_name')->get() ;
+	}
+
+	public static function methodsAvailableForAdmins()
+	{
+		$array = self::$methods_selectable_for_admins ;
+		$string = '' ;
+
+		foreach($array as $item) {
+			$string .= ",$item" ;
+		}
+
+		return substr($string,1) ;
 	}
 
 

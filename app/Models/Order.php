@@ -8,6 +8,7 @@ use Hashids\Hashids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class Order extends Model
 {
@@ -17,7 +18,7 @@ class Order extends Model
 	protected $casts = [
 		'meta' => 'array' ,
 	];
-	public static $valid_types = ['new' , 'extend' , 'recharge' , 'refund' , 'block'] ;
+	public static $valid_types = ['new' , 'extend' , 'recharge' , 'refund' , 'block' ,'credit_charge' , 'credit_refund'] ;
 	public static $meta_fields = ['initial_charge' , 'rate' ];
 
 	/*
@@ -156,6 +157,21 @@ class Order extends Model
 
 	}
 
+	public function getAmountPayableAttribute()
+	{
+		return $this->amount_invoiced - $this->amount_paid ;
+	}
+
+	public function getDirectionAttribute()
+	{
+		if(in_array($this->type , ['refund' , 'block' , 'credit_refund']))
+			return 'outcome' ;
+		else
+			return 'income' ;
+	}
+	
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Stators
@@ -262,6 +278,8 @@ class Order extends Model
 				return $table->where('status' , '3');
 			case 'dispatched' :
 				return $table->where('status' , '4') ;
+			case 'live' :                                // <-- anything before archive
+				return $table->where('status' , '<' , '9');
 			case 'archive' :
 				return $table->where('status' , '9') ;
 			case 'open' :
