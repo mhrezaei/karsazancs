@@ -33,7 +33,7 @@ class PaymentSaveRequest extends Request
 	{
 		$input = $this->all() ;
 		return [
-			'payment_method' => "required|in:".Payment::methodsAvailableForAdmins(),
+			'payment_method' => "required_if:id,0|in:".Payment::methodsAvailableForAdmins(),
 			'status' => "in:confirmed,pending",
 			'amount_declared' => "required_if:id,0|numeric|min:1000|max:".$input['amount_payable'],
 			'payment_date' => "date|required_if:payment_method,cash,shetab,transfer,deposit,pos",

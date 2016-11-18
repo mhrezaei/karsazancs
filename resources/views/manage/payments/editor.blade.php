@@ -12,7 +12,8 @@
 		['user_id' , encrypt($model->user_id)],
 		['amount_payable' , encrypt($model->order->amount_payable)],
 		['direction' , encrypt($model->order->direction),],
-		['site_credit' , encrypt($model->user->site_credit)]
+		['site_credit' , encrypt($model->user->site_credit)],
+		['payment_method' , $model->payment_method],
 	]])
 	
 	@include("forms.input" , [
@@ -23,14 +24,14 @@
 
 	@include('forms.input' , [
 		'name' => 'customer_id',
-		'value' => $model->user->full_name_with_credit ,
+		'value' => $model->id? $model->user->full_name : $model->user->full_name_with_credit ,
 		'disabled' => true,
 	])
 
 	@include("forms.input" , [
 		'name' => "amount_payable",
-		'condition' => $model->order_id,
-		'value' => $model->order_id? $model->order->amount_payable : '',
+		'condition' => !$model->id,
+		'value' => $model->order->amount_payable ,
 		'disabled' => true,
 		'class' => "form-numberFormat",
 	])
@@ -45,7 +46,7 @@
 		'options' => $model->methodCombo(),
 		'caption_field' => "1",
 		'value_field' => "0",
-		'value' => $model->method ,
+		'value' => $model->payment_method ,
 		'disabled' => $model->id or !$model->canSave()? true : false,
 		'search' => 1,
 		'size' => "10",
@@ -165,6 +166,7 @@
 
 	@include("forms.textarea" , [
 		'name' => "description",
+		'value' => $model,
 		'rows' => "3",
 	])
 

@@ -6,6 +6,7 @@ use App\Providers\AppServiceProvider;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Payment extends Model
 {

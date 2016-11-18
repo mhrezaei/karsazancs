@@ -20,7 +20,7 @@ class TestController extends Controller
 {
 	public function index()
 	{
-		User::find(5)->reindex() ;
+
 	}
 
 }

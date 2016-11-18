@@ -58,6 +58,9 @@
 		'condition' => $model->status == 'confirmed',
 		'icon' => $model->status_icon,
 	])
+	@include("manage.frame.widgets.grid-tiny" , [
+		'text' => trans("payments.methods.$model->payment_method"),
+	])
 </td>
 
 {{--

@@ -16,6 +16,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use Morilog\Jalali\jDate;
 
 
 class PaymentsController extends Controller
@@ -164,6 +165,7 @@ class PaymentsController extends Controller
 
 	public function create($order_id = 0)
 	{
+		$order_id = 1 ; //@TODO: Remove This!
 		//Permission...
 		if(!Auth::user()->can('payments.create'))
 			return view('errors.m403');
@@ -196,24 +198,18 @@ class PaymentsController extends Controller
 
 	}
 
-	public function editor($model_id=0)
+	public function editor($model_id)
 	{
 		//Model...
 		$model = Payment::withTrashed()->find($model_id);
 		if(!$model)
 			return view('errors.m410');
 
-		$model->spreadMeta();
-		$model->product->spreadMeta() ;
-
-		if($model->canEdit())
-			$model->rate = $model->product->currency()->loadCurrentRates()->price_to_sell ;
-		else
-			$model->rate = $model->product->currency()->loadRates($model->created_at)->price_to_sell ;
-
+		$model->spreadMeta() ;
+		$model->payment_time = jDate::forge($model->payment_date)->format('H:i');
 
 		//View...
-		return view( 'manage.payments.editor-new', compact('model'));
+		return view( 'manage.payments.editor', compact('model'));
 	}
 
 	/*
@@ -258,8 +254,8 @@ class PaymentsController extends Controller
 		if($request->id) {
 			$model = Payment::find($request->id);
 			unset($data['payment_method']);
-			unset($data['status']) ;
 			unset($data['amount_declared']);
+			$data['status'] = '-' ;
 			if(!$model) {
 				return $this->jsonFeedback(trans('validation.http.Error410'));
 			}
@@ -275,7 +271,6 @@ class PaymentsController extends Controller
 		if(in_array($request->payment_method , ['cash','shetab','transfer','deposit','pos'])) {
 			$data['payment_date'] = $request->payment_date . ' ' . $request->payment_time;
 		}
-		unset($data['payment_time']);
 
 		if($request->direction == 'outcome' and in_array($request->payment_method,['shetab','transfer','deposit','cheque'])) {
 			$account = Account::where('id' , $request->customer_account_id )->where('user_id' , $request->user_id)->first();
