@@ -195,6 +195,8 @@ class Order extends Model
 
 	public function canEdit()
 	{
+		if($this->view_only)
+			return false ;
 		if($this->status>3 or $this->trashed() or !Auth::user()->can('orders.edit'))
 			return false ;
 		else
@@ -211,6 +213,8 @@ class Order extends Model
 
 	public function canSave()
 	{
+		if($this->view_only)
+			return false ;
 		if(!$this->id or $this->canEdit())
 			return true ;
 		else

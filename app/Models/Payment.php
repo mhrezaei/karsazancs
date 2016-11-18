@@ -142,8 +142,12 @@ class Payment extends Model
 
 	public function getPaymentTimeAttribute()
 	{
-		$this->spreadMeta() ;
-		return jDate::forge($this->payment_date)->format('H:i');
+		if($this->id) {
+			$this->spreadMeta() ;
+			return jDate::forge($this->payment_date)->format('H:i');
+		}
+		else
+			return null ;
 	}
 
 

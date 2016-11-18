@@ -71,6 +71,7 @@
 		'value_field' => "0",
 		'value' => $model,
 		'condition' => $model->canProcess(),
+		'disabled' => !$model->canSave()? true : false,
 	])
 
 	@include("forms.input" , [

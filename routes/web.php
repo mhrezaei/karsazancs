@@ -138,7 +138,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 		Route::get('/create/{product_id?}/{customer_id?}' , 'OrdersController@create') ;
 //		Route::get('/search' , 'OrdersController@search');
 		Route::get('/{product_id}/edit' , 'OrdersController@editor');
-		Route::get('/{user_id}/{modal_action}' , 'OrdersController@modalActions');
+		Route::get('/{product_id}/{modal_action}' , 'OrdersController@modalActions');
 
 		Route::group(['prefix'=>'save'] , function() {
 //			Route::post('/' , 'OrdersController@save');

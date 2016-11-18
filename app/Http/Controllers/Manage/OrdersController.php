@@ -112,8 +112,12 @@ class OrdersController extends Controller
 
 	public function modalActions($item_id , $view_file)
 	{
+		//Bypass...
 		if($item_id==0)
 			return $this->modalBulkAction($view_file);
+
+		if($view_file=='view')
+			return $this->editor($item_id,true);
 
 		$opt = [] ;
 
@@ -198,7 +202,7 @@ class OrdersController extends Controller
 			return view('manage.orders.editor-new' , compact('model')); ;
 	}
 
-	public function editor($model_id=0)
+	public function editor($model_id=0 , $view_only = false )
 	{
 		//Model...
 		$model = Order::withTrashed()->find($model_id);
@@ -207,6 +211,7 @@ class OrdersController extends Controller
 
 		$model->spreadMeta();
 		$model->product->spreadMeta() ;
+		$model->view_only = $view_only ;
 
 		if($model->canEdit())
 			$model->rate = $model->product->currency()->loadCurrentRates()->price_to_sell ;

@@ -12,7 +12,7 @@
 <td>
 	@include('manage.frame.widgets.grid-text' , [
 		'text' => $model->order->title,
-		'link' => "modal:manage/payments/-id-/edit",
+		'link' => "modal:manage/orders/$model->order_id/view",
 	])
 	@include('manage.frame.widgets.grid-tiny' , [
 		'icon' => 'user',
@@ -95,12 +95,10 @@
 --}}
 
 @include('manage.frame.widgets.grid-actionCol' , [ 'actions' => [
-			['pencil' , trans('manage.permits.edit') , "modal:manage/orders/-id-/edit" , "currencies.edit"],
-//			['money' , trans('currencies.update_price') , 'modal:manage/currencies/-id-/update' , 'currencies.process'],
-//			['eye' , trans('currencies.query') , 'modal:manage/currencies/-id-/query' ],
-//			['history' , trans('currencies.price_history') , "urlN:manage/currencies/-id-/history" , 'currencies.process'],
+			['pencil' , trans('manage.permits.edit') , "modal:manage/payments/-id-/edit" , "payments.edit"],
+			['diamond' , trans('payments.process') , "modal:manage/payments/-id-/process" , "payments.process"],
 
-			['ban' , trans('forms.button.soft_delete') , 'modal:manage/orders/-id-/soft_delete' , 'currencies.delete' , !$model->trashed()] ,
-			['undo' , trans('forms.button.undelete') , 'modal:manage/orders/-id-/undelete' , 'currencies.bin' , $model->trashed()] ,
-			['times' , trans('forms.button.hard_delete') , 'modal:manage/orders/-id-/hard_delete' , 'currencies.bin' , $model->trashed()] ,
+//			['ban' , trans('forms.button.soft_delete') , 'modal:manage/payments/-id-/soft_delete' , 'payments.delete' , !$model->trashed()] ,
+//			['undo' , trans('forms.button.undelete') , 'modal:manage/payments/-id-/undelete' , 'payments.bin' , $model->trashed()] ,
+//			['times' , trans('forms.button.hard_delete') , 'modal:manage/payments/-id-/hard_delete' , 'payments.bin' , $model->trashed()] ,
 ]])
