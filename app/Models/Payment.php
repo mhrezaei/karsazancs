@@ -7,6 +7,7 @@ use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Morilog\Jalali\jDate;
 
 class Payment extends Model
 {
@@ -45,6 +46,14 @@ class Payment extends Model
 		}
 
 		return $user ;
+	}
+
+	public function reindex()
+	{
+		$this->order->reindex() ;
+		if($this->payment_method == 'site_credit') {
+			$this->user->reindex();
+		}
 	}
 
 	/*
@@ -113,6 +122,30 @@ class Payment extends Model
 				return 'check' ;
 		}
 	}
+
+	public function getStatusInProcessAttribute()
+	{
+		switch($this->status) {
+			case 'rejected' :
+			case 'confirmed' :
+				return $this->status ;
+
+			case 'underpaid' :
+			case 'overpaid' :
+				return 'custom' ;
+
+			default :
+				return '' ;
+		}
+	}
+
+
+	public function getPaymentTimeAttribute()
+	{
+		$this->spreadMeta() ;
+		return jDate::forge($this->payment_date)->format('H:i');
+	}
+
 
 	/*
 	|--------------------------------------------------------------------------

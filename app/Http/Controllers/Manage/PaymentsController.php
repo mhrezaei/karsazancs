@@ -150,8 +150,14 @@ class PaymentsController extends Controller
 				$permit .= '.bin' ;
 				break;
 
+			case 'process' :
+				$model->spreadMeta();
+				$model->view_only = true ;
+				$permit .= '.process' ;
+				break;
+
 			default:
-				dd("$view_file: $item_id");
+				dd("modalAction:$view_file: $item_id");
 		}
 
 		if(!Auth::user()->can($permit))
@@ -165,7 +171,7 @@ class PaymentsController extends Controller
 
 	public function create($order_id = 0)
 	{
-		$order_id = 1 ; //@TODO: Remove This!
+//		$order_id = 1 ; //@TODO: Remove This!
 		//Permission...
 		if(!Auth::user()->can('payments.create'))
 			return view('errors.m403');
@@ -206,7 +212,6 @@ class PaymentsController extends Controller
 			return view('errors.m410');
 
 		$model->spreadMeta() ;
-		$model->payment_time = jDate::forge($model->payment_date)->format('H:i');
 
 		//View...
 		return view( 'manage.payments.editor', compact('model'));
@@ -297,10 +302,7 @@ class PaymentsController extends Controller
 
 		if($saved and $data['status']=='confirmed') {
 			$model = Payment::find($saved);
-			$model->order->reindex() ;
-			if($request->payment_method == 'site_credit') {
-				$model->user->reindex();
-			}
+			$model->reindex() ;
 		}
 
 		/*--------------------------------------------------------------------------
@@ -310,6 +312,48 @@ class PaymentsController extends Controller
 		return $this->jsonAjaxSaveFeedback($saved , [
 				'success_callback' => "rowUpdate('tblPayments','$request->id')",
 		]);
+
+	}
+
+	public function process(Requests\Manage\PaymentProcessRequest $request)
+	{
+		$data = [] ;
+
+		/*--------------------------------------------------------------------------
+		| Validations and Normalizations
+		*/
+
+		$model = Payment::find($request->id);
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		if($model->direction == 'income' and $model->payment_method=='site_credit' and $request->amount_confirmed > $model->user->site_credit){
+			return $this->jsonFeedback(trans('payments.form.insufficient_credit'));
+		}
+
+		/*--------------------------------------------------------------------------
+		| Save ...
+		*/
+
+		$saved = Payment::store( [
+			'id' => $request->id,
+			'amount_confirmed' => $request->amount_confirmed,
+			'checked_at' => Carbon::now()->toDateTimeString(),
+			'checked_by' => Auth::user()->id,
+		] );
+		if($saved)
+			$model->reindex() ;
+
+		/*--------------------------------------------------------------------------
+		| Return ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback($saved , [
+				'success_callback' => "rowUpdate('tblPayments','$request->id')",
+		]);
+
+
 
 	}
 

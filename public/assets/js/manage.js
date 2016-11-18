@@ -301,3 +301,34 @@ function paymentEditor()
 	$('.-detail').parent().parent().hide() ;
 	$('.-'+$method).parent().parent().show() ;
 }
+
+function paymentProcessEditor()
+{
+	var $selector_value = $('#cmbStatus').val();
+	$('.saveButton').hide() ;
+
+	switch($selector_value) {
+		case 'confirmed' :
+			$('#btnConfirm').show() ;
+			$('#txtConfirmed').val( $('#txtDeclared').val() ).parent().parent().hide();
+			break;
+
+		case 'rejected' :
+			$('#btnReject').show() ;
+			$('#txtConfirmed').val( '0' ).parent().parent().hide();
+			break;
+
+		case 'custom' :
+			$('#btnSave').show() ;
+			$('#txtConfirmed').val( $('#txtConfirmed').attr('aria-valuenow') ).parent().parent().show();
+			forms_numberFormat('#txtConfirmed');
+			$('#txtConfirmed').focus();
+			break;
+
+		default :
+			$('#btnSave').show() ;
+			$('#txtConfirmed').val('').parent().parent().hide();
+			break;
+
+	}
+}

@@ -165,6 +165,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'PaymentsController@save');
 			Route::post('/create' , 'PaymentsController@createAction');
+			Route::post('/process' , 'PaymentsController@process');
 			Route::post('/soft_delete' , 'PaymentsController@soft_delete');
 			Route::post('/undelete' , 'PaymentsController@undelete');
 			Route::post('/hard_delete' , 'PaymentsController@hard_delete');
