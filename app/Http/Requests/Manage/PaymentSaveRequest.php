@@ -35,7 +35,7 @@ class PaymentSaveRequest extends Request
 		return [
 			'payment_method' => "required|in:".Payment::methodsAvailableForAdmins(),
 			'status' => "in:confirmed,pending",
-			'amount_declared' => "numeric|min:1000|max:".$input['amount_payable'],
+			'amount_declared' => "required_if:id,0|numeric|min:1000|max:".$input['amount_payable'],
 			'payment_date' => "date|required_if:payment_method,cash,shetab,transfer,deposit,pos",
 			'payment_time' => "time|required_if:payment_method,cash,shetab,transfer,deposit,pos",
 			'account_no' => "required_if:payment_method,transfer,cheque",

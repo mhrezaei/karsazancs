@@ -11,7 +11,7 @@
 
 <td>
 	@include('manage.frame.widgets.grid-text' , [
-		'text' => $model->order->slug.' ('.trans("orders.type.".$model->order->type).')',
+		'text' => $model->order->title,
 		'link' => "modal:manage/orders/-id-/edit",
 	])
 	@include('manage.frame.widgets.grid-tiny' , [

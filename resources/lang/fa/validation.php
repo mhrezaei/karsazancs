@@ -386,6 +386,7 @@ return [
 			'payment_datetime' => "زمان پرداخت",
 			'receiver' => "دریافت‌کننده",
 			'sender' => "ارسال‌کننده",
+			'order_id' => "سفارش",
 			'order_no' => "شماره سفارش",
 			'cheque_no' => "شماره چک",
 			'cheque_date' => "تاریخ چک",

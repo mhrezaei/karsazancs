@@ -16,8 +16,8 @@
 	]])
 	
 	@include("forms.input" , [
-		'name' => "order_no",
-		'value' => $model->order->slug ,
+		'label' => trans('validation.attributes.order_id'),
+		'value' => $model->order->title ,
 		'disabled' => true,
 	])
 
@@ -36,7 +36,6 @@
 
 	@include("forms.input" , [
 		'name' => "amount_payable",
-//		'label' => trans('validation.attributes.amount_payable'),
 		'condition' => $model->order_id,
 		'value' => $model->order_id? $model->order->amount_payable : '',
 		'disabled' => true,
@@ -77,7 +76,7 @@
 		'name' => "amount_declared",
 		'value' => $model,
 		'class' => 'form-numberFormat form-required form-default' ,
-		'disabled' => $model->id or !$model->canSave()? true : false,
+		'disabled' => $model->id ? true : false,
 	])
 
 	{{------------------------------------------------------------------------------------------}}

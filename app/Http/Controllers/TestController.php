@@ -20,7 +20,7 @@ class TestController extends Controller
 {
 	public function index()
 	{
-		dd(Payment::methodsAvailableForAdmins());
+		User::find(5)->reindex() ;
 	}
 
 }

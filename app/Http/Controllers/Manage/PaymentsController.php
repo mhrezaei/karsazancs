@@ -16,7 +16,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
-use Morilog\Jalali\jDate;
 
 
 class PaymentsController extends Controller
@@ -256,6 +255,22 @@ class PaymentsController extends Controller
 		| Validations and Normalizations
 		*/
 
+		if($request->id) {
+			$model = Payment::find($request->id);
+			unset($data['payment_method']);
+			unset($data['status']) ;
+			unset($data['amount_declared']);
+			if(!$model) {
+				return $this->jsonFeedback(trans('validation.http.Error410'));
+			}
+			if(!$model->canSave()) {
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
+		}
+		else {
+			if(!Auth::user()->can('payments.process'))
+				$data['status'] = 'pending' ;
+		}
 
 		if(in_array($request->payment_method , ['cash','shetab','transfer','deposit','pos'])) {
 			$data['payment_date'] = $request->payment_date . ' ' . $request->payment_time;
@@ -273,14 +288,6 @@ class PaymentsController extends Controller
 			return $this->jsonFeedback(trans('payments.form.insufficient_credit'));
 		}
 
-		if($request->id) {
-			unset($data['status']) ;
-		}
-		else {
-			if(!Auth::user()->can('payments.process'))
-				$data['status'] = 'pending' ;
-		}
-
 		if($data['status']=='confirmed') {
 			$data['amount_confirmed'] = $data['amount_declared'] ;
 			$data['checked_at'] = Carbon::now()->toDateTimeString() ;
@@ -288,11 +295,22 @@ class PaymentsController extends Controller
 		}
 
 		/*--------------------------------------------------------------------------
-		| Save and Return
+		| Save
 		*/
 
-		//Save and Return...
 		$saved = Payment::store($data , ['payment_time' , 'amount_payable' , 'site_credit' , 'status']);
+
+		if($saved and $data['status']=='confirmed') {
+			$model = Payment::find($saved);
+			$model->order->reindex() ;
+			if($request->payment_method == 'site_credit') {
+				$model->user->reindex();
+			}
+		}
+
+		/*--------------------------------------------------------------------------
+		| Return ...
+		*/
 
 		return $this->jsonAjaxSaveFeedback($saved , [
 				'success_callback' => "rowUpdate('tblPayments','$request->id')",

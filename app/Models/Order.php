@@ -47,12 +47,22 @@ class Order extends Model
 		return $this->hasMany('App\Models\Payment');
 	}
 
+	public function reindex()
+	{
+		$this->amount_paid = $this->payments()->where('amount_confirmed' , '>' , '0')->sum('amount_confirmed') ;
+		$this->save() ;
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors & Mutators
 	|--------------------------------------------------------------------------
 	|
 	*/
+	public function getTitleAttribute()
+	{
+		return AppServiceProvider::pd($this->slug.' ('.trans("orders.type.".$this->type).')') ;
+	}
+
 	public function getAdminEditorTitleAttribute()
 	{
 		if(!$this->id)

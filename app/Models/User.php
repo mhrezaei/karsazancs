@@ -83,6 +83,12 @@ class User extends Authenticatable
 		return $this->logins()->orderBy('created_at' , 'desc')->first() ;
 	}
 
+	public function reindex()
+	{
+		$this->site_credit = $this->payments()->where('direction' , 'outcome')->where('payment_method' , 'site_credit')->sum('amount_confirmed') - $this->payments()->where('direction' , 'income')->where('payment_method' , 'site_credit')->sum('amount_confirmed');
+		$this->save() ;
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors & Mutators
