@@ -152,6 +152,12 @@ class User extends Authenticatable
 			return $this->name_first . " " . $this->name_last ;
 	}
 
+	public function getFullNameWithCreditAttribute()
+	{
+		return $this->full_name . " (" . trans('validation.attributes.site_credit') . ": " . AppServiceProvider::pd(number_format($this->site_credit)) . " " . trans('currencies.IRR') . ") " ;
+	}
+
+
 	public function fullName()
 	{
 		return $this->full_name ;

@@ -395,6 +395,7 @@ return [
 			'customer_account_id' => "حساب مشتری",
 			'depositor' => "واریزکننده",
 			'site_credit' => "اعتبار حساب",
+			'checked_by' => "کنترل‌کننده",
 		],
 
 		"http" => [

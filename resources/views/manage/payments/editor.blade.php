@@ -23,14 +23,7 @@
 
 	@include('forms.input' , [
 		'name' => 'customer_id',
-		'value' => $model->user->full_name ,
-		'disabled' => true,
-	])
-
-	@include('forms.input' , [
-		'name' => 'site_credit',
-		'value' => $model->user->site_credit  ,
-		'class' => "form-numberFormat",
+		'value' => $model->user->full_name_with_credit ,
 		'disabled' => true,
 	])
 

@@ -36,6 +36,16 @@ class Payment extends Model
 		return $this->belongsTo('App\Models\User') ;
 	}
 
+	public function checker()
+	{
+		$user = User::findAdmin($this->checked_by , true) ;
+		if(!$user) {
+			$user = new User();
+		}
+
+		return $user ;
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors & Mutators
@@ -57,7 +67,7 @@ class Payment extends Model
 			return trans('payments.view') ;
 	}
 
-	public function getStatusCodeAttribute()
+	public function getStatusAttribute()
 	{
 		if($this->amount_declared == $this->amount_confirmed)
 			return 'confirmed' ;
@@ -73,15 +83,15 @@ class Payment extends Model
 	}
 	public function getStatusColorAttribute()
 	{
-		switch($this->status_code) {
+		switch($this->status) {
 			case 'rejected' :
 				return 'danger' ;
 			case 'pending' :
 				return 'orange' ;
 			case 'underpaid' :
-				return 'warning' ;
+				return 'danger' ;
 			case 'overpaid' :
-				return 'violet' ;
+				return 'pink' ;
 			case 'confirmed' :
 				return 'success' ;
 		}
@@ -89,7 +99,7 @@ class Payment extends Model
 
 	public function getStatusIconAttribute()
 	{
-		switch($this->status_code) {
+		switch($this->status) {
 			case 'rejected' :
 				return 'times' ;
 			case 'pending' :

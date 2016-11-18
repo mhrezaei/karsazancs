@@ -162,7 +162,7 @@ class PaymentsController extends Controller
 		return view($view , compact('model' , 'opt')) ;
 	}
 
-	public function create($order_id = 1)
+	public function create($order_id = 0)
 	{
 		//Permission...
 		if(!Auth::user()->can('payments.create'))
