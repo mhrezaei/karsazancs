@@ -375,6 +375,7 @@ return [
 			'amount_declared' => "مبلغ پرداختی",
 			'amount_confirmed' => "مبلغ تأییدشده",
 			'amount_payable' => "مبلغ قابل پرداخت",
+			'amount_paid' => "مبلغ پرداخت‌شده",
 			'expiry' => 'انقضاء',
 			'customer_id' => "مشتری",
 			'tracking_no' => "کد رهگیری",

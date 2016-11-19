@@ -50,8 +50,21 @@ class Order extends Model
 	public function reindex()
 	{
 		$this->amount_paid = $this->payments()->where('amount_confirmed' , '>' , '0')->sum('amount_confirmed') ;
+		if($this->status_code=='under_payment' and $this->amount_paid >= $this->amount_invoiced)
+			$this->status = 2 ;
 		$this->save() ;
 	}
+
+	public function deleter()
+	{
+		$user = User::withTrashed()->find($this->deleted_by) ;
+		if(!$user) {
+			$user = new User();
+		}
+
+		return $user ;
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Accessors & Mutators
@@ -77,12 +90,14 @@ class Order extends Model
 	{
 		switch($this->status) {
 			case 1 :
-				return 'unprocessed' ;
-			case 2 :
-				return 'processing' ;
-			case 3 :
 				return 'under_payment' ;
+			case 2 :
+				return 'unprocessed' ;
+			case 3 :
+				return 'processing' ;
 			case 4 :
+				return 'ready' ;
+			case 5 :
 				return 'dispatched' ;
 			case 9 :
 				return 'archive' ;
@@ -91,12 +106,14 @@ class Order extends Model
 	public function getStatusColorAttribute()
 	{
 		switch($this->status_code) {
+			case 'under_payment' :
+				return 'warning' ;
 			case 'unprocessed' :
 				return 'danger' ;
 			case 'processing' :
 				return 'orange' ;
-			case 'under_payment' :
-				return 'warning' ;
+			case 'ready' :
+				return 'pink' ;
 			case 'dispatched' :
 				return 'violet' ;
 			case 'archive' :
@@ -107,12 +124,14 @@ class Order extends Model
 	public function getStatusIconAttribute()
 	{
 		switch($this->status_code) {
+			case 'under_payment' :
+				return 'money' ;
 			case 'unprocessed' :
 				return 'fire' ;
 			case 'processing' :
 				return 'diamond' ;
-			case 'under_payment' :
-				return 'money' ;
+			case 'ready' :
+				return 'diamond' ;
 			case 'dispatched' :
 				return 'truck' ;
 			case 'archive' :
@@ -284,14 +303,16 @@ class Order extends Model
 			case 'all' :
 				return $table ;
 
-			case 'unprocessed' :
-				return $table->where('status' , '1') ;
-			case 'processing' :
-				return $table->where('status' , '2') ;
 			case 'under_payment' :
-				return $table->where('status' , '3');
-			case 'dispatched' :
+				return $table->where('status' , '1');
+			case 'unprocessed' :
+				return $table->where('status' , '2') ;
+			case 'processing' :
+				return $table->where('status' , '3') ;
+			case 'ready' :
 				return $table->where('status' , '4') ;
+			case 'dispatched' :
+				return $table->where('status' , '5') ;
 			case 'live' :                                // <-- anything before archive
 				return $table->where('status' , '<' , '9');
 			case 'archive' :

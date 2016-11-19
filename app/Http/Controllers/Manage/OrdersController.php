@@ -278,6 +278,7 @@ class OrdersController extends Controller
 			$model->product_id = $request->product_id ;
 			$data['type'] = 'new' ;
 			$data['slug'] = $model->generateSlug() ;
+			$data['status'] = 1 ;
 		}
 
 		$customer = User::selector()->where('id' , $request->user_id)->first() ;
@@ -296,13 +297,7 @@ class OrdersController extends Controller
 			return $this->jsonFeedback(trans('products.form.error_charge_more_than_max'));
 
 
-		//Other Data... ()
-		if(!$model->canProcess() or !$request->status or $request->status>3)
-			if($model->id)
-				unset($data['status']);
-			else
-				$data['status'] = 1 ;
-
+		//Other Data...
 		$data['rate'] = $model->product->currency()->loadCurrentRates()->price_to_sell ;
 		$data['original_invoice'] = round($data['rate'] * $request->initial_charge);
 

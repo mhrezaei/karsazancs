@@ -74,7 +74,7 @@ class PaymentsController extends Controller
 			$order = Order::withTrashed()->find( str_replace('order' , null , $master) ) ;
 			if(!$order)
 				return view('errors.410');
-			$master_name = $order->title ;
+			$master_name = trans('validation.attributes.order_id').' '.AppServiceProvider::pd($order->slug) ;
 			$order_id = $order->id ;
 			$page[1] = ["browse/$master/$request_tab" , $master_name , "payments/browse/$master"] ;
 		}

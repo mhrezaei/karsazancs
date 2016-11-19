@@ -5,6 +5,7 @@ return [
 		'view' => "مشاهده‌ی سفارش",
 		'of' => 'سفارش‌های',
 		'all' => 'همه مشتریان' ,
+		'payments' => "فهرست پرداخت‌ها",
 
 		'form' => [
 			'original_card_price' => "بهای اصلی محصول: :price ریال",
@@ -22,13 +23,14 @@ return [
 		],
 
 		'status' => [
-				'unprocessed' => 'جدید',
+				'unprocessed' => 'منتظر اقدام',
 				'processing' => 'در دست اقدام' ,
 				'under_payment' => 'منتظر پرداخت',
 				'paid' => 'پرداخت‌شده',
 				'partly_paid' => "منتظر تکمیل پرداخت",
 				'unpaid' => 'منتظر پرداخت' ,
 				'partially_paid' => 'پرداخت ناقص',
+				'ready' => "آماده ارسال",
 				'dispatched' => 'ارسال‌شده',
 				'archive' => 'بایگانی',
 				'open' => ' باز',

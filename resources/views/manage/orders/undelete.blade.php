@@ -12,7 +12,7 @@
 
 	@include('forms.input' , [
 		'label' => trans('orders.type.title'),
-		'value' => trans("orders.type.".$model->type).' ('.$model->hashid.')' ,
+		'value' => $model->title ,
 		'disabled' => "1",
 	])
 	@include('forms.input' , [

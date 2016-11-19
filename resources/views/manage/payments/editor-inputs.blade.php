@@ -86,7 +86,7 @@
 		@include("forms.input" , [
 			'name' => "bank_name",
 			'value' => $model,
-			'class' => "ltr form-required -detail -transfer -cheque -deposit",
+			'class' => "form-required -detail -transfer -cheque -deposit",
 			'condition' => $model->order->direction == 'income',
 			'disabled' => $model->canSave()? false : true,
 		])

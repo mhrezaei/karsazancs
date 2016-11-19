@@ -210,11 +210,11 @@ class Payment extends Model
 //			$criteria = 'search' ;
 //		}
 
-		//Process User and Product...
+		//Process User and Order...
 		if($user_id>0)
 			$table = $table->where('user_id' , $user_id);
 		if($order_id>0)
-			$table = $table->where('product_id' , $order_id);
+			$table = $table->where('order_id' , $order_id);
 
 		//Process Criteria...
 		switch ($criteria) {
