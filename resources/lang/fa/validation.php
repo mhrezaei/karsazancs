@@ -311,6 +311,8 @@ return [
 				'domain_id' => 'دامنه',
 				'alias' => 'نام مستعار' ,
 				'status' => 'وضعیت' ,
+				'current_status' => "وضعیت کنونی",
+				'new_status' => "وضعیت جدید",
 				'level' => 'سطح دسترسی' ,
 				'domain' => 'دامنه' ,
 				'tel' => 'تلفن',

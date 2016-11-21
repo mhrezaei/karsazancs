@@ -49,7 +49,7 @@ class Order extends Model
 
 	public function reindex()
 	{
-		$this->amount_paid = $this->payments()->where('amount_confirmed' , '>' , '0')->sum('amount_confirmed') ;
+		$this->amount_paid = $this->payments()->where('direction',$this->direction)->where('amount_confirmed' , '>' , '0')->sum('amount_confirmed') ;
 		if($this->status_code=='under_payment' and $this->amount_paid >= $this->amount_invoiced)
 			$this->status = 2 ;
 		$this->save() ;
@@ -103,6 +103,26 @@ class Order extends Model
 				return 'archive' ;
 		}
 	}
+
+	public function getStatusTitleAttribute()
+	{
+		return trans("orders.status.".$this->status_code) ;
+	}
+
+	public function getStatusFullTitleAttribute()
+	{
+		$result = $this->status_title ;
+
+		if($this->status_code == 'under_payment' and $this->amount_paid > 0 ) {
+			$percent = floor(100 * $this->amount_paid / $this->amount_invoiced) ;
+			$percent_statement = AppServiceProvider::pd($percent).' '.trans('orders.status.paid');
+			$result .= " (% $percent_statement) " ;
+		}
+
+		return $result ;
+	}
+
+
 	public function getStatusColorAttribute()
 	{
 		switch($this->status_code) {

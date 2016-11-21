@@ -135,6 +135,10 @@ class OrdersController extends Controller
 		$permit = 'orders' ;
 
 		switch($view_file) {
+			case 'process' :
+				$model->reindex() ;
+				$permit .= '.process' ;
+				break;
 			case 'soft_delete' :
 				$permit .= '.delete' ;
 				break;

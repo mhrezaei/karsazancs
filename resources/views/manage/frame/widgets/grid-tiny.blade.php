@@ -6,7 +6,7 @@
 	$class = " f".$size." text-$color $class" ;
 
 	//target...
-	if(isset($link)) {
+	if(isset($link) and $link) {
 		$link = str_replace('-id-' , $model->id , $link);
 		$extra = '' ;
 		if(str_contains($link,'(')) {
@@ -35,7 +35,7 @@
 ?>
 @if(!isset($condition) or $condition)
 	<div class="" style="">
-		@if(isset($link))
+		@if(isset($link) and $link)
 			<a href="{{$target}}" onclick="{{$js_command}}" class="{{$class}}" {{$extra}}>
 				<i class="fa fa-{{$icon or 'hand-o-left'}} mhl5"></i>
 				@pd($text)

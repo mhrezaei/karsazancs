@@ -51,12 +51,14 @@
 		'color' => "success",
 		'icon' => "check",
 		'condition' => $model->amount_invoiced == $model->amount_paid,
+		'link' => "urlN:manage/payments/browse/order-id-",
 	])
 	@include("manage.frame.widgets.grid-tiny" , [
 		'text' => $model->amount_paid>0? trans('orders.status.partly_paid') : trans('orders.status.unpaid'),
 		'color' => "danger",
 		'icon' => "exclamation-triangle",
 		'condition' => $model->amount_invoiced != $model->amount_paid,
+		'link' => $model->amount_paid>0? "urlN:manage/payments/browse/order-id-" : null,
 	])
 	@include("manage.frame.widgets.grid-tiny" , [
 		'text' => trans('validation.attributes.amount_paid').': '.number_format($model->amount_paid).' '.trans('currencies.IRR'),
@@ -77,7 +79,7 @@
 <td>
 	@include('manage.frame.widgets.grid-text' , [
 		'text' => trans("orders.status.$model->status_code") ,
-		'link' => Auth::user()->can('payments.browse')? "modal:manage/orders/$model->product_id/process" : '',
+		'link' => Auth::user()->can('payments.browse')? "modal:manage/orders/-id-/process" : '',
 		'icon' => $model->status_icon ,
 		'color' => $model->trashed()? 'grey' : $model->status_color ,
 	])
