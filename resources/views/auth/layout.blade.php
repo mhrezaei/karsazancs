@@ -6,12 +6,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
 	<title>@yield('page_title')</title>
 
-	{!! Html::style('assets/css/auth.min.css') !!}
+	{!! Html::style('assets/css/front-style.css') !!}
 </head>
 
 
 <body>
-@include('front.layouts.topbar')
+@include('front.persian.frame.header_navbar')
 @include('auth.navbar')
 @yield('content')
 <div class="overlay"></div>

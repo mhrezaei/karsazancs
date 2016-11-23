@@ -1,7 +1,7 @@
 <!-- START: Header -->
 <header id="main-header">
     <div class="container">
-        <a href="home.html" id="logo"> <img src="images/logo.png" width="234"> </a>
+        <a href="home.html" id="logo"> <img src="{{ url('/assets/images/logo.png') }}" width="234"> </a>
         <!-- Menu -->
         <div class="f-l">
             <ul class="menu">

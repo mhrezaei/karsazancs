@@ -4,7 +4,7 @@
     </div>
 </footer>
 <div class="overlay"></div>
-@include('front.persian.frame.chat')
+{{--@include('front.persian.frame.chat')--}}
 
 @include('front.persian.frame.script')
 </body>

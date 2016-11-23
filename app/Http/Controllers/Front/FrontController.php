@@ -14,7 +14,12 @@ class FrontController extends Controller
 
 	public function index()
 	{
-		return view('front.index');
+		return view('front.persian.home.0');
+	}
+
+	public function register()
+	{
+		return 123;
 	}
 
 	/*
