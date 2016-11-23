@@ -1,0 +1,2 @@
+<a href="#" id="foot-logo"><img src="images/logo-bw.png" width="150"></a>
+<div class="simple-links"> <a href="#">تماس با ما</a> <a href="#">درباره ما</a> <a href="#">حریم شخصی</a> <a href="#">پرسش‌های متداول</a> </div>

@@ -12,6 +12,14 @@ $(document).ready(function(){
         $('body').removeClass('open');
         $('ul.menu').removeClass('open');
         $('.overlay').removeClass('open');
-    })
+    });
+
+    /*-----------------------------------------------------------------
+     - Panel Toggle
+     -----------------------------------------------------------------*/
+    $(document).on('click', '.panel-toggle', function(e) {
+        e.preventDefault();
+        $(this).closest('section.panel').toggleClass('closed');
+    });
 
 });
