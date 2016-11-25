@@ -11,7 +11,6 @@ Route::get('test' , 'TestController@index');
 
 Route::group(['namespace' => 'Front'], function () {
 	Route::get('/', 'FrontController@index');
-	Route::get('/register', 'FrontController@register');
 });
 
 /*
