@@ -17,20 +17,38 @@
                             'name' => 'registerForm',
                             'id' => 'registerForm',
                         ]) !!}
-                            <div class="field icon right">
-                                <input type="text" placeholder="نام" class="">
-                                <div class="icon-user"></div>
-                            </div>
-                            <div class="field icon right"> <input type="text" placeholder="ایمیل">
-                                <div class="icon-mail"></div>
-                            </div>
-                            <div class="field icon right"> <input type="password" placeholder="پسورد">
-                                <div class="icon-lock"></div>
-                            </div>
+                        @include('auth.frame.input',[
+                            'field' => 'name_first',
+                            'class' => 'form-required form-persian',
+                            'icon' => 'icon-user',
+
+                        ])
+
+                        @include('auth.frame.input',[
+                            'field' => 'name_last',
+                            'class' => 'form-required form-persian',
+                            'icon' => 'icon-user',
+
+                        ])
+
+                        @include('auth.frame.input',[
+                            'field' => 'email',
+                            'class' => 'form-required form-email',
+                            'icon' => 'icon-mail',
+
+                        ])
+
+                        @include('auth.frame.input',[
+                            'field' => 'mobile',
+                            'class' => 'form-required form-mobile',
+                            'icon' => 'icon-earphone',
+
+                        ])
+
                             <div class="field">
                                 <div class="checkbox"> <input id="check-1" type="checkbox" name="field" value="check"> <label for="check-1"> شرایط و قوانین سایت را می‌پذیرم </label> </div>
                             </div>
-                            <div class="field mt25"> <button class="green block" type="button"> ثبت‌نام </button> </div>
+                            <div class="field mt25"> <button class="green block" type="submit"> ثبت‌نام </button> </div>
                         @include('forms.feed')
                             <div class="more-link"> <span> عضو سایت هستید؟ </span> <a href="#"> وارد شوید </a> </div>
                         {!! Form::close() !!}
