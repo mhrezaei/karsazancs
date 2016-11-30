@@ -373,6 +373,8 @@ return [
 			'expiry' => 'انقضاء',
 			'customer_id' => "مشتری",
 			'tracking_no' => "کد رهگیری",
+            'g-recaptcha-response' => "کد امنیتی",
+
 		],
 
 		"http" => [

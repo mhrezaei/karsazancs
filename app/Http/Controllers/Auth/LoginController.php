@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Request;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 
@@ -36,5 +38,12 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'logout']);
+    }
+
+    public function validator(Request $data)
+    {
+        return Validator::make($data, [
+            'g-recaptcha-response' => 'required|captcha',
+        ]);
     }
 }
