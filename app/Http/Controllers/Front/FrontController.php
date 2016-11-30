@@ -15,9 +15,11 @@ class FrontController extends Controller
 
 	public function index()
 	{
-		$front_slide = Post::findBySlug('persian_index_about');
-		$features = Post::branch('features')->get();
-	    return view('front.persian.home.0', compact('front_slide'));
+		$front_slide = Post::findBySlug('persian_index_slide');
+		$features = Post::selector('features')->get();
+		$services = Post::selector('services')->get();
+        $front_about = Post::findBySlug('persian_index_about');
+	    return view('front.persian.home.0', compact('front_slide', 'features', 'services', 'front_about'));
 	}
 
 	public function register()

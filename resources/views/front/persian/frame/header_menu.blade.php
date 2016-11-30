@@ -5,7 +5,7 @@
         <!-- Menu -->
         <div class="f-l">
             <ul class="menu">
-                <li><a href="#" class="button green" id="auth-link"> ورود ثبت‌نام </a></li>
+                <li><a href="{{ url('/login') }}" class="button green" id="auth-link"> {{ trans('front.login_signup') }} </a></li>
                 <li><a href="#"> معرفی </a></li>
                 <li> <a href="#"> خدمات </a>
                     <ul class="sub-menu">

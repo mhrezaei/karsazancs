@@ -28,7 +28,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-6 tar">
-                                    <div class="checkbox"> <input id="check-1" type="checkbox" name="remember" value="check"> <label for="check-1">{{ trans('people.commands.remember_me') }}</label> </div>
+                                    {{--<div class="checkbox"> <input id="check-1" type="checkbox" name="remember" value="check"> <label for="check-1">{{ trans('people.commands.remember_me') }}</label> </div>--}}
                                 </div>
                                 <div class="col-sm-6 tal"> <a href="#" class="simple-link">{{ trans('people.commands.forget_password') }}</a> </div>
                             </div>
