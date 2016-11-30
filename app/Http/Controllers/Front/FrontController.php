@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -14,7 +15,9 @@ class FrontController extends Controller
 
 	public function index()
 	{
-		return view('front.persian.home.0');
+		$front_slide = Post::findBySlug('persian_index_about');
+		$features = Post::branch('features')->get();
+	    return view('front.persian.home.0', compact('front_slide'));
 	}
 
 	public function register()
