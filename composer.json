@@ -12,7 +12,8 @@
         "laravelcollective/html": "5.3.*",
         "twbs/bootstrap": "^3.3",
         "unisharp/laravel-filemanager": "^1.6",
-        "vinkla/hashids": "^2.4"
+        "vinkla/hashids": "^2.4",
+        "anhskohbo/no-captcha": "^2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
