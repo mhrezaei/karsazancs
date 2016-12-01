@@ -1,7 +1,7 @@
 <!-- START: Header -->
 <header id="main-header">
     <div class="container">
-        <a href="{{ url('') }}" id="logo"> <img src="{{ App\Providers\SettingServiceProvider::get('site_logo') }}" width="234"> </a>
+        <a href="{{ url('') }}" id="logo"> <img src="{{ url('/' . Setting::get('site_logo')) }}" width="234"> </a>
         <!-- Menu -->
         <div class="f-l">
             <ul class="menu">

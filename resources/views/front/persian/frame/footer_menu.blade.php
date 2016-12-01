@@ -1,4 +1,4 @@
-<a href="{{ url('/') }}" id="foot-logo"><img src="{{ App\Providers\SettingServiceProvider::get('site_logo_bw') }}" width="150"></a>
+<a href="{{ url('/') }}" id="foot-logo"><img src="{{ url('/' . Setting::get('site_logo_bw')) }}" width="150"></a>
 <div class="simple-links">
     <a href="{{ url('/contact') }}"> {{ trans('front.contact_us') }}</a>
     <a href="{{ url('/pages/persian_about_page') }}"> {{ trans('front.about') }}</a>

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class FrontController extends Controller
 {
@@ -54,6 +55,19 @@ class FrontController extends Controller
         return view('front.persian.page.0', compact('page', 'data'));
 	}
 
+    public function contact()
+    {
+        $data = $this->global_data;
+        return view('front.persian.contact.0', compact('data'));
+    }
+
+    public function faq()
+    {
+        $data = $this->global_data;
+        $faq = Post::selector('faq')->orderBy('title', 'asc')->get();
+        return view('front.persian.faq.0', compact('data', 'faq'));
+    }
+
 	/*
 	|--------------------------------------------------------------------------
 	| Authentication Related Things
@@ -71,12 +85,15 @@ class FrontController extends Controller
 
 	public function logout(Request $request)
 	{
-		$logged_developer = decrypt($request->session()->pull('logged_developer'));
+		if ($request->session()->get('logged_developer'))
+        {
+            $logged_developer = decrypt($request->session()->pull('logged_developer'));
 
-		if($logged_developer) {
-			$ok = Auth::loginUsingId( $logged_developer );
-			return redirect('/manage') ;
-		}
+            if($logged_developer) {
+                $ok = Auth::loginUsingId( $logged_developer );
+                return redirect('/manage') ;
+            }
+        }
 
 		Auth::logout();
 		Session::flush();
