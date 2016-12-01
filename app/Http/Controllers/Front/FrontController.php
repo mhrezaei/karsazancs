@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Post;
+use App\Providers\SettingServiceProvider;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;

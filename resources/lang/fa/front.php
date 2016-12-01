@@ -10,6 +10,9 @@ return [
     'login_signup' => 'ورود / ثبت‌نام',
     'about' => 'معرفی',
     'privacy' => 'حریم شخصی',
+    'faq' => 'سوالات',
+    'products' => 'محصولات',
+    'contact_us' => 'تماس با ما',
 
 
 

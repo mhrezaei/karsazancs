@@ -1,7 +1,7 @@
 <!-- START: Header -->
 <header id="main-header">
     <div class="container">
-        <a href="{{ url('') }}" id="logo"> <img src="{{ url('/assets/images/logo.png') }}" width="234"> </a>
+        <a href="{{ url('') }}" id="logo"> <img src="{{ App\Providers\SettingServiceProvider::get('site_logo') }}" width="234"> </a>
         <!-- Menu -->
         <div class="f-l">
             <ul class="menu">
@@ -16,8 +16,9 @@
                     </ul>
                 </li>
                 @endif
-                <li><a href="#"> محصولات </a></li>
-                <li><a href="#"> سوالات </a></li>
+                <li><a href="{{ url('/products') }}"> {{ trans('front.products') }} </a></li>
+                <li><a href="{{ url('/faq') }}"> {{ trans('front.faq') }} </a></li>
+                <li><a href="{{ url('/contact') }}"> {{ trans('front.contact_us') }}</a></li>
             </ul>
             <!-- Responsive Menu -->
             <a href="#" class="res-menu-toggle icon-menu"></a>
