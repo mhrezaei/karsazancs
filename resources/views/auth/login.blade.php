@@ -37,7 +37,7 @@
                             <div class="col-sm-12" style="text-align: center;"> <a href="#" class="simple-link">{{ trans('people.commands.forget_password') }}</a> </div>
                         </div>
 
-                        <div class="more-link"> <span>{{ trans('people.commands.not_a_member') }}</span> <a href="#">{{ trans('people.commands.register_now') }}</a> </div>
+                        <div class="more-link"> <span>{{ trans('people.commands.not_a_member') }}</span> <a href="{{ url('/register') }}">{{ trans('people.commands.register_now') }}</a> </div>
                         </form>
                     </article>
                 </section>

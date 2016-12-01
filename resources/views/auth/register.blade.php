@@ -46,7 +46,7 @@
                         ])
 
                             <div class="field">
-                                <div class="checkbox"> <input id="check-1" type="checkbox" name="field" value="check"> <label for="check-1"> شرایط و قوانین سایت را می‌پذیرم </label> </div>
+                                <div class="checkbox"> <input id="check-1" type="checkbox" name="field" value="check"> <label for="check-1"> <a style="color: #BBBBBB; font-size: 13px;" target="_blank" href="{{ url('/pages/term_of_service') }}">{{ trans('front.term_of_service') }}</a> </label> </div>
                             </div>
                             <div class="field mt25"> <button class="green block" type="submit"> ثبت‌نام </button> </div>
                         @include('forms.feed')
