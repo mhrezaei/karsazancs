@@ -6,15 +6,16 @@
         <div class="f-l">
             <ul class="menu">
                 <li><a href="{{ url('/login') }}" class="button green" id="auth-link"> {{ trans('front.login_signup') }} </a></li>
-                <li><a href="#"> معرفی </a></li>
-                <li> <a href="#"> خدمات </a>
+                <li><a href="{{ url('/pages/persian_about_page') }}"> {{ trans('front.about') }} </a></li>
+                @if($data['header_menu'])
+                <li> <a href="#"> {{ trans('front.our_services') }} </a>
                     <ul class="sub-menu">
-                        <li><a href="#">صدور ویزا کارت</a></li>
-                        <li><a href="#">عودت کارت</a></li>
-                        <li><a href="#">تمدید</a></li>
-                        <li><a href="#">شارژ ارزی ویزا کارت</a></li>
+                        @foreach($data['header_menu'] as $menu)
+                        <li><a href="{{ $menu->say('link') }}">{{ $menu->title }}</a></li>
+                        @endforeach
                     </ul>
                 </li>
+                @endif
                 <li><a href="#"> محصولات </a></li>
                 <li><a href="#"> سوالات </a></li>
             </ul>

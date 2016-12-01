@@ -5,7 +5,7 @@
     <div class="row">
         @foreach($services as $service)
         <div class="col-sm-3">
-            <a href="#" class="service">
+            <a href="{{ $service->say('link') }}" class="service">
                 <section class="panel">
                     <article>
                         <div class="tac"><img src="{{ $service->say('featured_image') }}" width="66"></div>

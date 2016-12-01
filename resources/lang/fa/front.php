@@ -8,6 +8,9 @@ return [
     'give_card' => 'دریافت کارت',
     'our_services' => 'خدمات ما',
     'login_signup' => 'ورود / ثبت‌نام',
+    'about' => 'معرفی',
+    'privacy' => 'حریم شخصی',
+
 
 
 

@@ -11,20 +11,46 @@ use Illuminate\Support\Facades\Auth;
 
 class FrontController extends Controller
 {
-
+    public $global_data;
+    public function __construct()
+    {
+        $this->global_data['header_menu'] = Post::selector('services')->get();
+    }
 
 	public function index()
 	{
-		$front_slide = Post::findBySlug('persian_index_slide');
+		$data = $this->global_data;
+	    $front_slide = Post::findBySlug('persian_index_slide');
 		$features = Post::selector('features')->get();
 		$services = Post::selector('services')->get();
         $front_about = Post::findBySlug('persian_index_about');
-	    return view('front.persian.home.0', compact('front_slide', 'features', 'services', 'front_about'));
+	    return view('front.persian.home.0', compact('front_slide', 'features', 'services', 'front_about', 'data'));
 	}
 
 	public function register()
 	{
-		return 123;
+        $data = $this->global_data;
+	}
+
+    public function pages($slug, $title = null)
+    {
+        $data = $this->global_data;
+        if (! $slug)
+            return view('errors.404');
+
+        if (is_numeric($slug) and $slug > 0)
+        {
+            $page = Post::findBySlug($slug, 'id');
+        }
+        else
+        {
+            $page = Post::findBySlug($slug);
+        }
+
+        if (! $page)
+            return view('errors.404');
+
+        return view('front.persian.page.0', compact('page', 'data'));
 	}
 
 	/*
