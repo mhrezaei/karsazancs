@@ -11,7 +11,7 @@
                     <article>
                         <h1 class="auth-title"> {{ trans('front.register') }} </h1>
                         {!! Form::open([
-                            'url'	=> '/register' ,
+                            'url'	=> '/register/new' ,
                             'method'=> 'post',
                             'class' => 'js',
                             'name' => 'registerForm',
@@ -46,8 +46,21 @@
                         ])
 
                             <div class="field">
-                                <div class="checkbox"> <input id="check-1" type="checkbox" name="field" value="check"> <label for="check-1"> <a style="color: #BBBBBB; font-size: 13px;" target="_blank" href="{{ url('/pages/term_of_service') }}">{{ trans('front.term_of_service') }}</a> </label> </div>
+                                <div class="checkbox">
+                                    <input id="check-1" type="checkbox" name="term_of_service" class="form-required form-checkbox" error-value="{{ trans('validation.javascript_validation.term_of_service') }}">
+                                    <label for="check-1">
+                                        <a style="color: #BBBBBB; font-size: 13px;" target="_blank" href="{{ url('/pages/term_of_service') }}">
+                                            {{ trans('front.term_of_service') }}
+                                        </a>
+                                    </label>
+                                </div>
                             </div>
+                        <div class="row">
+                            <div class="col-sm-6 tar">
+                                {{--<div class="checkbox"> <input id="check-1" type="checkbox" name="remember" value="check"> <label for="check-1">{{ trans('people.commands.remember_me') }}</label> </div>--}}
+                                {!! app('captcha')->display($attributes = [], $lang = 'fa') !!}
+                            </div>
+                        </div>
                             <div class="field mt25"> <button class="green block" type="submit"> ثبت‌نام </button> </div>
                         @include('forms.feed')
                             <div class="more-link"> <span> عضو سایت هستید؟ </span> <a href="#"> وارد شوید </a> </div>

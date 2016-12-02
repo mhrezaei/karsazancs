@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Providers\EmailServiceProvider;
+use App\Providers\ValidationServiceProvider;
+use App\Models\User;
+use App\Traits\TahaControllerTrait;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -21,6 +25,7 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
+    use TahaControllerTrait;
 
     /**
      * Where to redirect users after login / registration.
@@ -47,11 +52,66 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $data = $this->all($data);
+
+        if (filter_var($data['email'], FILTER_VALIDATE_EMAIL))
+        {
+            $user = User::where('email', $data['email'])->first();
+            if ($user)
+            {
+                if ($user->status >= 3)
+                {
+                    return $this->jsonFeedback(trans('front.unique_email'),[
+                        'ok' => 0,
+                        'message' => trans('front.unique_email')
+                    ]);
+                }
+                else
+                {
+                    $update = array(
+                        'name_first' => $data['name_first'],
+                        'name_last' => $data['name_last'],
+                        'email' => $data['email'],
+                        'mobile' => $data['mobile'],
+                        'status' => 2,
+                        'remember_token' => md5($data['email']) . rand(10000, 99999),
+                        'id' => $user->id,
+                    );
+                    User::store($update);
+                    $user = User::find($user->id);
+                    Auth::loginUsingId($user->id);
+                    EmailServiceProvider::send($user, $user->email, trans('front.verify_email'), trans('front.site_title'));
+                    return $this->jsonFeedback(null, [
+                        'redirect' => url('/profile'),
+                        'ok' => 1,
+                        'message' => trans('forms.feed.wait'),
+                    ]);
+                }
+            }
+        }
+
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name_first' => 'required|persian:60|min:2|max:255',
+            'name_last' => 'required|persian:60|min:2|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+//            'email' => 'required|email|max:255|unique:users', //@TODO chon sabtename makhfi darim nemitoone unique bashe
+            'mobile' => 'required|phone:mobile' ,
+            'g-recaptcha-response' => 'required', 'recaptcha',
+            //'password' => 'required|min:6|confirmed',
         ]);
+    }
+
+    public function all($data)
+    {
+        $value	= $data;
+        $purified = ValidationServiceProvider::purifier($value,[
+            'name_first'  =>  'pd',
+            'name_last'  =>  'pd',
+            'email'  =>  'ed',
+            'mobile' => 'ed' ,
+        ]);
+        return $purified;
+
     }
 
     /**
@@ -62,10 +122,33 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        $create = User::create([
+            'name_first' => $data['name_first'],
+            'name_last' => $data['name_last'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'mobile' => $data['mobile'],
+            'status' => 2,
+            'remember_token' => md5($data['email']) . rand(10000, 99999),
+//            'password' => bcrypt($data['password']),
         ]);
+
+        $user = $create->toArray();
+        if (isset($user['id']) and $user['id'] > 0)
+        {
+            $user = User::find($user['id']);
+            EmailServiceProvider::send($user, $user->email, trans('front.verify_email'), trans('front.site_title'));
+            return $this->jsonFeedback(null, [
+                'redirect' => url('/profile'),
+                'ok' => 1,
+                'message' => trans('forms.feed.wait'),
+            ]);
+        }
+        else
+        {
+            return $this->jsonFeedback(trans('forms.feed.error'),[
+                'ok' => 0,
+                'message' => trans('forms.feed.error')
+            ]);
+        }
     }
 }

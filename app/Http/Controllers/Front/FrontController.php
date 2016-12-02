@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Post;
+use App\Models\User;
+use App\Providers\EmailServiceProvider;
 use App\Providers\SettingServiceProvider;
+use App\Traits\TahaControllerTrait;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -13,30 +16,86 @@ use Illuminate\Support\Facades\Session;
 
 class FrontController extends Controller
 {
-    public $global_data;
+    use TahaControllerTrait;
     public function __construct()
     {
-        $this->global_data['header_menu'] = Post::selector('services')->get();
+
     }
 
 	public function index()
 	{
-		$data = $this->global_data;
 	    $front_slide = Post::findBySlug('persian_index_slide');
 		$features = Post::selector('features')->get();
 		$services = Post::selector('services')->get();
         $front_about = Post::findBySlug('persian_index_about');
-	    return view('front.persian.home.0', compact('front_slide', 'features', 'services', 'front_about', 'data'));
+	    return view('front.persian.home.0', compact('front_slide', 'features', 'services', 'front_about'));
 	}
 
-	public function register()
+	public function register(Requests\Front\AccountSaveRequest $request)
 	{
-        $data = $this->global_data;
+        $data = $request->toArray();
+	    if (filter_var($data['email'], FILTER_VALIDATE_EMAIL))
+        {
+            $user = User::where('email', $data['email'])->first();
+            if ($user)
+            {
+                if ($user->status >= 3) {
+                    return $this->jsonFeedback(trans('front.unique_email'),[
+                        'ok' => 0,
+                        'message' => trans('front.unique_email')
+                    ]);
+                } else {
+                    $update = array(
+                        'name_first' => $data['name_first'],
+                        'name_last' => $data['name_last'],
+                        'email' => $data['email'],
+                        'mobile' => $data['mobile'],
+                        'status' => 2,
+                        'remember_token' => md5($data['email']) . rand(10000, 99999),
+                        'id' => $user->id,
+                    );
+                    User::store($update);
+                    $user = User::find($user->id);
+                    Auth::loginUsingId($user->id);
+                    EmailServiceProvider::send($user, $user->email, trans('front.verify_email'), trans('front.site_title'));
+                    return $this->jsonFeedback(null, [
+                        'redirect' => url('/profile'),
+                        'ok' => 1,
+                        'message' => trans('forms.feed.wait'),
+                    ]);
+                }
+            }
+            else
+            {
+                $insert = array(
+                    'name_first' => $data['name_first'],
+                    'name_last' => $data['name_last'],
+                    'email' => $data['email'],
+                    'mobile' => $data['mobile'],
+                    'status' => 2,
+                    'remember_token' => md5($data['email']) . rand(10000, 99999),
+                );
+                $user = User::find(User::store($insert));
+                Auth::loginUsingId($user->id);
+                EmailServiceProvider::send($user, $user->email, trans('front.verify_email'), trans('front.site_title'));
+                return $this->jsonFeedback(null, [
+                    'redirect' => url('/profile'),
+                    'ok' => 1,
+                    'message' => trans('forms.feed.wait'),
+                ]);
+            }
+        }
+        else
+        {
+            return $this->jsonFeedback(null, [
+                'ok' => 0,
+                'message' => trans('forms.feed.error'),
+            ]);
+        }
 	}
 
     public function pages($slug, $title = null)
     {
-        $data = $this->global_data;
         if (! $slug)
             return view('errors.404');
 
@@ -52,20 +111,18 @@ class FrontController extends Controller
         if (! $page)
             return view('errors.404');
 
-        return view('front.persian.page.0', compact('page', 'data'));
+        return view('front.persian.page.0', compact('page'));
 	}
 
     public function contact()
     {
-        $data = $this->global_data;
-        return view('front.persian.contact.0', compact('data'));
+        return view('front.persian.contact.0');
     }
 
     public function faq()
     {
-        $data = $this->global_data;
         $faq = Post::selector('faq')->orderBy('title', 'asc')->get();
-        return view('front.persian.faq.0', compact('data', 'faq'));
+        return view('front.persian.faq.0', compact('faq'));
     }
 
 	/*

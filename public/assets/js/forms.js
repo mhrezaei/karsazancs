@@ -21,6 +21,7 @@ $(document).ready(function () {
 //    9) password    : .form-password => for check verify password field rename that to password id + '2'
 //    10) datepicker : .form-datepicker => get timestamp with your input id + 'Extra'
 //    11) select     : .form-select
+//	  12) checkbox   : .form-checkbox
 //
 // Option => add this attr to form element
 //    1) no-validation="1"    :     submit form without javascript validation
@@ -126,6 +127,7 @@ function forms_validate(formData, jqForm, options) {
 		var $datepicker = $(this).hasClass('form-datepicker');
 		var $select = $(this).hasClass('form-select');
 		var $selectpicker = $(this).hasClass('form-selectpicker');
+		var $checkbox = $(this).hasClass('form-checkbox');
 
 		if ($required && $err_el < 0)
 		{
@@ -341,6 +343,24 @@ function forms_validate(formData, jqForm, options) {
 				forms_markError($(this), "success");
 			}
 		}
+
+        if ($checkbox && $err_el < 0)
+        {
+            if (!$(this).is(':checked'))
+            {
+                if (forms_errorIfNotPhone(this))
+                {
+                    if ($err && $err.length)
+                    {
+                        $errors_msg.push($err);
+                    }
+                    if ($errors < 1) $(this).focus();
+                    $errors++;
+                    $errors_el.push($name);
+                    $err_el = $.inArray($name, $errors_el);
+                }
+            }
+        }
 	});
 
 

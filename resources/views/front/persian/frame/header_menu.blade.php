@@ -7,10 +7,10 @@
             <ul class="menu">
                 <li><a href="{{ url('/login') }}" class="button green" id="auth-link"> {{ trans('front.login_signup') }} </a></li>
                 <li><a href="{{ url('/pages/persian_about_page') }}"> {{ trans('front.about') }} </a></li>
-                @if($data['header_menu'])
+                @if(\App\Providers\ServicesMenuServiceProvider::get())
                 <li> <a href="#"> {{ trans('front.our_services') }} </a>
                     <ul class="sub-menu">
-                        @foreach($data['header_menu'] as $menu)
+                        @foreach(\App\Providers\ServicesMenuServiceProvider::get() as $menu)
                         <li><a href="{{ $menu->say('link') }}">{{ $menu->title }}</a></li>
                         @endforeach
                     </ul>
