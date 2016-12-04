@@ -6,14 +6,14 @@
                 <div class="page-content">
                     @if($faq)
                         @foreach($faq as $question)
-                            <div class="panel green">
+                            <section class="panel faq">
                                 <header>
                                     <div class="title"> {{ $question->title }} </div>
                                 </header>
                                 <article>
                                     <p>{!! $question->text !!}</p>
                                 </article>
-                            </div>
+                            </section>
                         @endforeach
                     @else
                     <div class="alert red">

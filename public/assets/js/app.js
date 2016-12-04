@@ -19,7 +19,16 @@ $(document).ready(function(){
      -----------------------------------------------------------------*/
     $(document).on('click', '.panel-toggle', function(e) {
         e.preventDefault();
-        $(this).closest('section.panel').toggleClass('closed');
+        var panel = $(this).closest('section.panel');
+        $(panel).closest('section.panel').toggleClass('closed');
+    });
+    $('.panel.faq:not(:first-child)').each(function (index, value) {
+        $(this).addClass('faq-close').find('article').hide();
+    });
+    $('.panel.faq header').on('click', function (e) {
+        e.preventDefault();
+        var panel = $(this).closest('section.panel');
+        $(panel).toggleClass('faq-close').find('article').slideToggle();
     });
 
 });
