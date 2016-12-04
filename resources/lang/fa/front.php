@@ -22,6 +22,10 @@ return [
     'alert_for_verify_email' => 'توجه: شما ایمیل خود را تایید نکرده اید.',
     'profile_not_completed_one' => 'شما پروفایل خود را کامل نکرده اید. ',
     'profile_not_completed_two' => 'از اینجا اطلاعات را بروزرسانی کنید.',
+    'order' => 'سفارش',
+    'orders' => 'سفارشات',
+    'user_profile_setting' => 'تنظیمات کاربری',
+
 
 
 

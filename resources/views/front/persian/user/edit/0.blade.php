@@ -4,5 +4,5 @@
     {{ trans('front.site_title') }} | {{ trans('front.profile') . ' ' . $user->name_first }}
 @endsection
 @section('content')
-    @include('front.persian.user.profile.content')
+    @include('front.persian.user.edit.content')
 @endsection

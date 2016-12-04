@@ -12,12 +12,14 @@ Route::get('test' , 'TestController@index');
 Route::group(['namespace' => 'Front'], function () {
 	Route::get('/', 'FrontController@index');
 	Route::post('/register/new', 'FrontController@register');
+	Route::get('/register/confirm/{hash}', 'UserController@register_confirm');
 	Route::get('/pages/{slug}/{title?}', 'FrontController@pages');
     Route::get('/contact', 'FrontController@contact');
     Route::get('/faq', 'FrontController@faq');
 
     Route::group(['middleware' => 'auth'], function (){
         Route::get('/profile', 'UserController@profile');
+        Route::get('/user/edit', 'UserController@user_edit');
     });
 });
 
