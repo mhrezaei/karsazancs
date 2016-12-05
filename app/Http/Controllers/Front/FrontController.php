@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Providers\EmailServiceProvider;
 use App\Providers\SettingServiceProvider;
 use App\Traits\TahaControllerTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -56,12 +57,12 @@ class FrontController extends Controller
                     );
                     User::store($update);
                     $user = User::find($user->id);
-                    Auth::loginUsingId($user->id);
-                    EmailServiceProvider::send($user, $user->email, trans('front.verify_email'), trans('front.site_title'));
+                    //Auth::loginUsingId($user->id);
+                    EmailServiceProvider::send($user, $user->email, trans('front.verify_email'), trans('front.site_title'), 'user_register_active_link');
                     return $this->jsonFeedback(null, [
-                        'redirect' => url('/profile'),
+                        //'redirect' => url('/profile'),
                         'ok' => 1,
-                        'message' => trans('forms.feed.wait'),
+                        'message' => trans('front.please_verify_your_email_address'),
                     ]);
                 }
             }
@@ -76,12 +77,12 @@ class FrontController extends Controller
                     'remember_token' => md5($data['email']) . rand(10000, 99999),
                 );
                 $user = User::find(User::store($insert));
-                Auth::loginUsingId($user->id);
-                EmailServiceProvider::send($user, $user->email, trans('front.verify_email'), trans('front.site_title'));
+                //Auth::loginUsingId($user->id);
+                EmailServiceProvider::send($user, $user->email, trans('front.verify_email'), trans('front.site_title'), 'user_register_active_link');
                 return $this->jsonFeedback(null, [
-                    'redirect' => url('/profile'),
+                    //'redirect' => url('/profile'),
                     'ok' => 1,
-                    'message' => trans('forms.feed.wait'),
+                    'message' => trans('front.please_verify_your_email_address'),
                 ]);
             }
         }
@@ -125,6 +126,15 @@ class FrontController extends Controller
         return view('front.persian.faq.0', compact('faq'));
     }
 
+    public function news()
+    {
+        $news = Post::selector('news')
+            ->where('published_at', '<=', Carbon::now()->toDateTimeString())
+            ->orderBy('published_at', 'desc')
+            ->paginate(20);
+        return view('front.persian.news.0', compact('news'));
+    }
+
 	/*
 	|--------------------------------------------------------------------------
 	| Authentication Related Things
@@ -155,6 +165,17 @@ class FrontController extends Controller
 		Auth::logout();
 		Session::flush();
 		return redirect('/login');
+	}
+
+    public function test()
+    {
+        return view('hadi.test');
+	}
+
+    public function test2()
+    {
+        $data = request()->file('avatar')->store('upload/document');
+        dd($data);
 	}
 
 }

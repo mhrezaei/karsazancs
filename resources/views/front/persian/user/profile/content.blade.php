@@ -11,7 +11,7 @@
                             </div>
                         @endif
                         @if(strlen($user->code_melli) != 10)
-                            <div class="alert compact alt icon-bell red">
+                            <div class="alert alt icon-bell red">
                                 <p> {{ trans('front.profile_not_completed_one') }} <a href="{{ url('/user/edit') }}">{{ trans('front.profile_not_completed_two') }}</a> </p>
                             </div>
                         @endif

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
@@ -44,15 +45,8 @@ class UserController extends Controller
         $update = array(
             'remember_token' => null,
             'id' => $user->id,
+            'status' => 3,
         );
-        if (strlen($user->code_melli) != 10)
-        {
-            $update['status'] = 3;
-        }
-        else
-        {
-            $update['status'] = 4;
-        }
 
         User::store($update);
 
@@ -60,13 +54,40 @@ class UserController extends Controller
         {
             Auth::loginUsingId($user->id);
         }
-        return redirect(url('/profile'));
+        return redirect(url('/user/password'));
     }
 
     public function user_edit()
     {
         $user = Auth::user();
         return view('front.persian.user.edit.0', compact('user'));
+    }
+
+    public function user_password()
+    {
+        return view('auth.set_password');
+    }
+
+    public function user_password_set(Requests\Front\AccountSetPasswordRequest $request)
+    {
+        $input = $request->toArray();
+        $update['password'] = Hash::make($input['password']);
+        $update['id'] = Auth::user()->id;
+        if (User::store($update))
+        {
+            return $this->jsonFeedback(null, [
+                'redirect' => url('/profile'),
+                'ok' => 1,
+                'message' => trans('forms.feed.done'),
+            ]);
+        }
+        else
+        {
+            return $this->jsonFeedback(null, [
+                'ok' => 0,
+                'message' => trans('forms.feed.error'),
+            ]);
+        }
     }
 
 }

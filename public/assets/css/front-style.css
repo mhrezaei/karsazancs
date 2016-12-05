@@ -10,6 +10,7 @@
  * 1. Change the default font family in all browsers (opinionated).
  * 2. Prevent adjustments of font size after orientation changes in IE and iOS.
  */
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,700");
 html {
 	font-family: sans-serif;
 	/* 1 */
@@ -1105,6 +1106,7 @@ img {
 /*-----------------------------------------------------------------
 - Helpers
 -----------------------------------------------------------------*/
+/*rtl:begin:ignore*/
 .bg-n {
 	background: none !important;
 }
@@ -2150,6 +2152,7 @@ hr.or:after {
 	background-color: #ededed !important;
 }
 
+/*rtl:end:ignore*/
 /*-----------------------------------------------------------------
 - Buttons
 -----------------------------------------------------------------*/
@@ -7075,7 +7078,8 @@ ul.tabs li.active a {
 
 [class^="icon-"],
 [class*=" icon-"] {
-	font: normal normal normal 14px/1 FontAwesome !important;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-family: FontAwesome !important;
 	font-size: inherit;
 
 	display: inline-block;
@@ -7512,7 +7516,8 @@ ul.tabs li.active a {
 	content: "";
 }
 
-.icon-align-right:before {
+.icon-align-right:before,
+section.panel.post .thumbnail:before {
 	content: "";
 }
 
@@ -10404,6 +10409,8 @@ header#main-header a#logo {
 	float: right;
 }
 header#main-header .f-l {
+	float: left !important;
+
 	margin-top: 20px;
 }
 header#main-header ul.menu {
@@ -10516,8 +10523,6 @@ header#main-header ul.menu li:hover ul.sub-menu {
 }
 header#main-header a#auth-link {
 	float: left;
-
-	width: 150px;
 }
 @media (max-width: 767px) {
 	header#main-header {
@@ -10867,6 +10872,9 @@ footer#main-footer {
 
 	border-top: 3px solid #00729c;
 	border-bottom: 3px solid #e9822c;
+}
+footer#main-footer a#foot-logo {
+	float: right;
 }
 footer#main-footer .simple-links {
 	float: left;
@@ -11469,4 +11477,120 @@ table span.icon-close {
 	border-width: 6px;
 	border-color: rgba(194, 225, 245, 0);
 	border-right-color: #e7e7e7;
+}
+
+/*-----------------------------------------------------------------
+- Post
+-----------------------------------------------------------------*/
+section.panel.post {
+	transition: all .3s ease;
+}
+section.panel.post:before,
+section.panel.post:after {
+	font-size: 0;
+
+	display: block;
+	visibility: hidden;
+	clear: both;
+
+	height: 0; 
+
+	content: " ";
+}
+section.panel.post .thumbnail {
+	position: relative; 
+
+	float: right;
+
+	width: 280px;
+}
+section.panel.post .thumbnail img {
+	width: 100%;
+	height: auto;
+
+	vertical-align: middle;
+}
+section.panel.post .thumbnail:after {
+	position: absolute;
+	z-index: 100;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	content: "";
+	transition: all .2s ease; 
+
+	opacity: 0;
+	background: rgba(0, 0, 0, .6);
+}
+section.panel.post .thumbnail:before {
+	font-family: FontAwesome;
+	font-size: 2rem;
+	font-weight: 300;
+
+	position: absolute;
+	z-index: 200;
+	top: 35%;
+	left: 50%;
+
+	transition: all .2s ease; 
+	-webkit-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
+
+	opacity: 0;
+	color: #ffffff;
+
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+section.panel.post .content {
+	padding: 20px 300px 0 20px;
+}
+section.panel.post .content a.title {
+	font-size: 1.25rem;
+	font-weight: normal;
+
+	display: inline-block;
+
+	margin-bottom: 10px;
+}
+section.panel.post .content p {
+	font-size: .875rem;
+	font-weight: 300;
+
+	color: #555555;
+}
+section.panel.post:hover {
+	box-shadow: 0 2px 15px rgba(0, 0, 0, .15);
+}
+section.panel.post:hover .thumbnail:after {
+	opacity: 1;
+}
+section.panel.post:hover .thumbnail:before {
+	top: 50%;
+
+	opacity: 1;
+}
+@media (max-width: 767px) {
+	section.panel.post .thumbnail {
+		float: none;
+
+		width: 100%;
+	}
+	section.panel.post .content {
+		padding: 30px;
+	}
+}
+
+/*-----------------------------------------------------------------
+- LTR
+-----------------------------------------------------------------*/
+body.ltr {
+	font-family: "Roboto", sans-serif;
+}
+body.ltr * {
+	font-family: "Roboto", sans-serif;
 }

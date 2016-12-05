@@ -34,14 +34,14 @@
                         @include('auth.frame.input',[
                             'field' => 'email',
                             'class' => 'form-required form-email',
-                            'icon' => 'icon-mail',
+                            'icon' => 'icon-envelope',
 
                         ])
 
                         @include('auth.frame.input',[
                             'field' => 'mobile',
                             'class' => 'form-required form-mobile',
-                            'icon' => 'icon-earphone',
+                            'icon' => 'icon-mobile',
 
                         ])
 
