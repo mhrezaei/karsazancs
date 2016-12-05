@@ -53,6 +53,7 @@ class FrontController extends Controller
                         'mobile' => $data['mobile'],
                         'status' => 2,
                         'remember_token' => md5($data['email']) . rand(10000, 99999),
+                        'customer_type' => 1,
                         'id' => $user->id,
                     );
                     User::store($update);
@@ -75,6 +76,7 @@ class FrontController extends Controller
                     'mobile' => $data['mobile'],
                     'status' => 2,
                     'remember_token' => md5($data['email']) . rand(10000, 99999),
+                    'customer_type' => 1,
                 );
                 $user = User::find(User::store($insert));
                 //Auth::loginUsingId($user->id);
