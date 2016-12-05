@@ -13,6 +13,7 @@
                             <div class="field"> <label> ایمیل </label> <input type="text" value="salam@peyman.me"> </div>
                             <div class="field"> <label> موبایل </label> <input type="text" value="09111233434"> </div>
                             <div class="select">
+                                <label> جنسیت </label>
                                 <select name="" id="">
                                     <option value="">سلام</option>
                                 </select>
