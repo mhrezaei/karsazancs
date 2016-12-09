@@ -2,7 +2,7 @@
     <div class="form-feed alert" style="display:none">
         {{ $feed_wait or trans('forms.feed.wait') }}
     </div>
-    <div class="d-n">
+    <div class="d-n hide">
         <span class=" form-feed-wait" style="color: black;">
             <div style="width: 100%; text-align: center;">
                 {{  $feed_wait or trans('forms.feed.wait')  }}
