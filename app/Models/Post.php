@@ -198,7 +198,7 @@ class Post extends Model
 	private static function loadDefaultImage()
 	{
 		if(!self::$default_image)
-			self::$default_image = '/assets/site/images/default-post.png';
+			self::$default_image = '/assets/images/default-post.jpg';
 
 	}
 
