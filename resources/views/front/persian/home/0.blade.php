@@ -12,3 +12,4 @@
     </div>
     @include('front.persian.home.about')
 @endsection
+

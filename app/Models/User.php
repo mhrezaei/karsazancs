@@ -29,7 +29,7 @@ class User extends Authenticatable
 	public static $optional_media_for_individuals = [] ;
 
 	protected $hidden = [
-		'password', 'remember_token',
+		'password',
 	];
 
 	protected $casts = [
@@ -362,6 +362,9 @@ class User extends Authenticatable
 					return '-' ;
 				else
 					return trans("people.$property.".$this->$property) ;
+
+            case 'confirm_link' :
+                return url('/register/confirm/' . $this->remember_token);
 
 			case 'city' :
 			case 'city_id' :

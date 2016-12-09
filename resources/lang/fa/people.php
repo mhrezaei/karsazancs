@@ -46,6 +46,7 @@ return [
 
 				'bank_accounts' => 'حساب‌های بانکی' ,
 				'bank_account' => 'حساب بانکی' ,
+                'set_password' => 'تنظیم رمز عبور',
 		],
 		"form" => [
 				"deleted_person" => '[؟]' ,

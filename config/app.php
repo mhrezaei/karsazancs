@@ -163,6 +163,9 @@ return [
           Illuminate\Validation\ValidationServiceProvider::class,
           Illuminate\View\ViewServiceProvider::class,
           'App\Providers\ValidationServiceProvider',
+         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+         App\Providers\SettingServiceProvider::class,
+
 
          /*
 		* Package Service Providers...
@@ -239,6 +242,9 @@ return [
           'Image' => Intervention\Image\Facades\Image::class,
           'Taha' => \App\Providers\TahaServiceProvider::class ,
           'Hashids' => Vinkla\Hashids\Facades\Hashids::class ,
+          'NoCaptcha' => 'Anhskohbo\NoCaptcha\Facades\NoCaptcha',
+          'Setting' => \App\Providers\SettingServiceProvider::class,
+
      ],
 
 ];

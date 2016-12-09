@@ -9,9 +9,25 @@
 
 Route::get('test' , 'TestController@index');
 
-Route::group(['namespace' => 'Front'], function () {
-	Route::get('/', 'FrontController@index');
-	Route::get('/register', 'FrontController@register');
+Route::group(['namespace' => 'Front', 'middleware' => 'Subdomain'], function () {
+	// test
+    Route::get('/hadi', 'UserController@test');
+    Route::post('/hadi', 'FrontController@test2');
+
+    Route::get('/', 'FrontController@index');
+	Route::post('/register/new', 'FrontController@register');
+	Route::get('/register/confirm/{hash}', 'UserController@register_confirm');
+	Route::get('/pages/{slug}/{title?}', 'FrontController@pages');
+    Route::get('/contact', 'FrontController@contact');
+    Route::get('/faq', 'FrontController@faq');
+    Route::get('/news', 'FrontController@news');
+
+    Route::group(['middleware' => 'auth'], function (){
+        Route::get('/profile', 'UserController@profile');
+        Route::get('/user/edit', 'UserController@user_edit');
+        Route::get('/user/password', 'UserController@user_password');
+        Route::post('/user/password', 'UserController@user_password_set');
+    });
 });
 
 /*
