@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Providers\SettingServiceProvider;
 use App\Traits\GlobalControllerTrait;
 use Closure;
 use Illuminate\Support\Facades\App;
@@ -21,16 +22,29 @@ class UserIpDetect
                 $data = json_decode($data, true);
                 if ($data['country_code'] == 'IR')
                 {
-                    Session::put('domain', 'fa');
-                    App::setLocale('fa');
+                    {
+                    }
+                    else
+                    {
+                        $this->setData('fa');
+                    }
                 }
                 else
                 {
-                    Session::put('domain', 'en');
-                    App::setLocale('en');
+                    {
+                    }
+                    else
+                    {
+                    }
                 }
             }
         }
         return $next($request);
+    }
+
+    public function setData($lang)
+    {
+        Session::put('domain', $lang);
+        App::setLocale($lang);
     }
 }

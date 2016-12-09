@@ -163,7 +163,9 @@ class FrontController extends Controller
 
     public function show_products($id)
     {
-        return base_path();
+        echo $this->getDomain();
+        echo '<br>';
+        echo self::domain();
     }
 
 	/*

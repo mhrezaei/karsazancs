@@ -13,8 +13,11 @@ class Subdomain
     use GlobalControllerTrait;
     public function handle($request, Closure $next)
     {
-        Session::put('domain', $this->getDomain());
-        App::setLocale($this->getDomain());
+        if ($this->getDomain())
+        {
+            Session::put('domain', $this->getDomain());
+            App::setLocale($this->getDomain());
+        }
         return $next($request);
     }
 }

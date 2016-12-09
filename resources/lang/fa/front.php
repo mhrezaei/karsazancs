@@ -2,7 +2,7 @@
 
 return [
 
-    'site_title' => 'صرافی میهن',
+    'site_title' => 'صرافی کاردان',
     'home_page' => 'صفحه نخست',
     'register' => 'ثبت‌نام',
     'give_card' => 'دریافت کارت',

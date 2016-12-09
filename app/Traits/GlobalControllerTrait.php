@@ -11,53 +11,32 @@ trait GlobalControllerTrait
         $subdomain = str_replace('http://', '', url(''));
         $subdomain = str_replace('https://', '', $subdomain);
         $subdomain = explode('.', $subdomain);
+        $result = null;
         if ($subdomain[0] == 'www')
         {
-            if ($subdomain[1] == 'diamondecard' or $subdomain[1] == 'localhost')
+            if ($subdomain[1] == 'fa')
             {
-                $subdomain = 'fa';
+                $result = 'fa';
             }
-            else
+            elseif ($subdomain[1] == 'en')
             {
-                if ($subdomain[1] == 'fa')
-                {
-                    $subdomain = 'fa';
-                }
-                elseif ($subdomain[1] == 'en')
-                {
-                    $subdomain = 'en';
-                }
-                else
-                {
-                    $subdomain = 'fa';
-                }
+                $result = 'en';
             }
         }
         else
         {
-            if ($subdomain[0] == 'diamondecard' or $subdomain[0] == 'localhost')
+            if ($subdomain[0] == 'fa')
             {
-                $subdomain = 'fa';
+                $result = 'fa';
             }
-            else
+            elseif ($subdomain[0] == 'en')
             {
-                if ($subdomain[0] == 'fa')
-                {
-                    $subdomain = 'fa';
-                }
-                elseif ($subdomain[0] == 'en')
-                {
-                    $subdomain = 'en';
-                }
-                else
-                {
-                    $subdomain = 'fa';
-                }
+                $result = 'en';
             }
         }
 
-        $subdomain = 'en';
-        return $subdomain;
+//        $subdomain = 'en';
+        return $result;
     }
 
     public static function domain()
