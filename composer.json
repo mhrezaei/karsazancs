@@ -13,7 +13,8 @@
         "twbs/bootstrap": "^3.3",
         "unisharp/laravel-filemanager": "^1.6",
         "vinkla/hashids": "^2.4",
-        "anhskohbo/no-captcha": "^2.1"
+        "anhskohbo/no-captcha": "^2.1",
+        "paragonie/random_compat": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
