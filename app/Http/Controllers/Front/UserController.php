@@ -90,4 +90,17 @@ class UserController extends Controller
         }
     }
 
+    public function test()
+    {
+        $api = new \SoapClient('http://enumis.cloudapp.net/EbankingService/EbankingService.svc?wsdl');
+//        $res = $api->__soapCall('AccountEnquiry', array(
+//            'CardID' => '1234567890123456',
+//            'AvailableBalance' => 1,
+//        ));
+//        dd($api->__getFunctions());
+        $params['AvailableBalance'] = 0;
+        $params['CardID'] = '1234567890123456';
+        dd($api->AccountEnquiry($params));
+    }
+
 }

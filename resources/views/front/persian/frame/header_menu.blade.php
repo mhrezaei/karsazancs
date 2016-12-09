@@ -6,7 +6,7 @@
         <div class="f-l">
             <ul class="menu">
                 <li><a href="{{ url('/login') }}" class="button green" id="auth-link"> {{ trans('front.login_signup') }} </a></li>
-                <li><a href="{{ url('/pages/persian_about_page') }}"> {{ trans('front.about') }} </a></li>
+                <li><a href="{{ url('/pages/about_page') }}"> {{ trans('front.about') }} </a></li>
                 @if(\App\Providers\ServicesMenuServiceProvider::get())
                 <li> <a href="#"> {{ trans('front.our_services') }} </a>
                     <ul class="sub-menu">

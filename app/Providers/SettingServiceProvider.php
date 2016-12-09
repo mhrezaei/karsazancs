@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Setting;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
 class SettingServiceProvider extends ServiceProvider
@@ -30,5 +31,15 @@ class SettingServiceProvider extends ServiceProvider
     public static function get($slug)
     {
         return Setting::get($slug);
+    }
+
+    public static function isLocale($lang)
+    {
+        return App::isLocale($lang);
+    }
+
+    public static function getLocale()
+    {
+        return App::getLocale();
     }
 }

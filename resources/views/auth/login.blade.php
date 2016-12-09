@@ -1,7 +1,8 @@
-@extends('auth.layout')
+@extends('auth.frame.frame')
 
-@section('page_title' , trans('people.commands.login'))
-
+@section('page_title')
+    {{ trans('front.site_title') }} | {{ trans('front.register') }}
+@endsection
 @section('content')
     <div class="page-bg">
         <div class="container">

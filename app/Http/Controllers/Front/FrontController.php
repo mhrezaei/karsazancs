@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Providers\EmailServiceProvider;
 use App\Providers\SettingServiceProvider;
+use App\Traits\GlobalControllerTrait;
 use App\Traits\TahaControllerTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Session;
 class FrontController extends Controller
 {
     use TahaControllerTrait;
+    use GlobalControllerTrait;
     public function __construct()
     {
 
@@ -25,10 +27,10 @@ class FrontController extends Controller
 
 	public function index()
 	{
-	    $front_slide = Post::findBySlug('persian_index_slide');
-		$features = Post::selector('features')->get();
-		$services = Post::selector('services')->get();
-        $front_about = Post::findBySlug('persian_index_about');
+	    $front_slide = Post::findBySlug($this->domain() . '-index_slide');
+		$features = Post::selector($this->domain() . '-features')->get();
+		$services = Post::selector($this->domain() . '-services')->get();
+        $front_about = Post::findBySlug($this->domain() . '-index_about');
 	    return view('front.persian.home.0', compact('front_slide', 'features', 'services', 'front_about'));
 	}
 
@@ -108,7 +110,7 @@ class FrontController extends Controller
         }
         else
         {
-            $page = Post::findBySlug($slug);
+            $page = Post::findBySlug($this->domain() . '-' . $slug);
         }
 
         if (! $page)
@@ -124,13 +126,13 @@ class FrontController extends Controller
 
     public function faq()
     {
-        $faq = Post::selector('faq')->orderBy('title', 'asc')->get();
+        $faq = Post::selector($this->domain() . '-faq')->orderBy('title', 'asc')->get();
         return view('front.persian.faq.0', compact('faq'));
     }
 
     public function news()
     {
-        $news = Post::selector('news')
+        $news = Post::selector($this->domain() . '-news')
             ->where('published_at', '<=', Carbon::now()->toDateTimeString())
             ->orderBy('published_at', 'desc')
             ->paginate(20);
