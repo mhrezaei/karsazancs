@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use App\Providers\SecKeyServiceProvider; //@TODO: Bring it here to this project!
 
@@ -134,7 +135,8 @@ class ValidationServiceProvider extends ServiceProvider
 
 			case "number":
 			case "numeric" :
-				$data = floatval( str_replace(',',null,$data) );
+				if($data)
+					$data = floatval( str_replace(',',null,$data) );
 				break;
 
 			case "bool":
@@ -148,6 +150,10 @@ class ValidationServiceProvider extends ServiceProvider
 				$data = Crypt::decrypt($data) ;
 				break;
 
+			case 'shetab' :
+				$data = str_replace(' - ',null , $data) ;
+				break;
+
 			case 'date' :
 				//$data = Carbon::createFromTimestamp($data)->toDateTimeString();
 				$carbon = new Carbon($data) ;
@@ -156,7 +162,7 @@ class ValidationServiceProvider extends ServiceProvider
 
 			case 'time' :
 				if(strlen($data)==4)
-					$data = $data[0].$data[1].':'.$data['2'].$data[3] ;
+					$data = $data[0].$data[1].':'.$data[3].$data[4] ;
 				break;
 
 			case 'stripUrl' :
@@ -202,6 +208,12 @@ class ValidationServiceProvider extends ServiceProvider
 		$this->app['validator']->extend('fileExists', function($attribute, $value, $parameters, $validator){
 			return self::fileExists($attribute, $value, $parameters, $validator);
 		});
+		$this->app['validator']->extend('time', function($attribute, $value, $parameters, $validator){
+			return self::validateTime($attribute, $value, $parameters, $validator);
+		});
+		$this->app['validator']->extend('shetab', function($attribute, $value, $parameters, $validator){
+			return self::validateShetab($attribute, $value, $parameters, $validator);
+		});
 	}
 
 	/*
@@ -210,6 +222,29 @@ class ValidationServiceProvider extends ServiceProvider
 	|--------------------------------------------------------------------------
 	| All private static functions
 	*/
+
+	private function validateShetab($attribute, $value, $parameters, $validator)
+	{
+		return strlen($value) == 16 ;
+	}
+
+	private function validateTime($attribute, $value, $parameters, $validator)
+	{
+		if(strlen($value) != 5 or $value[2] != ':')
+			return false ;
+
+		$array = explode(':',$value) ;
+		$h = floatval($array[0]);
+		$m = floatval($array[1]);
+
+		if($h<0 or $h>23 or $m<0 or $m>59)
+			return false ;
+		else
+			return true ;
+
+
+
+	}
 
 	private function fileExists($attribute, $value, $parameters, $validator)
 	{

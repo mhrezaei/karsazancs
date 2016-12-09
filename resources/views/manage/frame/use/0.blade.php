@@ -6,9 +6,9 @@
 
 @section('page_title')
 	@if(isset($page[0][1]))
-		{{$page[0][1]}}:&nbsp;
+		{{$page[0][1]}} |&nbsp;
 	@endif
-	{{ trans('manage.global.page_title') }}
+	{{ trans('global.admin_page_title') }}
 @endsection
 
 @section('modal')

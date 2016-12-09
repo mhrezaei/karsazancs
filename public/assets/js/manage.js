@@ -283,8 +283,8 @@ function customerEditor()
 
 function orderEditor()
 {
-	$rate = parseFloat($('input[name=rate]').val()) ;
-	$amount = parseFloat(  forms_digit_en($('input[name=initial_charge]').val().replaceAll(',','') ) )
+	var $rate = parseFloat($('input[name=rate]').val()) ;
+	var $amount = parseFloat(  forms_digit_en($('input[name=initial_charge]').val().replaceAll(',','') ) )
 	if(!$amount)
 		$amount = 0 ;
 	$invoice = forms_digit_fa(addCommas(Math.round($rate * $amount))) ;
@@ -292,4 +292,43 @@ function orderEditor()
 	$('input[name=original_invoice]').val( $invoice ) ;
 	$('input[name=amount_invoiced]').val( $invoice ) ;
 	$('input[name=invoice]').val( $invoice ) ;
+}
+
+function paymentEditor()
+{
+	var $method = $('#cmbMethodSelector').val() ;
+
+	$('.-detail').parent().parent().hide() ;
+	$('.-'+$method).parent().parent().show() ;
+}
+
+function paymentProcessEditor()
+{
+	var $selector_value = $('#cmbStatus').val();
+	$('.saveButton').hide() ;
+
+	switch($selector_value) {
+		case 'confirmed' :
+			$('#btnConfirm').show() ;
+			$('#txtConfirmed').val( $('#txtDeclared').val() ).parent().parent().hide();
+			break;
+
+		case 'rejected' :
+			$('#btnReject').show() ;
+			$('#txtConfirmed').val( '0' ).parent().parent().hide();
+			break;
+
+		case 'custom' :
+			$('#btnSave').show() ;
+			$('#txtConfirmed').val( $('#txtConfirmed').attr('aria-valuenow') ).parent().parent().show();
+			forms_numberFormat('#txtConfirmed');
+			$('#txtConfirmed').focus();
+			break;
+
+		default :
+			$('#btnSave').show() ;
+			$('#txtConfirmed').val('').parent().parent().hide();
+			break;
+
+	}
 }

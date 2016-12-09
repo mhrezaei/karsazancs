@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Manage;
 
+use App\Models\Account;
+use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
@@ -46,10 +48,18 @@ class PaymentsController extends Controller
 	}
 
 
-	public function browse($master = 'all'  , $request_tab = 'open')
+	public function browse($master = 'all'  , $request_tab = null)
 	{
 		$page = $this->page ;
-		$user_id = $product_id = 0 ;
+		$user_id = $order_id = 0 ;
+
+		//request_tab...
+		if(!$request_tab) {
+			if($master=='all')
+				$request_tab ='pending' ;
+			else
+				$request_tab = 'all' ;
+		}
 
 		//Master...
 		if(str_contains($master,'customer')) {
@@ -64,8 +74,8 @@ class PaymentsController extends Controller
 			$order = Order::withTrashed()->find( str_replace('order' , null , $master) ) ;
 			if(!$order)
 				return view('errors.410');
-			$master_name = $order->title ;
-			$product_id = $order->id ;
+			$master_name = trans('validation.attributes.order_id').' '.AppServiceProvider::pd($order->slug) ;
+			$order_id = $order->id ;
 			$page[1] = ["browse/$master/$request_tab" , $master_name , "payments/browse/$master"] ;
 		}
 		elseif($master=='all') {
@@ -91,11 +101,11 @@ class PaymentsController extends Controller
 			return view('errors.403');
 
 		//Model...
-		$model_data = Payment::selector($request_tab , $user_id , $product_id)->orderby('created_at' , 'desc')->paginate(50);
+		$model_data = Payment::selector($request_tab , $user_id , $order_id)->orderby('created_at' , 'desc')->paginate(50);
 		$db = new Payment() ;
 
 		//View...
-		return view("manage.payments.browse" , compact('page','model_data' , 'db' , 'master' , 'user_id' , 'product_id'));
+		return view("manage.payments.browse" , compact('page','model_data' , 'db' , 'master' , 'user_id' , 'order_id'));
 
 	}
 
@@ -140,8 +150,14 @@ class PaymentsController extends Controller
 				$permit .= '.bin' ;
 				break;
 
+			case 'process' :
+				$model->spreadMeta();
+				$model->view_only = true ;
+				$permit .= '.process' ;
+				break;
+
 			default:
-				dd("$view_file: $item_id");
+				dd("modalAction:$view_file: $item_id");
 		}
 
 		if(!Auth::user()->can($permit))
@@ -153,69 +169,52 @@ class PaymentsController extends Controller
 		return view($view , compact('model' , 'opt')) ;
 	}
 
-	public function create($product_id = 0 , $user_id = 0)
+	public function create($order_id = 0)
 	{
+//		$order_id = 1 ; //@TODO: Remove This!
 		//Permission...
 		if(!Auth::user()->can('payments.create'))
 			return view('errors.m403');
 
 		//Model...
 		$model = new Payment() ;
-		$model->user_id = $user_id ;
-		$model->product_id = $product_id ;
+		$model->order_id = $order_id ;
+		$model->user_id = 0 ;
 
-		//User...
-		if($user_id>0) {
-			$customer = User::selector()->where('id' , $user_id)->first() ;
-			if(!$customer)
-				return view('errors.m410');
-			$model->user_id = $customer->id ;
-		}
 
 		//Product...
-		if($product_id>0) {
-			$product = Product::selector('all')->where('id' , $product_id)->first() ;
-			if(!$product)
+		if($order_id>0) {
+			$order = Order::selector('live')->where('id' , $order_id)->first() ;
+			if(!$order)
 				return view('errors.m410');
-			$model->product_id = $product->id ;
+			$model->order_id = $order->id ;
+			$model->user_id = $order->user_id ;
+			$model->amount_declared = $order->amount_payable ;
+
+			if($model->order->direction == 'outcome')
+				$model->method  = $model->default_method_for_outcome;
+			else
+				$model->method  =$model->default_method_for_income;
+
+			return view('manage.payments.editor' , compact('model'));
 		}
 		else {
-			$products = Product::selector('all')->orderBy('title')->get() ;
+			return view('manage.payments.create');
 		}
 
-		//Full Form...
-		if($product_id * $user_id > 0) {
-			$model->initial_charge = $model->product->initial_charge ;
-			$model->product->spreadMeta() ;
-			$model->status = 2 ;
-			$model->rate = $model->product->currency()->loadCurrentRates()->price_to_sell ;
-		}
-
-		//View...
-		if($product_id * $user_id == 0)
-			return view('manage.payments.create' , compact('model' , 'products'));
-		else
-			return view('manage.payments.editor-new' , compact('model')); ;
 	}
 
-	public function editor($model_id=0)
+	public function editor($model_id)
 	{
 		//Model...
 		$model = Payment::withTrashed()->find($model_id);
 		if(!$model)
 			return view('errors.m410');
 
-		$model->spreadMeta();
-		$model->product->spreadMeta() ;
-
-		if($model->canEdit())
-			$model->rate = $model->product->currency()->loadCurrentRates()->price_to_sell ;
-		else
-			$model->rate = $model->product->currency()->loadRates($model->created_at)->price_to_sell ;
-
+		$model->spreadMeta() ;
 
 		//View...
-		return view( 'manage.payments.editor-new', compact('model'));
+		return view( 'manage.payments.editor', compact('model'));
 	}
 
 	/*
@@ -227,27 +226,20 @@ class PaymentsController extends Controller
 
 	public function createAction(Requests\Manage\PaymentCreateRequest $request)
 	{
+		//Find...
+		$order = Order::findBySlug($request->order_no) ;
 
-		//Customer...
-		if($request->user_id > 0) {
-			$customer = User::selector()->where('id' , $request->user_id)->first() ;
-		}
-		else {
-			$customer = User::selector()->where('code_melli' , $request->code_melli)->first() ;
+		//Validation...
+		if(!$order)
+			return $this->jsonFeedback(trans('validation.http.Error410'));
 
-		}
-		if(!$customer)
-			return $this->jsonFeedback(trans('forms.feed.user_not_found'));
-
-		//Product...
-		$product = Product::selector('all')->where('id' , $request->product_id)->first() ;
-		if(!$product)
-			return $this->jsonFeedback(trans('forms.feed.thing_not_found' , ['thing' => trans('validation.attributes.product'),]));
+		if($order->amount_invoiced <= $order->amount_paid )
+			return $this->jsonFeedback(trans('orders.form.order_already_paid'));
 
 		//Feedback...
 		return $this->jsonFeedback([
 				'ok' => 1 ,
-				'callback' => 'masterModal("'. url('manage/payments/create/'.$product->id.'/'.$customer->id) . '") ',
+				'callback' => 'masterModal("'. url('manage/payments/create/'.$order->id) . '") ',
 				'message' => trans('payments.form.feedback_order_next_step') ,
 				'redirectTime' => "1",
 		]);
@@ -256,78 +248,112 @@ class PaymentsController extends Controller
 
 	}
 
-	public function saveNew(Requests\Manage\PaymentNewRequest $request)
-	{
-		$data = $request ;
-
-		//Validation
-		if($request->id) {
-			$model = Payment::find($request->id);
-			if(!$model or $model->type != 'new')
-				return $this->jsonFeedback(trans('validation.http.Error410'));
-			if(!$model->canEdit())
-				return $this->jsonFeedback(trans('validation.http.Error403'));
-		}
-		else {
-			$model = new Payment();
-			$model->product_id = $request->product_id ;
-			$model->type = 'new' ;
-		}
-
-		$customer = User::selector()->where('id' , $request->user_id)->first() ;
-		if(!$customer)
-			return $this->jsonFeedback(trans('forms.feed.user_not_found'));
-
-		$product = Product::selector('all')->where('id' , $request->product_id)->first() ;
-		if(!$product)
-			return $this->jsonFeedback(trans('forms.feed.thing_not_found' , ['thing' => trans('validation.attributes.product'),]));
-		$product->spreadMeta() ;
-
-		if($request->initial_charge < $product->min_charge)
-			return $this->jsonFeedback(trans('products.form.error_charge_less_than_min'));
-
-		if($request->initial_charge > $product->max_charge and $product->max_charge > 0)
-			return $this->jsonFeedback(trans('products.form.error_charge_more_than_max'));
-
-
-		//Other Data... ()
-		if(!$model->canProcess() or !$request->status or $request->status>3)
-			if($model->id)
-				unset($data['status']);
-			else
-				$data['status'] = 1 ;
-
-		$data['rate'] = $model->product->currency()->loadCurrentRates()->price_to_sell ;
-		$data['original_invoice'] = round($data['rate'] * $request->initial_charge);
-
-		//Save...
-		$saved = Payment::store($data);
-
-		//Feedback...
-		return $this->jsonAjaxSaveFeedback($saved , [
-				'success_callback' => "rowUpdate('tblPayments','$request->id')",
-		]);
-	}
-
 	public function save(Requests\Manage\PaymentSaveRequest $request)
 	{
-		//More Validations...
-		if($request->charge > 0 and $request->min_charge > 0 and $request->charge < $request->min_charge)
-			return $this->jsonFeedback(trans('payments.form.error_charge_less_than_min'));
-		if($request->charge > 0 and $request->max_charge > 0 and $request->charge > $request->max_charge)
-			return $this->jsonFeedback(trans('payments.form.error_charge_less_than_min'));
-		if($request->min_charge > 0 and $request->max_charge > 0 and $request->min_charge > $request->max_charge)
-			return $this->jsonFeedback(trans('payments.form.error_min_more_than_max'));
+		$data = $request->toArray() ;
 
-		if($request->inventory > 0 and $request->inventory_low_alarm < $request->inventory_low_action )
-			return $this->jsonFeedback(trans('payments.form.error_alarm_less_than_action'));
+		/*--------------------------------------------------------------------------
+		| Validations and Normalizations
+		*/
 
-		//Save and Return...
-		$saved = Payment::store($request);
+		if($request->id) {
+			$model = Payment::find($request->id);
+			unset($data['payment_method']);
+			unset($data['amount_declared']);
+			$data['status'] = '-' ;
+			if(!$model) {
+				return $this->jsonFeedback(trans('validation.http.Error410'));
+			}
+			if(!$model->canSave()) {
+				return $this->jsonFeedback(trans('validation.http.Error403'));
+			}
+		}
+		else {
+			if(!Auth::user()->can('payments.process'))
+				$data['status'] = 'pending' ;
+		}
+
+		if(in_array($request->payment_method , ['cash','shetab','transfer','deposit','pos'])) {
+			$data['payment_date'] = $request->payment_date . ' ' . $request->payment_time;
+		}
+
+		if($request->direction == 'outcome' and in_array($request->payment_method,['shetab','transfer','deposit','cheque'])) {
+			$account = Account::where('id' , $request->customer_account_id )->where('user_id' , $request->user_id)->first();
+			if(!$account) {
+				return $this->jsonFeedback(trans('validation.exists') , ['attribute' => trans('validation.attributes.customer_account_id'),]);
+			}
+		}
+
+		if($request->direction == 'income' and $request->payment_method=='site_credit' and $request->amount_declared > $request->site_credit){
+			return $this->jsonFeedback(trans('payments.form.insufficient_credit'));
+		}
+
+		if($data['status']=='confirmed') {
+			$data['amount_confirmed'] = $data['amount_declared'] ;
+			$data['checked_at'] = Carbon::now()->toDateTimeString() ;
+			$data['checked_by'] = Auth::user()->id ;
+		}
+
+		/*--------------------------------------------------------------------------
+		| Save
+		*/
+
+		$saved = Payment::store($data , ['payment_time' , 'amount_payable' , 'site_credit' , 'status']);
+
+		if($saved and $data['status']=='confirmed') {
+			$model = Payment::find($saved);
+			$model->reindex() ;
+		}
+
+		/*--------------------------------------------------------------------------
+		| Return ...
+		*/
 
 		return $this->jsonAjaxSaveFeedback($saved , [
 				'success_callback' => "rowUpdate('tblPayments','$request->id')",
 		]);
+
+	}
+
+	public function process(Requests\Manage\PaymentProcessRequest $request)
+	{
+		$data = [] ;
+
+		/*--------------------------------------------------------------------------
+		| Validations and Normalizations
+		*/
+
+		$model = Payment::find($request->id);
+		if(!$model) {
+			return $this->jsonFeedback(trans('validation.http.Error410'));
+		}
+
+		if($model->direction == 'income' and $model->payment_method=='site_credit' and $request->amount_confirmed > $model->user->site_credit){
+			return $this->jsonFeedback(trans('payments.form.insufficient_credit'));
+		}
+
+		/*--------------------------------------------------------------------------
+		| Save ...
+		*/
+
+		$saved = Payment::store( [
+			'id' => $request->id,
+			'amount_confirmed' => $request->amount_confirmed,
+			'checked_at' => Carbon::now()->toDateTimeString(),
+			'checked_by' => Auth::user()->id,
+		] );
+		if($saved)
+			$model->reindex() ;
+
+		/*--------------------------------------------------------------------------
+		| Return ...
+		*/
+
+		return $this->jsonAjaxSaveFeedback($saved , [
+				'success_callback' => "rowUpdate('tblPayments','$request->id')",
+		]);
+
+
 
 	}
 

@@ -15,6 +15,9 @@ else
 
 if(isset($value) and $value) {
 	$j_value = jdate($value)->format('Y/m/d');
+	$carbon = new \Carbon\Carbon($value);
+	$value = $carbon->toDateString() ;
+
 }
 else {
 	$j_value = '' ;

@@ -14,8 +14,8 @@
 	]])
 	
 	@include("forms.input" , [
-		'name' => "tracking_no",
-		'value' => $model->slug ,
+		'name' => "order_id",
+		'value' => $model->title ,
 		'disabled' => true,
 		'condition' => $model->id,
 	])
@@ -59,19 +59,20 @@
 	{{------------------------------------------------------------------------------------------}}
 	@include('forms.sep')
 
-	@include('forms.select' , [
-		'name' => 'status' ,
-		'class' => 'form-required',
-		'options' => [
-			['1' , trans('orders.status.unprocessed')],
-			['2' , trans('orders.status.processing')],
-			['3' , trans('orders.status.under_payment')],
-		] ,
-		'caption_field' => '1' ,
-		'value_field' => "0",
-		'value' => $model,
-		'condition' => $model->canProcess(),
-	])
+	{{--@include('forms.select' , [--}}
+		{{--'name' => 'status' ,--}}
+		{{--'class' => 'form-required',--}}
+		{{--'options' => [--}}
+			{{--['3' , trans('orders.status.under_payment')],--}}
+			{{--['1' , trans('orders.status.unprocessed')],--}}
+			{{--['2' , trans('orders.status.processing')],--}}
+		{{--] ,--}}
+		{{--'caption_field' => '1' ,--}}
+		{{--'value_field' => "0",--}}
+		{{--'value' => $model,--}}
+		{{--'condition' => $model->canProcess(),--}}
+		{{--'disabled' => !$model->canSave()? true : false,--}}
+	{{--])--}}
 
 	@include("forms.input" , [
 		'name' => "initial_charge",
@@ -79,7 +80,7 @@
 		'hint' => $model->canEdit()? $model->charge_admin_hint : '',
 		'class' => 'form-numberFormat form-required form-default' ,
 		'on_change' => "orderEditor()",
-		'on_focus' => "orderEditor()",
+		'on_focus' => $model->id? '' : "orderEditor()",
 		'disabled' => !$model->canSave()? true : false,
 	])
 

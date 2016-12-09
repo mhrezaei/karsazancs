@@ -68,6 +68,21 @@ function forms_listener() {
 		forms_numberFormat(this);
 	});
 
+	$(".form-timeFormat").each(function () {
+		$(this).removeClass('form-timeFormat');
+		$(this).on("keyup", function () {
+			forms_timeFormat(this);
+		});
+		forms_timeFormat(this);
+	});
+	$(".form-cardFormat").each(function () {
+		$(this).removeClass('form-cardFormat');
+		$(this).on("keyup", function () {
+			forms_cardFormat(this);
+		});
+		forms_cardFormat(this);
+	});
+
 //	$(".form-datepicker").each(function () {
 //		$datepicker_id = $(this).attr('id');
 //		if (!$('#' + $datepicker_id + 'Extra').length) {
@@ -428,7 +443,7 @@ function forms_error(jqXhr, textStatus, errorThrown, $form) {
 		errorsHtml = $($feedSelector + '-error').html();
 	}
 
-	$($feedSelector).addClass("alert-danger").html(errorsHtml);
+	$($feedSelector).addClass("alert-danger").html(enDigitsToFa(errorsHtml));
 
 }
 
@@ -859,6 +874,38 @@ function forms_numberFormat(selector)
 	$(selector).val( forms_digit_fa(addCommas(string)) );
 }
 
+function forms_timeFormat(selector)
+{
+	var string = $(selector).val() ;
+	string = forms_digit_en(string.replaceAll(':',''));
+
+	if(string.length > 4) {
+		forms_markError(selector, 'danger');
+		return ;
+	}
+	else
+		forms_markError(selector, 'reset');
+
+
+	$(selector).val( forms_digit_fa(addTimeSeparator(string)) );
+}
+
+function forms_cardFormat(selector)
+{
+	var string = $(selector).val() ;
+	string = forms_digit_en(string.replaceAll(' - ',''));
+
+	if(string.length > 16) {
+		forms_markError(selector, 'danger');
+		return ;
+	}
+	else
+		forms_markError(selector, 'reset');
+
+
+	$(selector).val( forms_digit_fa(addCardSeparator(string)) );
+}
+
 function forms_autoDirection(selector) {
 	return; //TODO: rectify the lagging problem!
 	var $object = $(selector);
@@ -1020,4 +1067,28 @@ function addCommas(nStr) {
 		x1 = x1.replace(rgx, '$1' + ',' + '$2');
 	}
 	return x1 + x2;
+}
+function addTimeSeparator(nStr) {
+
+	nStr += '';
+//	x = nStr.split('.');
+//	x1 = x[0];
+//	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{2})/;
+	while (rgx.test(nStr)) {
+		nStr = nStr.replace(rgx, '$1' + ':' + '$2');
+	}
+	return nStr ;
+}
+function addCardSeparator(nStr) {
+
+	nStr += '';
+//	x = nStr.split('.');
+//	x1 = x[0];
+//	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d{4})(\d+)/;
+	while (rgx.test(nStr)) {
+		nStr = nStr.replace(rgx, '$1' + ' - ' + '$2');
+	}
+	return nStr ;
 }
