@@ -8,7 +8,11 @@
     @include('front.persian.home.feature')
     <div class="container">
         @include('front.persian.home.services')
-        @include('front.persian.home.products')
+        @if(Setting::isLocale('en'))
+            @include('front.english.home.products')
+        @else
+            @include('front.persian.home.products')
+        @endif
     </div>
     @include('front.persian.home.about')
 @endsection

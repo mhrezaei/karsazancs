@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Providers\AppServiceProvider;
+use App\Providers\SettingServiceProvider;
 use App\Traits\TahaMetaTrait;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -353,7 +354,14 @@ class Post extends Model
 			case 'published_at' :
 			case 'deleted_at' :
 				if($this->$property) {
-					return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y [H:m]'));
+                    if (SettingServiceProvider::isLocale('fa'))
+                    {
+                        return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y [H:m]'));
+                    }
+                    elseif (SettingServiceProvider::isLocale('en'))
+                    {
+                        return $this->$property->format('j F Y [H:m]');
+                    }
 				}
 				else
 					return $default ;

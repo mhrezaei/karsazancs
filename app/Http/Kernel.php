@@ -56,5 +56,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'can' => CanMiddleware::class,
         'Subdomain' => \App\Http\Middleware\Subdomain::class,
+        'UserIpDetect' => \App\Http\Middleware\UserIpDetect::class,
     ];
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Post;
+use App\Models\Product;
 use App\Models\User;
 use App\Providers\EmailServiceProvider;
 use App\Providers\SettingServiceProvider;
@@ -37,7 +38,7 @@ class FrontController extends Controller
         }
         else
         {
-            $products = null;
+            $products = Product::all();
         }
 	    return view('front.persian.home.0', compact('front_slide', 'features', 'services', 'front_about', 'products'));
 	}
@@ -145,6 +146,24 @@ class FrontController extends Controller
             ->orderBy('published_at', 'desc')
             ->paginate(20);
         return view('front.persian.news.0', compact('news'));
+    }
+
+    public function products()
+    {
+        if (SettingServiceProvider::isLocale('en'))
+        {
+            $products = Post::selector('en-products')->get();
+        }
+        else
+        {
+            $products = Product::all();
+        }
+        return view('front.persian.products.0', compact('products'));
+    }
+
+    public function show_products($id)
+    {
+        return \Request::ip();
     }
 
 	/*
