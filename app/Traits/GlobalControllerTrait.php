@@ -56,11 +56,11 @@ trait GlobalControllerTrait
             }
         }
 
-        $subdomain = 'en';
+//        $subdomain = 'en';
         return $subdomain;
     }
 
-    public function domain()
+    public static function domain()
     {
         if (Session::has('domain'))
         {

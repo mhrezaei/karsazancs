@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Models\Post;
+use App\Traits\GlobalControllerTrait;
 use Illuminate\Support\ServiceProvider;
 
 class ServicesMenuServiceProvider extends ServiceProvider
 {
+    use GlobalControllerTrait;
     /**
      * Bootstrap the application services.
      *
@@ -29,6 +31,6 @@ class ServicesMenuServiceProvider extends ServiceProvider
 
     public static function get()
     {
-        return Post::selector('services')->get();
+        return Post::selector(self::domain() . '-services')->get();
     }
 }
