@@ -163,7 +163,7 @@ class FrontController extends Controller
 
     public function show_products($id)
     {
-        return \Request::ip();
+        return base_path();
     }
 
 	/*

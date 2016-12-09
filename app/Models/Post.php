@@ -422,7 +422,7 @@ class Post extends Model
 					return str_limit(strip_tags($this->text),200);
 
 			case 'featured_image' :
-				if(!$this->featured_image or !File::exists( public_path() .$this->featured_image))
+				if(!$this->featured_image or !File::exists( base_path('/') . env('PUBLIC_FOLDER', 'public_html') .$this->featured_image))
 					return url(self::$default_image) ;
 				else
 					return url($this->featured_image);
