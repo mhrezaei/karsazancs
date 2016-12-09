@@ -56,7 +56,7 @@ trait GlobalControllerTrait
             }
         }
 
-//        $subdomain = 'en';
+        $subdomain = 'en';
         return $subdomain;
     }
 
