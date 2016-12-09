@@ -163,9 +163,7 @@ class FrontController extends Controller
 
     public function show_products($id)
     {
-        echo $this->getDomain();
-        echo '<br>';
-        echo $this->domain();
+        return redirect(url('/'));
     }
 
 	/*
