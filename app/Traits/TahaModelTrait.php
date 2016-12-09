@@ -132,7 +132,7 @@ trait TahaModelTrait
 	{
 		$data = $this->$field ;
 		if(!is_array($data))
-			$data = json_encode($data , true) ;
+			$data = json_decode($data , true) ;
 
 		if(isset($data[$slug]))
 			return $data[$slug];
