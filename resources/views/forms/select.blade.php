@@ -1,6 +1,8 @@
 <?php
 if(!isset($extra))
 	$extra = '' ;
+if(!isset($name))
+	$name = '' ;
 
 if(isset($class) && str_contains($class, 'form-required')) {
 	$required = true;

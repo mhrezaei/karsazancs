@@ -21,6 +21,7 @@ return [
 				'Inquiry' => 'استعلام' ,
 				'oh_no' => 'نه! اشتباه شد!' ,
 				'details' => 'جزئیات بیش‌تر' ,
+				'show_details' => "نمایش جزئیات",
 				'save'		=> 'ذخیره',
 				'send_and_save' => 'ذخیره و ارسال' ,
 				'undo_changes' => 'لغو تغییرات' ,

@@ -11,7 +11,7 @@
 
 <td>
 	@include('manage.frame.widgets.grid-text' , [
-		'text' => $model->slug.' ('.trans("orders.type.".$model->type).')',
+		'text' => $model->title,
 		'link' => "modal:manage/orders/-id-/edit",
 	])
 	@include('manage.frame.widgets.grid-tiny' , [
@@ -31,6 +31,7 @@
 	@include('manage.frame.widgets.grid-date' , [
 		'date' => $model->created_at,
 	])
+
 </td>
 
 
@@ -50,12 +51,21 @@
 		'color' => "success",
 		'icon' => "check",
 		'condition' => $model->amount_invoiced == $model->amount_paid,
+		'link' => "urlN:manage/payments/browse/order-id-",
 	])
 	@include("manage.frame.widgets.grid-tiny" , [
 		'text' => $model->amount_paid>0? trans('orders.status.partly_paid') : trans('orders.status.unpaid'),
 		'color' => "danger",
 		'icon' => "exclamation-triangle",
 		'condition' => $model->amount_invoiced != $model->amount_paid,
+		'link' => $model->amount_paid>0? "urlN:manage/payments/browse/order-id-" : null,
+	])
+	@include("manage.frame.widgets.grid-tiny" , [
+		'text' => trans('validation.attributes.amount_paid').': '.number_format($model->amount_paid).' '.trans('currencies.IRR'),
+		'color' => "success",
+		'icon' => "check",
+		'condition' => $model->amount_paid>0 and $model->amount_invoiced != $model->amount_paid ,
+		'link' => "urlN:manage/payments/browse/order-id-",
 	])
 </td>
 
@@ -69,9 +79,20 @@
 <td>
 	@include('manage.frame.widgets.grid-text' , [
 		'text' => trans("orders.status.$model->status_code") ,
-		'link' => "modal:manage/orders/$model->product_id/process",
+		'link' => Auth::user()->can('payments.browse')? "modal:manage/orders/-id-/process" : '',
 		'icon' => $model->status_icon ,
-		'color' => $model->status_color ,
+		'color' => $model->trashed()? 'grey' : $model->status_color ,
+	])
+	@include("manage.frame.widgets.grid-tiny" , [
+		'icon' => "times",
+		'text' => trans('posts.manage.deleted_by' , ['name' => $model->deleter()->full_name,]),
+		'color' => "danger",
+		'condition' => $model->trashed(),
+	])
+	@include('manage.frame.widgets.grid-date' , [
+		'date' => $model->deleted_at,
+		'condition' => $model->trashed(),
+		'color' => "danger",
 	])
 </td>
 
@@ -84,11 +105,12 @@
 
 @include('manage.frame.widgets.grid-actionCol' , [ 'actions' => [
 			['pencil' , trans('manage.permits.edit') , "modal:manage/orders/-id-/edit" , "currencies.edit"],
+			['plus-square' , trans('payments.new') , "modal:manage/payments/create/-id-" , "payments.create" , $model->amount_payable > 0],
 //			['money' , trans('currencies.update_price') , 'modal:manage/currencies/-id-/update' , 'currencies.process'],
 //			['eye' , trans('currencies.query') , 'modal:manage/currencies/-id-/query' ],
-//			['history' , trans('currencies.price_history') , "urlN:manage/currencies/-id-/history" , 'currencies.process'],
+			['history' , trans('orders.payments') , "urlN:manage/payments/browse/order-id-" , 'payments.browse'],
 
-			['ban' , trans('forms.button.soft_delete') , 'modal:manage/orders/-id-/soft_delete' , 'currencies.delete' , !$model->trashed()] ,
-			['undo' , trans('forms.button.undelete') , 'modal:manage/orders/-id-/undelete' , 'currencies.bin' , $model->trashed()] ,
-			['times' , trans('forms.button.hard_delete') , 'modal:manage/orders/-id-/hard_delete' , 'currencies.bin' , $model->trashed()] ,
+			['ban' , trans('forms.button.soft_delete') , 'modal:manage/orders/-id-/soft_delete' , 'orders.delete' , !$model->trashed()] ,
+			['undo' , trans('forms.button.undelete') , 'modal:manage/orders/-id-/undelete' , 'orders.bin' , $model->trashed()] ,
+			['times' , trans('forms.button.hard_delete') , 'modal:manage/orders/-id-/hard_delete' , 'orders.bin' , $model->trashed()] ,
 ]])

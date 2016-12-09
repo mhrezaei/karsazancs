@@ -1,7 +1,9 @@
 @extends('manage.frame.use.0')
 
 @section('section')
-	{{--@include('manage.customers.tabs')--}}
+	@if(isset($request_tab))
+		@include('manage.settings.tabs')
+	@endif
 
 	{{--
 	|--------------------------------------------------------------------------
@@ -15,7 +17,8 @@
 
 			@if(Auth::user()->can('customers.edit'))
 				@include('manage.frame.widgets.toolbar_button' , [
-					'target' => 'masterModal("'. url('manage/customers/'.$model->id.'/new_account') . '") ',
+					'fake' => isset($model)? $id = $model->id : $id = 'site',
+					'target' => 'masterModal("'. url("manage/customers/$id/new_account") . '") ',
 					'type' => 'success' ,
 					'caption' => trans('posts.manage.create' , ['thing' => trans('people.commands.bank_account')]) ,
 					'icon' => 'plus-circle' ,

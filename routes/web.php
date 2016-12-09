@@ -155,7 +155,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 		Route::get('/create/{product_id?}/{customer_id?}' , 'OrdersController@create') ;
 //		Route::get('/search' , 'OrdersController@search');
 		Route::get('/{product_id}/edit' , 'OrdersController@editor');
-		Route::get('/{user_id}/{modal_action}' , 'OrdersController@modalActions');
+		Route::get('/{product_id}/{modal_action}' , 'OrdersController@modalActions');
 
 		Route::group(['prefix'=>'save'] , function() {
 //			Route::post('/' , 'OrdersController@save');
@@ -174,18 +174,18 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 		Route::get('/update/{item_id}' , 'PaymentsController@update');
 		Route::get('/' , 'PaymentsController@browse') ;
 		Route::get('/browse/{master?}/{request_tab?}' , 'PaymentsController@browse') ;
-		Route::get('/create/{product_id?}/{customer_id?}' , 'PaymentsController@create') ;
-		Route::get('/search' , 'PaymentsController@search');
+		Route::get('/create/{order_id?}' , 'PaymentsController@create') ;
+//		Route::get('/search' , 'PaymentsController@search');
 		Route::get('/{product_id}/edit' , 'PaymentsController@editor');
 		Route::get('/{user_id}/{modal_action}' , 'PaymentsController@modalActions');
 
 		Route::group(['prefix'=>'save'] , function() {
 			Route::post('/' , 'PaymentsController@save');
 			Route::post('/create' , 'PaymentsController@createAction');
-			Route::post('/new' , 'PaymentsController@saveNew');
-			Route::post('/soft_delete' , 'PaymentsController@soft_delete');
-			Route::post('/undelete' , 'PaymentsController@undelete');
-			Route::post('/hard_delete' , 'PaymentsController@hard_delete');
+			Route::post('/process' , 'PaymentsController@process');
+//			Route::post('/soft_delete' , 'PaymentsController@soft_delete');
+//			Route::post('/undelete' , 'PaymentsController@undelete');
+//			Route::post('/hard_delete' , 'PaymentsController@hard_delete');
 		});
 	});
 

@@ -16,7 +16,11 @@ class AccountSaveRequest extends Request
 	 */
 	public function authorize()
 	{
-		return Auth::user()->can('customers.edit') ;
+		$user_id = $this->all()['user_id'] ;
+		if($user_id)
+			return Auth::user()->can('customers.edit') ;
+		else
+			return Auth::user()->can('super');
 	}
 
 	/**

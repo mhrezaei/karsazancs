@@ -4,10 +4,11 @@ namespace App\Models;
 
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Account extends Model
 {
-	use TahaModelTrait;
+	use TahaModelTrait , SoftDeletes;
 
 	protected $guarded = ['deleted_at'];
 
@@ -29,6 +30,19 @@ class Account extends Model
 	{
 		return $this->belongsTo('App\Models\User');
 	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Accessors & Mutators
+	|--------------------------------------------------------------------------
+	|
+	*/
+	public function getTitleAttribute()
+	{
+		return $this->bank_name . ' '.trans('global.dash').' ' . $this->beneficiary ;
+	}
+
+
 
 	/*
 	|--------------------------------------------------------------------------

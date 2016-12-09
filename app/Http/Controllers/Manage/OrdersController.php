@@ -112,8 +112,12 @@ class OrdersController extends Controller
 
 	public function modalActions($item_id , $view_file)
 	{
+		//Bypass...
 		if($item_id==0)
 			return $this->modalBulkAction($view_file);
+
+		if($view_file=='view')
+			return $this->editor($item_id,true);
 
 		$opt = [] ;
 
@@ -131,6 +135,10 @@ class OrdersController extends Controller
 		$permit = 'orders' ;
 
 		switch($view_file) {
+			case 'process' :
+				$model->reindex() ;
+				$permit .= '.process' ;
+				break;
 			case 'soft_delete' :
 				$permit .= '.delete' ;
 				break;
@@ -198,7 +206,7 @@ class OrdersController extends Controller
 			return view('manage.orders.editor-new' , compact('model')); ;
 	}
 
-	public function editor($model_id=0)
+	public function editor($model_id=0 , $view_only = false )
 	{
 		//Model...
 		$model = Order::withTrashed()->find($model_id);
@@ -207,6 +215,7 @@ class OrdersController extends Controller
 
 		$model->spreadMeta();
 		$model->product->spreadMeta() ;
+		$model->view_only = $view_only ;
 
 		if($model->canEdit())
 			$model->rate = $model->product->currency()->loadCurrentRates()->price_to_sell ;
@@ -273,6 +282,7 @@ class OrdersController extends Controller
 			$model->product_id = $request->product_id ;
 			$data['type'] = 'new' ;
 			$data['slug'] = $model->generateSlug() ;
+			$data['status'] = 1 ;
 		}
 
 		$customer = User::selector()->where('id' , $request->user_id)->first() ;
@@ -291,13 +301,7 @@ class OrdersController extends Controller
 			return $this->jsonFeedback(trans('products.form.error_charge_more_than_max'));
 
 
-		//Other Data... ()
-		if(!$model->canProcess() or !$request->status or $request->status>3)
-			if($model->id)
-				unset($data['status']);
-			else
-				$data['status'] = 1 ;
-
+		//Other Data...
 		$data['rate'] = $model->product->currency()->loadCurrentRates()->price_to_sell ;
 		$data['original_invoice'] = round($data['rate'] * $request->initial_charge);
 
