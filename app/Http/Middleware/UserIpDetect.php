@@ -22,7 +22,9 @@ class UserIpDetect
                 $data = json_decode($data, true);
                 if ($data['country_code'] == 'IR')
                 {
+                    if ($this->getDomain())
                     {
+                        $this->setData($this->getDomain());
                     }
                     else
                     {
@@ -31,10 +33,13 @@ class UserIpDetect
                 }
                 else
                 {
+                    if ($this->getDomain())
                     {
+                        $this->setData($this->getDomain());
                     }
                     else
                     {
+                        $this->setData('en');
                     }
                 }
             }
