@@ -3,7 +3,11 @@
         <article>
             <div class="avatar"><img src="{{ url('/assets/images/avatar.png') }}" width="96"></div>
             <h1 class="user-name"> {{ $user->name_first . ' ' . $user->name_last}} </h1>
-            <hr>
+            <div class="balance">
+                <div class="right"> <span> {{ trans('front.balance') }} </span>
+                    <h1> @pd($user->site_credit) {{ trans('front.toman') }} </h1> </div>
+                <a href="#" class="action button green icon-plus"></a>
+            </div>
             <?php
             $order_count = count($user->orders());
             ?>

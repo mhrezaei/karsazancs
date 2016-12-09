@@ -27,6 +27,16 @@ return [
     'orders' => 'Orders',
     'user_profile_setting' => 'User Settings',
     'please_verify_your_email_address' => 'Please activate the account, go to your email and click on the link sent.',
+    'address' => 'Address',
+    'phone' => 'Phone',
+    'mobile' => 'Mobile',
+    'fax' => 'Fax',
+    'email' => 'Email',
+    'name' => 'Name',
+    'your_message' => 'Your Message',
+    'send' => 'Send Message',
+    'balance' => 'Balance',
+    'toman' => 'T',
 
 
 
