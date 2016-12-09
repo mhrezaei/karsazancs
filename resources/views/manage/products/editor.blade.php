@@ -44,6 +44,16 @@
 		'disabled' => !$model->canSave()? true : false,
 	])
 
+	@include('forms.select' , [
+		'name' => 'color_code' ,
+		'class' => 'form-required',
+		'options' => $model->colorsCombo(),
+//		'caption_field' => 'full_name' ,
+//		'value_field' => 'slug' ,
+		'value' => $model ,
+		'disabled' => !$model->canSave()? true : false,
+	])
+
 	@include('forms.sep')
 
 	@include('forms.input' , [

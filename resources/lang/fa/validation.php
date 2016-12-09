@@ -396,11 +396,11 @@ return [
 				'cheque_no' => "شماره چک",
 				'cheque_date' => "تاریخ چک",
 				'own_account_id' => 'حساب صرافی' ,
-				'card_no' => "شماره کارت",
 				'customer_account_id' => "حساب مشتری",
 				'depositor' => "واریزکننده",
 				'site_credit' => "اعتبار حساب",
 				'checked_by' => "بررسی‌کننده",
+				'color_code' => "رنگ شاخص",
 		],
 
 		"http" => [
