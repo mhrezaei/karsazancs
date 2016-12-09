@@ -165,7 +165,7 @@ class FrontController extends Controller
     {
         echo $this->getDomain();
         echo '<br>';
-        echo self::domain();
+        echo $this->domain();
     }
 
 	/*
