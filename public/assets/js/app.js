@@ -28,7 +28,10 @@ $(document).ready(function(){
     $('.panel.faq header').on('click', function (e) {
         e.preventDefault();
         var panel = $(this).closest('section.panel');
-        $(panel).toggleClass('faq-close').find('article').slideToggle();
+        $('.panel.faq').each(function (index, value) {
+            $(this).addClass('faq-close').find('article').slideUp();
+        });
+        $(panel).removeClass('faq-close').find('article').slideToggle();
     });
 
     /*-----------------------------------------------------------------

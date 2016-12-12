@@ -15,7 +15,8 @@ class Product extends Model
 
 	protected $guarded = ['id', 'deleted_at' , 'deleted_by'];
 	protected static $search_fields = ['slug' , 'title' , 'description'] ;
-	protected static $meta_fields = ['min_charge' , 'max_charge' , 'is_rechargeable' , 'is_extensible' , 'image' , 'max_purchasable' , 'expiry'] ;
+	protected static $meta_fields = ['min_charge' , 'max_charge' , 'is_rechargeable' , 'is_extensible' , 'image' , 'max_purchasable' , 'expiry' , 'color_code'] ;
+	protected static $color_codes = ['red','orange','purple','green','teal','blue','gray','dark','brown'] ;
 	protected $casts = [
 		'meta' => 'array' ,
 		'is_available' => 'boolean' ,
@@ -264,5 +265,18 @@ class Product extends Model
 	public function currenciesCombo()
 	{
 		return Currency::selector() ;
+	}
+
+	public function colorsCombo()
+	{
+		$result = [] ;
+		foreach(self::$color_codes as $key => $color_code) {
+			$result[$key] = [
+				'id' => $color_code,
+				'title' => trans("forms.color.$color_code"),
+			];
+		}
+
+		return $result ;
 	}
 }

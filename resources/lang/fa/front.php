@@ -2,7 +2,7 @@
 
 return [
 
-    'site_title' => 'صرافی میهن',
+    'site_title' => 'صرافی کاردان',
     'home_page' => 'صفحه نخست',
     'register' => 'ثبت‌نام',
     'give_card' => 'دریافت کارت',
@@ -27,6 +27,16 @@ return [
     'orders' => 'سفارشات',
     'user_profile_setting' => 'تنظیمات کاربری',
     'please_verify_your_email_address' => 'لطفاً برای فعال سازی حساب، به ایمیل خود مراجعه نمائید و برروی لینک ارسال شده کلیک کنید.',
+    'address' => 'آدرس',
+    'phone' => 'تلفن',
+    'mobile' => 'موبایل',
+    'fax' => 'فکس',
+    'email' => 'پست الکترونیک',
+    'name' => 'نام',
+    'your_message' => 'پیغام شما',
+    'send' => 'ارسال',
+    'balance' => 'موجودی',
+    'toman' => 'تومان',
 
 
 

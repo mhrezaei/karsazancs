@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Providers\AppServiceProvider;
+use App\Providers\SettingServiceProvider;
 use App\Traits\TahaMetaTrait;
 use App\Traits\TahaModelTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -197,7 +198,7 @@ class Post extends Model
 	private static function loadDefaultImage()
 	{
 		if(!self::$default_image)
-			self::$default_image = '/assets/site/images/default-post.png';
+			self::$default_image = '/assets/images/default-post.jpg';
 
 	}
 
@@ -353,7 +354,14 @@ class Post extends Model
 			case 'published_at' :
 			case 'deleted_at' :
 				if($this->$property) {
-					return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y [H:m]'));
+                    if (SettingServiceProvider::isLocale('fa'))
+                    {
+                        return AppServiceProvider::pd(jDate::forge($this->$property)->format('j F Y [H:m]'));
+                    }
+                    elseif (SettingServiceProvider::isLocale('en'))
+                    {
+                        return $this->$property->format('j F Y [H:m]');
+                    }
 				}
 				else
 					return $default ;
@@ -414,7 +422,7 @@ class Post extends Model
 					return str_limit(strip_tags($this->text),200);
 
 			case 'featured_image' :
-				if(!$this->featured_image or !File::exists( public_path() .$this->featured_image))
+				if(!$this->featured_image or !File::exists( base_path('/') . env('PUBLIC_FOLDER', 'public_html') .$this->featured_image))
 					return url(self::$default_image) ;
 				else
 					return url($this->featured_image);
