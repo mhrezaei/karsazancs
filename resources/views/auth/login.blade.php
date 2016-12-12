@@ -21,7 +21,7 @@
                             <div class="row">
                                 <div class="col-sm-6 tar">
                                     {{--<div class="checkbox"> <input id="check-1" type="checkbox" name="remember" value="check"> <label for="check-1">{{ trans('people.commands.remember_me') }}</label> </div>--}}
-                                    {!! app('captcha')->display($attributes = [], $lang = 'fa') !!}
+                                    {!! app('captcha')->display($attributes = [], $lang = Setting::getLocale()) !!}
                                 </div>
                             </div>
 
