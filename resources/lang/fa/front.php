@@ -37,6 +37,12 @@ return [
     'send' => 'ارسال',
     'balance' => 'موجودی',
     'toman' => 'تومان',
+    
+    
+    'persian' => 'فارسی',
+    'arabic' => 'العربیة',
+    'english' => 'English',
+    
 
 
 
