@@ -9,15 +9,24 @@
         </div>
 
         <div class="langs">
-            <a href="#" class="active simptip-position-bottom simptip-fade" data-tooltip="{{ trans('front.persian') }}">
-                <img src="{{ url('/assets/images/images/lang-fa.png') }}" width="21">
-            </a>
-            <a href="#" class="simptip-position-bottom simptip-fade" data-tooltip="{{ trans('front.english') }}">
-                <img src="{{ url('/assets/images/images/images/lang-en.png') }}" width="21">
-            </a>
-            <a href="#" class="simptip-position-bottom simptip-fade" data-tooltip="{{ trans('front.arabic') }}">
-                <img src="{{ url('/assets/images/images/images/lang-ar.png') }}" width="21">
-            </a>
+            @if(Setting::getLocale() == 'en')
+                <a href="http://fa.diamondecard.com" class="simptip-position-bottom simptip-fade" data-tooltip="{{ trans('front.persian') }}">
+                    <img src="{{ url('/assets/images/lang-fa.png') }}" width="21">
+                </a>
+                <a href="http://en.diamondecard.com" class="active simptip-position-bottom simptip-fade" data-tooltip="{{ trans('front.english') }}">
+                    <img src="{{ url('/assets/images/lang-en.png') }}" width="21">
+                </a>
+            @else
+                <a href="http://fa.diamondecard.com" class="active simptip-position-bottom simptip-fade" data-tooltip="{{ trans('front.persian') }}">
+                    <img src="{{ url('/assets/images/lang-fa.png') }}" width="21">
+                </a>
+                <a href="http://en.diamondecard.com" class="simptip-position-bottom simptip-fade" data-tooltip="{{ trans('front.english') }}">
+                    <img src="{{ url('/assets/images/lang-en.png') }}" width="21">
+                </a>
+            @endif
+            {{--<a href="#" class="simptip-position-bottom simptip-fade" data-tooltip="{{ trans('front.arabic') }}">--}}
+                {{--<img src="{{ url('/assets/images/lang-ar.png') }}" width="21">--}}
+            {{--</a>--}}
         </div>
 
     </div>
