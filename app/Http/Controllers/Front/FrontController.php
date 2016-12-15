@@ -16,6 +16,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use SoapClient;
 
 class FrontController extends Controller
 {
@@ -200,7 +201,10 @@ class FrontController extends Controller
 
     public function test()
     {
-        return view('hadi.test');
+//        return view('hadi.test');
+//        $client = new SoapClient('http://enumis.cloudapp.net/EbankingService/EbankingService.svc?wsdl');
+        $client = new SoapClient('http://sep.shaparak.ir/payments/referencepayment.asmx?wsdl');
+        dd($client->__getFunctions());
 	}
 
     public function test2()

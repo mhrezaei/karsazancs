@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
-    {!! Html::style('assets/css/front-style.css') !!}
     @if(Setting::getLocale() == 'en')
         {!! Html::style('assets/css/front-style-en.css') !!}
+    @else
+        {!! Html::style('assets/css/front-style.css') !!}
     @endif
     <script language="javascript">
         function base_url($ext) {
@@ -19,8 +20,8 @@
 
 @if(Setting::getLocale() == 'en')
     <body class="ltr">
-    @else
-        <body>
+@else
+    <body>
 @endif
 @include('front.persian.frame.header_navbar')
 @include('auth.frame.header_content')

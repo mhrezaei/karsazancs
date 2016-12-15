@@ -11,7 +11,7 @@ Route::get('test' , 'TestController@index');
 
 Route::group(['namespace' => 'Front', 'middleware' => ['Subdomain', 'UserIpDetect']], function () {
 	// test
-    Route::get('/hadi', 'UserController@test');
+    Route::get('/hadi', 'FrontController@test');
     Route::post('/hadi', 'FrontController@test2');
 
     Route::get('/', 'FrontController@index');
