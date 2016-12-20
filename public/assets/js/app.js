@@ -65,4 +65,14 @@ $(document).ready(function(){
         });
     });
 
+    /*-----------------------------------------------------------------
+    - Black and white
+    -----------------------------------------------------------------*/
+    $('#services-image a.service').mouseenter(function(){
+        $('#services-image a.service').not(this).addClass('service-hover');
+    });
+    $('#services-image a.service').mouseleave(function(){
+        $('#services-image a.service').removeClass('service-hover');
+    });
+
 });

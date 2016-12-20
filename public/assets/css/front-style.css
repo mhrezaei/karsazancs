@@ -7902,52 +7902,76 @@ section#services a.service:hover section.panel {
 /*-----------------------------------------------------------------
 - Services image
 -----------------------------------------------------------------*/
-section#services-image a.service section.panel {
-  transition: all 0.2s ease; }
-  section#services-image a.service section.panel article {
-    padding: 0;
-    text-align: center;
-    overflow: hidden;
-    position: relative; }
-    section#services-image a.service section.panel article img {
-      width: 100%;
-      height: auto;
-      vertical-align: middle; }
-    section#services-image a.service section.panel article:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 100;
-      opacity: 0;
-      transition: all 0.2s ease; }
-    section#services-image a.service section.panel article:before {
-      font-family: FontAwesome;
-      position: absolute;
-      top: 35%;
-      left: 50%;
-      -webkit-transform: translate(-50%, -50%);
-          -ms-transform: translate(-50%, -50%);
-              transform: translate(-50%, -50%);
-      font-size: 2rem;
-      color: #ffffff;
-      z-index: 200;
-      font-weight: 300;
-      text-rendering: auto;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      opacity: 0;
-      transition: all 0.2s ease; }
-
-section#services-image a.service:hover section.panel article:after {
-  opacity: 1; }
-
-section#services-image a.service:hover section.panel article:before {
-  top: 50%;
-  opacity: 1; }
+section#services-image a.service {
+  display: inline-block;
+  opacity: 1;
+  vertical-align: middle;
+  margin-bottom: 30px; }
+  section#services-image a.service section.panel {
+    transition: all 0.2s ease;
+    margin-bottom: 0; }
+    section#services-image a.service section.panel article {
+      padding: 0;
+      text-align: center;
+      overflow: hidden;
+      position: relative; }
+      section#services-image a.service section.panel article img {
+        width: 100%;
+        height: auto;
+        vertical-align: middle;
+        transition: all 0.5s ease; }
+      section#services-image a.service section.panel article .title {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #ffffff;
+        opacity: 0;
+        position: absolute;
+        left: 50%;
+        bottom: -20px;
+        -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+                transform: translateX(-50%);
+        white-space: nowrap;
+        transition: all 0.2s ease;
+        z-index: 500; }
+      section#services-image a.service section.panel article:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 100;
+        opacity: 0;
+        transition: all 0.2s ease; }
+      section#services-image a.service section.panel article:before {
+        font-family: FontAwesome;
+        position: absolute;
+        top: 15%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+        font-size: 2rem;
+        color: #ffffff;
+        z-index: 200;
+        font-weight: 300;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        opacity: 0;
+        transition: all 0.2s ease; }
+  section#services-image a.service:hover section.panel article:after {
+    opacity: 1; }
+  section#services-image a.service:hover section.panel article:before {
+    top: 30%;
+    opacity: 1; }
+  section#services-image a.service:hover section.panel article .title {
+    bottom: 40px;
+    opacity: 1; }
+  section#services-image a.service.service-hover {
+    opacity: 0.5; }
 
 /*-----------------------------------------------------------------
 - Banner

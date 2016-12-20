@@ -28,9 +28,10 @@ class FrontController extends Controller
 
 	public function index()
 	{
-	    $front_slide = Post::findBySlug($this->domain() . '-index_slide');
-		$features = Post::selector($this->domain() . '-features')->get();
+        $front_slide = Post::selector($this->domain() . '-slide_show')->get();
+        $features = Post::selector($this->domain() . '-features')->get();
 		$services = Post::selector($this->domain() . '-services')->get();
+		$portfolio = Post::selector($this->domain() . '-portfolio')->get();
         $front_about = Post::findBySlug($this->domain() . '-index_about');
         if (SettingServiceProvider::isLocale('en'))
         {
@@ -40,7 +41,7 @@ class FrontController extends Controller
         {
             $products = Product::all();
         }
-	    return view('front.persian.home.0', compact('front_slide', 'features', 'services', 'front_about', 'products'));
+	    return view('front.persian.home.0', compact('front_slide', 'features', 'services', 'front_about', 'products', 'portfolio'));
 	}
 
 	public function register(Requests\Front\AccountSaveRequest $request)

@@ -7,6 +7,7 @@
     @include('front.persian.home.main_title')
     @include('front.persian.home.feature')
     <div class="container">
+        @include('front.persian.home.portfolio')
         @include('front.persian.home.services')
         @if(Setting::isLocale('en'))
             @include('front.english.home.products')
