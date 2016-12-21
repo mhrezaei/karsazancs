@@ -37,6 +37,9 @@ return [
     'send' => 'Send Message',
     'balance' => 'Balance',
     'toman' => 'T',
+    'persian '=> 'فارسی',
+    'english' => 'English',
+    'arabic' => 'العربیة',
 
 
 

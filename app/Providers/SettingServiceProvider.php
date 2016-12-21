@@ -42,4 +42,9 @@ class SettingServiceProvider extends ServiceProvider
     {
         return App::getLocale();
     }
+
+    public static function getUrl($lang)
+    {
+        return Setting::get('httpd') . $lang . '.' . Setting::get('domain_name');
+    }
 }

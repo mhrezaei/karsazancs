@@ -12,30 +12,37 @@ trait GlobalControllerTrait
         $subdomain = str_replace('https://', '', $subdomain);
         $subdomain = explode('.', $subdomain);
         $result = null;
-        if ($subdomain[0] == 'www')
+        if (strpos('localhost', $subdomain[0]))
         {
-            if ($subdomain[1] == 'fa')
+            if ($subdomain[0] == 'www')
             {
-                $result = 'fa';
+                if ($subdomain[1] == 'fa')
+                {
+                    $result = 'fa';
+                }
+                elseif ($subdomain[1] == 'en')
+                {
+                    $result = 'en';
+                }
             }
-            elseif ($subdomain[1] == 'en')
+            else
             {
-                $result = 'en';
+                if ($subdomain[0] == 'fa')
+                {
+                    $result = 'fa';
+                }
+                elseif ($subdomain[0] == 'en')
+                {
+                    $result = 'en';
+                }
             }
         }
         else
         {
-            if ($subdomain[0] == 'fa')
-            {
-                $result = 'fa';
-            }
-            elseif ($subdomain[0] == 'en')
-            {
-                $result = 'en';
-            }
+            $result = 'fa';
         }
 
-//        $subdomain = 'en';
+        $subdomain = 'en';
         return $result;
     }
 
