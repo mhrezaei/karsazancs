@@ -5,7 +5,7 @@
     <div class="row">
         @foreach($portfolio as $porto)
         <div class="col-sm-3">
-            <a href="{{ url('/post/' . $porto->branch . '/' . $porto->id) }}" class="service">
+            <a href="{{ $porto->say('gallery_link') }}" class="service">
                 <section class="panel">
                     <article> <img src="{{ $porto->say('featured_image') }}">
                         <div class="title"> {{ $porto->title }} </div>

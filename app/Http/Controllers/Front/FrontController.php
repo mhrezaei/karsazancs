@@ -129,6 +129,26 @@ class FrontController extends Controller
         return view('front.persian.page.0', compact('page'));
 	}
 
+    public function show_gallery($slug, $title = null)
+    {
+        if (! $slug)
+            return view('errors.404');
+
+        if (is_numeric($slug) and $slug > 0)
+        {
+            $page = Post::findBySlug($slug, 'id');
+        }
+        else
+        {
+            $page = Post::findBySlug($this->domain() . '-' . $slug);
+        }
+
+        if (! $page)
+            return view('errors.404');
+
+        return view('front.persian.gallery.0', compact('page'));
+    }
+
     public function contact()
     {
         return view('front.persian.contact.0');
