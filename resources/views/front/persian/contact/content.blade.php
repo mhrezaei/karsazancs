@@ -25,25 +25,25 @@
                                 </p>
                             </article>
                         </section>
-                        <section class="panel">
-                            <article>
-                                <form action="#">
-                                    <div class="row mb20">
-                                        <div class="col-sm-4">
-                                            <div class="field"> <label> {{ trans('front.name') }} </label> <input type="text"> </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="field"> <label> {{ trans('front.email') }} </label> <input type="text"> </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="field"> <label> {{ trans('front.mobile') }} </label> <input type="text"> </div>
-                                        </div>
-                                    </div>
-                                    <div class="field"> <label> {{ trans('front.your_message') }} </label> <textarea name="" id="" cols="30" rows="3"></textarea> </div>
-                                    <div class="tal"> <button class="blue ticket-submit"> {{ trans('front.send') }} </button> </div>
-                                </form>
-                            </article>
-                        </section>
+                        {{--<section class="panel">--}}
+                            {{--<article>--}}
+                                {{--<form action="#">--}}
+                                    {{--<div class="row mb20">--}}
+                                        {{--<div class="col-sm-4">--}}
+                                            {{--<div class="field"> <label> {{ trans('front.name') }} </label> <input type="text"> </div>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="col-sm-4">--}}
+                                            {{--<div class="field"> <label> {{ trans('front.email') }} </label> <input type="text"> </div>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="col-sm-4">--}}
+                                            {{--<div class="field"> <label> {{ trans('front.mobile') }} </label> <input type="text"> </div>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--<div class="field"> <label> {{ trans('front.your_message') }} </label> <textarea name="" id="" cols="30" rows="3"></textarea> </div>--}}
+                                    {{--<div class="tal"> <button class="blue ticket-submit"> {{ trans('front.send') }} </button> </div>--}}
+                                {{--</form>--}}
+                            {{--</article>--}}
+                        {{--</section>--}}
                     </div>
                 </div>
             </div>
