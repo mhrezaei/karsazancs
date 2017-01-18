@@ -484,7 +484,7 @@ class User extends Authenticatable
 
 		//Process Developer...
 		if(!Auth::user()->isDeveloper())
-			$table = $table->where('email' , '!=' , 'chieftaha@gmail.com' );
+			$table = $table->where('email' , '!=' , 'chieftaha@gmail.com' )->where('email' , '!=' , 'mr.mhrezaei@gmail.com' );
 
 		//Process Criteria...
 		if($role=='customer' or $role=='customers') {

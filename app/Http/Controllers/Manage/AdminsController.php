@@ -91,7 +91,6 @@ class AdminsController extends Controller
 
 				$opt['branches'] = Branch::orderBy('plural_title')->get() ;
 				$opt['modules'] = User::availableModules() ;
-				$opt['departments'] = Department::orderBy('title')->get() ;
 				break;
 
 			case 'undelete' :
@@ -183,7 +182,7 @@ class AdminsController extends Controller
 
 		if($is_saved and $request->sms_notify)
 			;//@TODO: Call the event
-			//Event::fire(new VolunteerPasswordManualReset($model , $request->password));
+		//Event::fire(new VolunteerPasswordManualReset($model , $request->password));
 
 		return $this->jsonAjaxSaveFeedback($is_saved);
 	}
@@ -283,7 +282,7 @@ class AdminsController extends Controller
 
 		//Return...
 		return $this->jsonAjaxSaveFeedback($ok , [
-			'success_refresh' => $level_changed? true : false
+				'success_refresh' => $level_changed? true : false
 		]) ;
 	}
 

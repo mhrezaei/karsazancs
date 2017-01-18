@@ -25,7 +25,7 @@ class SettingsController extends Controller
 	{
 	}
 
-	public function index($request_tab = 'database')
+	public function index($request_tab = 'contact')
 	{
 		//Preparetions...
 		$page[0] = ['settings' , trans('manage.settings.downstream')];

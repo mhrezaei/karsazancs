@@ -33,17 +33,6 @@
 
 	@include('forms.group-start')
 
-		@include('forms.check' , [
-			'name' => 'sms_notify',
-			'label' => trans('people.form.notify-with-sms'),
-			'value' => 1,
-		])
-
-	@include('forms.group-end')
-
-
-	@include('forms.group-start')
-
 		@include('forms.button' , [
 			'label' => trans('forms.button.save'),
 			'shape' => 'success',

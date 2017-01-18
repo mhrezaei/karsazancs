@@ -5,6 +5,7 @@ return [
 		'logout' => 'خروج' ,
 		'grid_count' => 'در حال نمایش :rows سطر از مجموع :total سطر موجود اطلاعات'  ,
 		'admins' => 'مدیران سایت' ,
+		'manage' => "مدیریت",
 
 		'modules' => [
 			'content_management' => 'مدیریت محتوا' ,

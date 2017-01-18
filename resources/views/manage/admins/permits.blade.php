@@ -38,30 +38,17 @@
 	|--------------------------------------------------------------------------
 	|
 	--}}
-	@include('forms.sep')
+	{{--@include('forms.sep')--}}
 
-	@foreach($opt['modules'] as $module => $permits)
-		@if( !in_array($module , ['posts' , 'admins' , 'tickets']) )
-			@include('manage.admins.permits-role' , [
-				'module' => $module ,
-				'permits' => $module ,
-				'label' => trans("manage.modules.$module")
-			])
-		@endif
-	@endforeach
-
-	@include('forms.sep' , [
-		'label' => trans('manage.modules.tickets') ,
-	])
-
-	@foreach($opt['departments'] as $department)
-		@include('manage.admins.permits-role' , [
-			'module' => 'tickets-'.$department->slug ,
-			'permits' => 'tickets' ,
-			'label' => $department->title ,
-		])
-	@endforeach
-
+	{{--@foreach($opt['modules'] as $module => $permits)--}}
+	{{--@if( !in_array($module , ['posts' , 'admins' , 'tickets']) )--}}
+	{{--@include('manage.admins.permits-role' , [--}}
+	{{--'module' => $module ,--}}
+	{{--'permits' => $module ,--}}
+	{{--'label' => trans("manage.modules.$module")--}}
+	{{--])--}}
+	{{--@endif--}}
+	{{--@endforeach--}}
 
 	@include('forms.sep' , [
 		'label' => trans('manage.modules.content_management') ,
@@ -79,8 +66,8 @@
 
 
 	@include('forms.group-start')
-		<a href="javascript:void(0)" onclick="$('.-permits').prop('checked', true)" class="p20">{{trans('forms.general.all')}}</a>
-		<a href="javascript:void(0)" onclick="$('.-permits').prop('checked', false)" class="">{{trans('forms.general.none')}}</a>
+	<a href="javascript:void(0)" onclick="$('.-permits').prop('checked', true)" class="p20">{{trans('forms.general.all')}}</a>
+	<a href="javascript:void(0)" onclick="$('.-permits').prop('checked', false)" class="">{{trans('forms.general.none')}}</a>
 	@include('forms.group-end')
 
 	@include('forms.sep')
@@ -94,16 +81,16 @@
 
 
 	@include('forms.group-start')
-		@include('forms.button' , [
-			'label' => trans('forms.button.save'),
-			'shape' => 'success',
-			'type' => 'submit' ,
-		])
-		@include('forms.button' , [
-			'label' => trans('forms.button.cancel'),
-			'shape' => 'link',
-			'link' => '$(".modal").modal("hide")',
-		])
+	@include('forms.button' , [
+		'label' => trans('forms.button.save'),
+		'shape' => 'success',
+		'type' => 'submit' ,
+	])
+	@include('forms.button' , [
+		'label' => trans('forms.button.cancel'),
+		'shape' => 'link',
+		'link' => '$(".modal").modal("hide")',
+	])
 
 	@include('forms.group-end')
 

@@ -22,7 +22,7 @@
 	'color' => 'grey' ,
 	'text' => Auth::user()->full_name ,
 	'items' => [
-		['manage/account' , trans('manage.account.account_settings') , 'sliders'] ,
+//		['manage/account' , trans('manage.account.account_settings') , 'sliders'] ,
 //		['-'] ,
 		['/logout' , trans('manage.logout') , 'sign-out'] ,
 	]

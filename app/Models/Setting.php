@@ -11,7 +11,7 @@ class Setting extends Model
 {
 	public static $available_data_types = ['text' , 'textarea' , 'boolean' , 'date' , 'photo' , 'array'] ;
 	public static $available_categories = ['socials' , 'contact' , 'template' , 'database'] ;
-	public static $full_categories = ['socials' , 'contact' , 'template' , 'database' , 'accounts'] ;
+	public static $full_categories = ['contact' , 'socials' , 'template' ] ;
 	public static $default_when_not_found = '-' ;
 	public static $unset_signals = ['unset' , 'default' , '=' , ''] ;
 	public static $reserved_slugs = 'none,setting' ;

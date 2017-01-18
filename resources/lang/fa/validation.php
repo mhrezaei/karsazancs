@@ -18,6 +18,8 @@ return [
 		'phone'             => ':attribute درست وارد نشده است.',
 		'code_melli'        => ":attribute درست وارد نشده است.",
 		'time'           => ":attribute درست وارد نشده است.",
+		'forbidden_chars' => ":attribute شامل کاراکتر غیرمجاز است.",
+		'required_chars' => ":attribute یک یا چند کاراکتر الزامی را ندارد.",
 		'shetab'           => ":attribute درست وارد نشده است.",
 		'national_id'        => ":attribute درست وارد نشده است.",
 		'postal_code'        => ":attribute درست وارد نشده است.",

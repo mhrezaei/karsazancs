@@ -374,7 +374,7 @@ class PostsController extends Controller
 
 		//if new record...
 		if(!$data['id']) {
-			$success_redirect = 'manage/posts/-ID-/edit' ;
+			$success_redirect = 'manage/posts/'.$data['branch'].'/edit/-ID-/' ;
 			switch($action) {
 				case 'draft' :
 					$data['is_draft'] = 1 ;

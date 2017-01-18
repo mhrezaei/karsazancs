@@ -17,6 +17,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['Subdomain', 'UserIpDetec
     Route::get('/contact', 'FrontController@contact');
     Route::get('/faq', 'FrontController@faq');
     Route::get('/news', 'FrontController@news');
+    Route::get('/news', 'FrontController@news');
     Route::get('/products', 'FrontController@products');
     Route::get('/gallery/show/{slug}/{title?}', 'FrontController@show_gallery');
 
@@ -38,14 +39,6 @@ Route::group(['namespace' => 'Front', 'middleware' => ['Subdomain', 'UserIpDetec
 Auth::routes();
 Route::get('home', 'Front\FrontController@redirectUsersAfterLogin');
 Route::get('logout', 'Front\FrontController@logout');
-
-/*
-|--------------------------------------------------------------------------
-| Routes for Registered Users
-|--------------------------------------------------------------------------
-|
-*/
-
 
 /*
 |--------------------------------------------------------------------------
@@ -77,137 +70,6 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 		});
 	});
 
-	/*
-	| Tickets
-	*/
-	Route::group(['prefix'=>'tickets'] , function() {
-		Route::get('/update/{item_id}' , 'TicketsController@update');
-		Route::get('{department_slug}/create/{user_id?}' , 'TicketsController@create');
-		Route::get('/edit/{ticket_id}/{action?}' , 'TicketsController@modalActions');
-		Route::get('/{department_slug}' , 'TicketsController@browse') ;
-//		Route::get('{department_slug}/searched' , 'TicketsController@searchResult');
-//		Route::get('{department_slug}/search' , 'TicketsController@searchPanel');
-		Route::get('/{department_slug}/{request_tab}' , 'TicketsController@browse') ;
-
-		Route::group(['prefix'=>'save'] , function() {
-			Route::post('/' , 'TicketsController@save');
-			Route::post('/reply' , 'TicketsController@saveReply');
-			Route::post('/soft_delete' , 'TicketsController@soft_delete');
-			Route::post('/undelete' , 'TicketsController@undelete');
-			Route::post('/hard_delete' , 'TicketsController@hard_delete');
-		});
-	});
-
-	/*
-	| Customers
-	*/
-
-	Route::group(['prefix'=>'customers', 'middleware' => 'can:customers'] , function() {
-		Route::get('/update/{item_id}' , 'CustomersController@update');
-		Route::get('/updateAccount/{item_id}' , 'CustomersController@updateAccount');
-		Route::get('/' , 'CustomersController@browse') ;
-		Route::get('/browse/{request_tab?}' , 'CustomersController@browse') ;
-		Route::get('/create/' , 'CustomersController@editor') ;
-		Route::get('/search' , 'CustomersController@search');
-		Route::get('/{user_id}/edit' , 'CustomersController@editor');
-		Route::get('/{user_id}/{modal_action}' , 'CustomersController@modalActions');
-
-		Route::group(['prefix'=>'save'] , function() {
-			Route::post('/' , 'CustomersController@save');
-			Route::post('/change_password' , 'CustomersController@change_password');
-			Route::post('/soft_delete' , 'CustomersController@soft_delete');
-			Route::post('/undelete' , 'CustomersController@undelete');
-			Route::post('/hard_delete' , 'CustomersController@hard_delete');
-			Route::post('/account' , 'CustomersController@account');
-		});
-	});
-
-	/*
-	| Products
-	*/
-	Route::group(['prefix'=>'products', 'middleware' => 'can:products'] , function() {
-		Route::get('/update/{item_id}' , 'ProductsController@update');
-		Route::get('/' , 'ProductsController@browse') ;
-		Route::get('/browse/{request_tab?}' , 'ProductsController@browse') ;
-		Route::get('/create/' , 'ProductsController@editor') ;
-		Route::get('/search' , 'ProductsController@search');
-		Route::get('/{user_id}/edit/{savable?}' , 'ProductsController@editor');
-		Route::get('/{user_id}/{modal_action}' , 'ProductsController@modalActions');
-
-		Route::group(['prefix'=>'save'] , function() {
-			Route::post('/' , 'ProductsController@save');
-			Route::post('/soft_delete' , 'ProductsController@soft_delete');
-			Route::post('/undelete' , 'ProductsController@undelete');
-			Route::post('/hard_delete' , 'ProductsController@hard_delete');
-		});
-	});
-
-
-	/*
-	| Orders
-	*/
-	Route::group(['prefix'=>'orders', 'middleware' => 'can:orders'] , function() {
-		Route::get('/update/{item_id}' , 'OrdersController@update');
-		Route::get('/' , 'OrdersController@browse') ;
-		Route::get('/browse/{master?}/{request_tab?}' , 'OrdersController@browse') ;
-		Route::get('/create/{product_id?}/{customer_id?}' , 'OrdersController@create') ;
-//		Route::get('/search' , 'OrdersController@search');
-		Route::get('/{product_id}/edit' , 'OrdersController@editor');
-		Route::get('/{product_id}/{modal_action}' , 'OrdersController@modalActions');
-
-		Route::group(['prefix'=>'save'] , function() {
-//			Route::post('/' , 'OrdersController@save');
-			Route::post('/create' , 'OrdersController@createAction');
-			Route::post('/new' , 'OrdersController@saveNew');
-			Route::post('/soft_delete' , 'OrdersController@soft_delete');
-			Route::post('/undelete' , 'OrdersController@undelete');
-			Route::post('/hard_delete' , 'OrdersController@hard_delete');
-		});
-	});
-
-	/*
-	| Payments
-	*/
-	Route::group(['prefix'=>'payments', 'middleware' => 'can:payments'] , function() {
-		Route::get('/update/{item_id}' , 'PaymentsController@update');
-		Route::get('/' , 'PaymentsController@browse') ;
-		Route::get('/browse/{master?}/{request_tab?}' , 'PaymentsController@browse') ;
-		Route::get('/create/{order_id?}' , 'PaymentsController@create') ;
-//		Route::get('/search' , 'PaymentsController@search');
-		Route::get('/{product_id}/edit' , 'PaymentsController@editor');
-		Route::get('/{user_id}/{modal_action}' , 'PaymentsController@modalActions');
-
-		Route::group(['prefix'=>'save'] , function() {
-			Route::post('/' , 'PaymentsController@save');
-			Route::post('/create' , 'PaymentsController@createAction');
-			Route::post('/process' , 'PaymentsController@process');
-//			Route::post('/soft_delete' , 'PaymentsController@soft_delete');
-//			Route::post('/undelete' , 'PaymentsController@undelete');
-//			Route::post('/hard_delete' , 'PaymentsController@hard_delete');
-		});
-	});
-
-	/*
-	| Currencies
-	*/
-	Route::group(['prefix'=>'currencies', 'middleware' => 'can:currencies'] , function() {
-		Route::get('/update/{item_id}' , 'CurrenciesController@update');
-		Route::get('/' , 'CurrenciesController@browse') ;
-		Route::get('/browse/{request_tab?}' , 'CurrenciesController@browse') ;
-		Route::get('/create/' , 'CurrenciesController@editor') ;
-		Route::get('/search' , 'CurrenciesController@search');
-		Route::get('/{user_id}/edit' , 'CurrenciesController@editor');
-		Route::get('/{user_id}/{modal_action}' , 'CurrenciesController@modalActions');
-
-		Route::group(['prefix'=>'save'] , function() {
-			Route::post('/' , 'CurrenciesController@save');
-			Route::post('/update' , 'CurrenciesController@updateRate');
-			Route::post('/query' , 'CurrenciesController@query');
-			Route::post('/soft_delete' , 'CurrenciesController@soft_delete');
-			Route::post('/undelete' , 'CurrenciesController@undelete');
-			Route::post('/hard_delete' , 'CurrenciesController@hard_delete');
-		});
-	});
 
 	/*
 	| Admins

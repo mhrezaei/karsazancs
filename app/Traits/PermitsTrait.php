@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Crypt;
 trait PermitsTrait
 {
 	protected static $available_modules = [
-		'customers' => ['create' , 'view' , 'activation' , 'send' , 'edit' , 'report' , 'delete' , 'bin'] ,
-		'products' => ['create' , 'edit' , 'delete' , 'bin'],
-		'orders' => ['create'  , 'browse' , 'process' , 'edit' , 'report'  ,  'delete' , 'bin' ] ,
-		'currencies' => ['create' , 'edit' , 'process' , 'delete' , 'bin'],
-		'tickets' => ['browse' , 'process' , 'edit' , 'report' , 'delete' , 'bin'] ,
-		'posts' => ['create','edit','publish','report','delete','bin'] ,
-		'payments' => [ 'browse' , 'process' , 'create' , 'edit' , 'report' , 'delete' , 'bin'],
+		//		'customers' => ['create' , 'view' , 'activation' , 'send' , 'edit' , 'report' , 'delete' , 'bin'] ,
+		//		'products' => ['create' , 'edit' , 'delete' , 'bin'],
+		//		'orders' => ['create'  , 'browse' , 'process' , 'edit' , 'report'  ,  'delete' , 'bin' ] ,
+		//		'currencies' => ['create' , 'edit' , 'process' , 'delete' , 'bin'],
+		//		'tickets' => ['browse' , 'process' , 'edit' , 'report' , 'delete' , 'bin'] ,
+			'posts' => ['create','edit','publish','report','delete','bin'] ,
+		//		'payments' => [ 'browse' , 'process' , 'create' , 'edit' , 'report' , 'delete' , 'bin'],
 	];
 
 	protected static $available_permits = [
@@ -65,7 +65,7 @@ trait PermitsTrait
 	|--------------------------------------------------------------------------
 	| Get
 	|--------------------------------------------------------------------------
-	| 
+	|
 	*/
 
 	public static function availableModules($key=null)
@@ -78,10 +78,18 @@ trait PermitsTrait
 
 	public function getRoles()
 	{
+		//		return null ;
 		if(!$this->roles)
 			return null;
-		else
-			return Crypt::decrypt($this->roles) ;
+		else {
+			try {
+				$crypt = Crypt::decrypt($this->roles) ;
+			}
+			catch(Exception $e) {
+				$crypt = null ;
+			}
+		}
+		return $crypt ;
 
 	}
 
@@ -159,7 +167,7 @@ trait PermitsTrait
 		}
 
 		return $this->canRole($requested_role);
-//		return $this->canDomain($requested_domain) AND $this->canRole($requested_role);
+		//		return $this->canDomain($requested_domain) AND $this->canRole($requested_role);
 	}
 
 	private function canDomain($requested_domain) //depreciated
@@ -193,7 +201,7 @@ trait PermitsTrait
 		//Special Roles...
 		if($requested_role == 'manage')
 			return $this->isSuperAdmin() ;
-//			return $this->canRole('settings') and $this->canRole('admins');
+		//			return $this->canRole('settings') and $this->canRole('admins');
 
 
 		//Module Check...

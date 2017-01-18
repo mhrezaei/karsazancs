@@ -47,7 +47,7 @@ class ValidationServiceProvider extends ServiceProvider
 
 
 		$this->addGlobalRules($global_rules) ;
-//		Session::push('test' , $this->rules) ;
+		//		Session::push('test' , $this->rules) ;
 
 		foreach($input as $varName => $data) {
 			$this->process($varName);
@@ -66,7 +66,7 @@ class ValidationServiceProvider extends ServiceProvider
 		array_push($rules , 'stripArabic') ;
 		foreach($rules as $rule) {
 			$this->applyFilter($key, $rule);
-//			Session::push('test', $key.': '.$rule);
+			//			Session::push('test', $key.': '.$rule);
 		}
 
 	}
@@ -189,6 +189,12 @@ class ValidationServiceProvider extends ServiceProvider
 		});
 		$this->app['validator']->extend('phone', function ($attribute, $value, $parameters, $validator) {
 			return self::validatePhoneNo($attribute, $value, $parameters, $validator);
+		});
+		$this->app['validator']->extend('forbidden_chars', function ($attribute, $value, $parameters, $validator) {
+			return self::validateForbiddenChars($attribute, $value, $parameters, $validator);
+		});
+		$this->app['validator']->extend('required_chars', function ($attribute, $value, $parameters, $validator) {
+			return self::validateRequiredChars($attribute, $value, $parameters, $validator);
 		});
 		$this->app['validator']->extend('code_melli', function ($attribute, $value, $parameters, $validator) {
 			return self::validateCodeMelli($attribute, $value, $parameters, $validator);
@@ -320,6 +326,20 @@ class ValidationServiceProvider extends ServiceProvider
 
 		return true ;
 	}
+	private static function validateForbiddenChars($attribute, $value, $parameters, $validator)
+	{
+		return !str_contains($value , $parameters) ;
+	}
+	private static function validateRequiredChars($attribute, $value, $parameters, $validator)
+	{
+		foreach($parameters as $parameter) {
+			if(!str_contains($value,$parameter))
+				return false ;
+		}
+
+		return true ;
+	}
+
 	private static function validateCodeMelli($attribute, $value, $parameters, $validator)
 	{
 		if(!preg_match("/^\d{10}$/", $value)) {
@@ -328,8 +348,8 @@ class ValidationServiceProvider extends ServiceProvider
 
 		$check = (int)$value[9];
 		$sum = array_sum(array_map(function ($x) use ($value) {
-				return ((int)$value[$x]) * (10 - $x);
-			}, range(0, 8))) % 11;
+					return ((int)$value[$x]) * (10 - $x);
+				}, range(0, 8))) % 11;
 
 		return ($sum < 2 && $check == $sum) || ($sum >= 2 && $check + $sum == 11);
 	}
