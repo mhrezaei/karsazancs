@@ -1,6 +1,5 @@
 <?php
 return [
-	'firm_name' => "دیاموند",
-	'admin_page_title' => "دیاموندپنل",
+	'firm_name' => "شرکت خدمات ساختمانی کارسازان",
 	'dash' => 'ـ',
 ];

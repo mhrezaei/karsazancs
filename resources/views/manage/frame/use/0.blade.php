@@ -8,7 +8,7 @@
 	@if(isset($page[0][1]))
 		{{$page[0][1]}} |&nbsp;
 	@endif
-	{{ trans('global.admin_page_title') }}
+	{{ Setting::get('fa_site_title') }}
 @endsection
 
 @section('modal')
