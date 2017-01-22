@@ -75,4 +75,12 @@ $(document).ready(function(){
         $('#services-image a.service').removeClass('service-hover');
     });
 
+    /*-----------------------------------------------------------------
+    - Lightbox
+    -----------------------------------------------------------------*/
+    lightbox.option({
+        'albumLabel': '',
+        'wrapAround': true
+    })
+
 });
