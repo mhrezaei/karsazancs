@@ -10,7 +10,7 @@
 
                     @foreach($page->photos as $photo)
                         <div class="col-sm-3">
-                        <a class="gallery-item" data-lightbox="gallery" data-title="{{ $photo['label'] }}"> <img src="{{ url($photo['src']) }}"> </a>
+                        <a class="gallery-item" href="{{ url($photo['src']) }}" data-lightbox="gallery" data-title="{{ $photo['label'] }}"> <img src="{{ url($photo['src']) }}"> </a>
                     </div>
                     @endforeach
                 </div>
