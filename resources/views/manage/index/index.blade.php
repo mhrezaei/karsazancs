@@ -1,6 +1,6 @@
 @extends('manage.frame.use.0')
 
-@section('page_title' , trans('manage.page_title'))
+@section('page_title' , Setting::get('fa_site_title'))
 
 @section('section')
 	{{--@include('manage.index.hello')--}}

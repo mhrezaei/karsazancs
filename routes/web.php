@@ -103,7 +103,7 @@ Route::group(['prefix' => 'manage', 'middleware' => ['auth', 'can:admin'], 'name
 			Route::get('/' , 'SettingsController@index') ;
 			Route::get('/{request_tab}/' , 'SettingsController@index') ;//@TODO: INTACT
 
-			Route::post('/save' , 'settingsController@save');
+			Route::post('/save' , 'SettingsController@save');
 
 		});
 
