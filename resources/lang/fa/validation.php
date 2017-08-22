@@ -230,6 +230,7 @@ return [
 	*/
 
 		'attributes' => [
+				'button' => "متن دکمه",
 				'template' => 'قالب' ,
 				"action" => 'عملیات' ,
 				"email"	=> "ایمیل",
